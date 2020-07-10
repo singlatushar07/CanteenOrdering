@@ -10,14 +10,14 @@ function AppTextInput({ icon, width = "100%", ...otherProps }) {
       {icon && (
         <MaterialCommunityIcons
           name={icon}
-          size={20}
+          size={25}
           color={defaultStyles.colors.medium}
           style={styles.icon}
         />
       )}
       <TextInput
         placeholderTextColor={defaultStyles.colors.medium}
-        style={defaultStyles.text}
+        style={[defaultStyles.text, { flex: 1 }]}
         {...otherProps}
       />
     </View>

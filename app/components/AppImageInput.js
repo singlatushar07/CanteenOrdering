@@ -1,32 +1,32 @@
 import React, { useEffect } from "react";
+import * as ImagePicker from "expo-image-picker";
 import {
-  View,
   StyleSheet,
+  View,
   Image,
-  TouchableWithoutFeedback,
   Alert,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
 
 import colors from "../config/colors";
 
-function ImageInput({ imageUri, onChangeImage }) {
+function AppImageInput({ imageUri, onChangeImage }) {
   useEffect(() => {
     requestPermission();
   }, []);
 
   const requestPermission = async () => {
     const { granted } = await ImagePicker.requestCameraRollPermissionsAsync();
-    if (!granted) alert("You need to enable permission to access the library.");
+    if (!granted) alert("You need to enable storage permissions");
   };
 
   const handlePress = () => {
     if (!imageUri) selectImage();
     else
-      Alert.alert("Delete", "Are you sure you want to delete this image?", [
+      Alert.alert("Delete", "Are you sure you want to delete this image", [
+        { text: "no" },
         { text: "Yes", onPress: () => onChangeImage(null) },
-        { text: "No" },
       ]);
   };
 
@@ -38,7 +38,7 @@ function ImageInput({ imageUri, onChangeImage }) {
       });
       if (!result.cancelled) onChangeImage(result.uri);
     } catch (error) {
-      console.log("Error reading an image", error);
+      console.log("Error reading image");
     }
   };
 
@@ -47,9 +47,9 @@ function ImageInput({ imageUri, onChangeImage }) {
       <View style={styles.container}>
         {!imageUri && (
           <MaterialCommunityIcons
-            color={colors.medium}
             name="camera"
             size={40}
+            color={colors.medium}
           />
         )}
         {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     height: 100,
     justifyContent: "center",
-    marginVertical: 10,
     overflow: "hidden",
     width: 100,
   },
@@ -75,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ImageInput;
+export default AppImageInput;

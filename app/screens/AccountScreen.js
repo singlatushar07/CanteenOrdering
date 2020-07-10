@@ -1,11 +1,10 @@
 import React from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 
 import { ListItem, ListItemSeparator } from "../components/lists";
+import Screen from "../components/Screen";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
-import routes from "../navigation/routes";
-import Screen from "../components/Screen";
 
 const menuItems = [
   {
@@ -21,7 +20,7 @@ const menuItems = [
       name: "email",
       backgroundColor: colors.secondary,
     },
-    targetScreen: routes.MESSAGES,
+    targetScreen: "Messages",
   },
 ];
 
@@ -30,8 +29,8 @@ function AccountScreen({ navigation }) {
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title="Mosh Hamedani"
-          subTitle="programmingwithmosh@gmail.com"
+          title="Mosh Handemi"
+          subTitle="abc@gmail.com"
           image={require("../assets/mosh.jpg")}
         />
       </View>

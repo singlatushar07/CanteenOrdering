@@ -1,35 +1,33 @@
 import React, { useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, View } from "react-native";
 
-import Screen from "../components/Screen";
 import {
   ListItem,
-  ListItemDeleteAction,
   ListItemSeparator,
+  ListItemDeleteAction,
 } from "../components/lists";
+import Screen from "../components/Screen";
 
 const initialMessages = [
   {
     id: 1,
-    title: "Mosh Hamedani",
-    description: "Hey! Is this item still available?",
+    title: "T1",
+    description: "M1",
     image: require("../assets/mosh.jpg"),
   },
   {
     id: 2,
-    title: "Mosh Hamedani",
-    description:
-      "I'm interested in this item. When will you be able to post it?",
+    title: "T2",
+    description: "M2",
     image: require("../assets/mosh.jpg"),
   },
 ];
 
-function MessagesScreen(props) {
+function MessagesScreen() {
   const [messages, setMessages] = useState(initialMessages);
   const [refreshing, setRefreshing] = useState(false);
 
   const handleDelete = (message) => {
-    // Delete the message from messages
     setMessages(messages.filter((m) => m.id !== message.id));
   };
 
@@ -43,7 +41,7 @@ function MessagesScreen(props) {
             title={item.title}
             subTitle={item.description}
             image={item.image}
-            onPress={() => console.log("Message selected", item)}
+            onPress={() => console.log("Tapped", item)}
             renderRightActions={() => (
               <ListItemDeleteAction onPress={() => handleDelete(item)} />
             )}
@@ -52,20 +50,11 @@ function MessagesScreen(props) {
         ItemSeparatorComponent={ListItemSeparator}
         refreshing={refreshing}
         onRefresh={() => {
-          setMessages([
-            {
-              id: 2,
-              title: "T2",
-              description: "D2",
-              image: require("../assets/mosh.jpg"),
-            },
-          ]);
+          setMessages(initialMessages);
         }}
       />
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default MessagesScreen;

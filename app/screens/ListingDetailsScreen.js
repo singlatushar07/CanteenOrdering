@@ -1,10 +1,9 @@
 import React from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, FlatList } from "react-native";
 
+import AppText from "../components/AppText";
 import colors from "../config/colors";
-import ListItem from "../components/lists/ListItem";
-import Text from "../components/Text";
-import { FlatList } from "react-native";
+import { ListItem } from "../components/lists";
 
 const foods = [
   {
@@ -55,27 +54,58 @@ const foods = [
     image: require("../assets/burger.jpg"),
     subTitle: "Rs 10",
   },
+  {
+    id: 9,
+    title: "food1",
+    image: require("../assets/burger.jpg"),
+    subTitle: "Rs 10",
+  },
+  {
+    id: 10,
+    title: "food1",
+    image: require("../assets/burger.jpg"),
+    subTitle: "Rs 10",
+  },
+  {
+    id: 11,
+    title: "food1",
+    image: require("../assets/burger.jpg"),
+    subTitle: "Rs 10",
+  },
+  {
+    id: 12,
+    title: "food1",
+    image: require("../assets/burger.jpg"),
+    subTitle: "Rs 10",
+  },
+  {
+    id: 13,
+    title: "food1",
+    image: require("../assets/burger.jpg"),
+    subTitle: "Rs 10",
+  },
 ];
 
 function ListingDetailsScreen({ route }) {
   const listing = route.params;
-
   return (
     <View>
       <Image style={styles.image} source={listing.image} />
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>{listing.title}</Text>
+        <AppText style={styles.title}>{listing.title}</AppText>
+        <AppText style={styles.price}>{listing.time}</AppText>
         <View style={styles.userContainer}>
           <FlatList
             data={foods}
             keyExtractor={(food) => food.id.toString()}
             renderItem={({ item }) => (
               <ListItem
-                title={item.title}
-                subTitle={"item.subTitle"}
+                title={item.id}
+                subTitle={item.subTitle}
                 image={item.image}
               />
             )}
+            contentInsetAdjustmentBehavior="automatic"
           />
         </View>
       </View>
@@ -103,6 +133,7 @@ const styles = StyleSheet.create({
   },
   userContainer: {
     marginVertical: 40,
+    marginBottom: 1000,
   },
 });
 

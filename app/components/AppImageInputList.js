@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import ImageInput from "./ImageInput";
+import AppImageInput from "./AppImageInput";
 
-function ImageInputList({ imageUris = [], onRemoveImage, onAddImage }) {
+function AppImageInputList({ imageUris = [], onAddImage, onRemoveImage }) {
   const scrollView = useRef();
 
   return (
@@ -15,13 +15,13 @@ function ImageInputList({ imageUris = [], onRemoveImage, onAddImage }) {
         <View style={styles.container}>
           {imageUris.map((uri) => (
             <View key={uri} style={styles.image}>
-              <ImageInput
+              <AppImageInput
                 imageUri={uri}
                 onChangeImage={() => onRemoveImage(uri)}
               />
             </View>
           ))}
-          <ImageInput onChangeImage={(uri) => onAddImage(uri)} />
+          <AppImageInput onChangeImage={(uri) => onAddImage(uri)} />
         </View>
       </ScrollView>
     </View>
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ImageInputList;
+export default AppImageInputList;

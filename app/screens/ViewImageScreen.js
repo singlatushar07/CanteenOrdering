@@ -8,13 +8,13 @@ function ViewImageScreen(props) {
   return (
     <View style={styles.container}>
       <View style={styles.closeIcon}>
-        <MaterialCommunityIcons name="close" color="white" size={35} />
+        <MaterialCommunityIcons name="close" size={35} color={colors.white} />
       </View>
       <View style={styles.deleteIcon}>
         <MaterialCommunityIcons
           name="trash-can-outline"
-          color="white"
           size={35}
+          color={colors.white}
         />
       </View>
       <Image
