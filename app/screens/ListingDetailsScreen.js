@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StyleSheet, FlatList } from "react-native";
+import { View, Image, StyleSheet, FlatList, Text } from "react-native";
 
 import AppText from "../components/AppText";
 import colors from "../config/colors";
@@ -133,7 +133,8 @@ const styles = StyleSheet.create({
   },
   userContainer: {
     marginVertical: 40,
-    marginBottom: 1000,
+    height: 300,
+    flexGrow: 0,
   },
 });
 
