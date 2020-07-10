@@ -17,6 +17,9 @@ function RegisterScreen(props) {
       <AppForm
         initialValues={{
           name: "",
+          rollNo: "",
+          hall: "",
+          roomNo: "",
           email: "",
           password: "",
         }}
