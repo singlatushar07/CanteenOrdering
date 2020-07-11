@@ -14,11 +14,13 @@ import ListingDetailsScreen from "./app/screens/ListingDetailsScreen";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import navigationTheme from "./app/navigation/navigationTheme";
 import AppNavigator from "./app/navigation/AppNavigator";
+import Counter from "./app/components/Counter";
 
 export default function App() {
   return (
-    <NavigationContainer theme={navigationTheme}>
-      <AppNavigator />
-    </NavigationContainer>
+    // <NavigationContainer theme={navigationTheme}>
+    //   <AppNavigator />
+    // </NavigationContainer>
+    <Counter />
   );
 }
