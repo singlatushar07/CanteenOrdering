@@ -4,7 +4,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import ListingsNavigator from "./ListingsNavigator";
 import AccountNavigator from "./AccountNavigator";
+
 import routes from "./routes";
+import Cart from "../screens/Cart";
 
 const Tab = createBottomTabNavigator();
 const AppNavigator = () => (
@@ -21,6 +23,15 @@ const AppNavigator = () => (
       options={{
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons name="home" color={color} size={size} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Cart"
+      component={Cart}
+      options={{
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="cart" color={color} size={size} />
         ),
       }}
     />
