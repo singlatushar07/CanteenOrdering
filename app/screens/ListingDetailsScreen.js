@@ -1,114 +1,118 @@
 import React from "react";
-import { View, Image, StyleSheet, FlatList, Text } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 
 import AppText from "../components/AppText";
 import colors from "../config/colors";
-import { ListItem } from "../components/lists";
+import FoodItemListing from "../components/FoodItemListing";
 
-const foods = [
-  {
-    id: 1,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 2,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 3,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 4,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 5,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 6,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 7,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 8,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 9,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 10,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 11,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 12,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-  {
-    id: 13,
-    title: "food1",
-    image: require("../assets/burger.jpg"),
-    subTitle: "Rs 10",
-  },
-];
+const foods = {
+  Snacks: [
+    {
+      id: 1,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+      subTitle: "Cheakcn lidec",
+    },
+    {
+      id: 2,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+      subTitle: "Cheakcn lidec",
+    },
+    {
+      id: 3,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+      subTitle: "Cheakcn lidec",
+    },
+  ],
+  Veg: [
+    {
+      id: 1,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+    },
+    {
+      id: 2,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+    },
+    {
+      id: 3,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+    },
+    {
+      id: 4,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+    },
+    {
+      id: 5,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+    },
+    {
+      id: 6,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+    },
+    {
+      id: 7,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+    },
+  ],
+  "Non Veg": [
+    {
+      id: 4,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+    },
+    {
+      id: 5,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+    },
+    {
+      id: 3,
+      title: "food1",
+      image: require("../assets/burger.jpg"),
+      price: 10,
+    },
+  ],
+};
 
-function ListingDetailsScreen({ route }) {
+function ListingDetailsScreen({ route, navigation }) {
   const listing = route.params;
-  return (
-    <View>
+  navigation.setOptions({
+    title: listing.title,
+  });
+  const headerContent = () => (
+    <>
       <Image style={styles.image} source={listing.image} />
       <View style={styles.detailsContainer}>
         <AppText style={styles.title}>{listing.title}</AppText>
         <AppText style={styles.price}>{listing.time}</AppText>
-        <View style={styles.userContainer}>
-          <FlatList
-            data={foods}
-            keyExtractor={(food) => food.id.toString()}
-            renderItem={({ item }) => (
-              <ListItem
-                title={item.id}
-                subTitle={item.subTitle}
-                image={item.image}
-              />
-            )}
-            contentInsetAdjustmentBehavior="automatic"
-          />
-        </View>
       </View>
+    </>
+  );
+
+  return (
+    <View>
+      <FoodItemListing data={foods} ListHeaderComponent={headerContent} />
     </View>
   );
 }
@@ -133,8 +137,6 @@ const styles = StyleSheet.create({
   },
   userContainer: {
     marginVertical: 40,
-    height: 300,
-    flexGrow: 0,
   },
 });
 
