@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import FoodItemListing from "../components/FoodItemListing";
-import foods from "../Data/data";
 
 // const foods = {
 //   Snacks: [

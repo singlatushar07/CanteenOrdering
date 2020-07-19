@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Alert,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -9,6 +8,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
+
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../store/actions/mealsaction";
 import AppText from "./AppText";
