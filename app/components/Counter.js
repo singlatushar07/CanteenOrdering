@@ -1,25 +1,29 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import Screen from "./Screen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AppText from "./AppText";
 import colors from "../config/colors";
 import { useSelector, useDispatch } from "react-redux";
-import { increaseQuantity, removeFromCart } from "../store/actions/mealsaction";
+import {
+  increaseQuantity,
+  removeFromCart,
+  decreaseQuantity,
+} from "../store/actions/mealsaction";
 
 function Counter({ item }) {
   const cartItems = useSelector((state) => state.meals.cart);
   const dispatch = useDispatch();
 
   const existingIndex = cartItems.findIndex((meal) => meal.id === item.id);
-  const [count, setCount] = useState(0);
-  if (existingIndex !== -1) setCount(cartItems[existingIndex].quantity);
+  const [count, setCount] = useState(cartItems[existingIndex].quantity);
 
   const handleDecrement = () => {
-    if (count === 0) {
-      removeFromCart(item.id);
+    if (count === 1) {
+      setCount(0);
+      dispatch(removeFromCart(item.id));
     } else {
       setCount(count - 1);
+      dispatch(decreaseQuantity(item.id));
     }
   };
   const handleIncrement = () => {
@@ -28,26 +32,20 @@ function Counter({ item }) {
   };
 
   return (
-    <View>
-      <View style={styles.container}>
-        <TouchableOpacity onPress={() => handleDecrement()}>
-          <MaterialCommunityIcons
-            name="minus"
-            size={20}
-            color={colors.medium}
-          />
-        </TouchableOpacity>
-        <AppText style={styles.text}>{count}</AppText>
-        <TouchableOpacity onPress={() => handleIncrement()}>
-          <MaterialCommunityIcons name="plus" size={20} color={colors.medium} />
-        </TouchableOpacity>
-      </View>
+    <View style={styles.detailsContainer}>
+      <TouchableOpacity onPress={handleDecrement}>
+        <MaterialCommunityIcons name="minus" size={20} color={colors.medium} />
+      </TouchableOpacity>
+      <AppText style={styles.text}>{count}</AppText>
+      <TouchableOpacity onPress={handleIncrement}>
+        <MaterialCommunityIcons name="plus" size={20} color={colors.medium} />
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  detailsContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -56,6 +54,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: colors.light,
     width: 100,
+    height: 30,
   },
   text: {
     marginHorizontal: 10,

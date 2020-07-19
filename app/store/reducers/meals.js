@@ -3,6 +3,7 @@ import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
   INCREASE_QUANTITY,
+  DECREASE_QUANTITY,
 } from "../actions/mealsaction";
 
 const initialstate = {
@@ -14,10 +15,11 @@ const mealsReducer = (state = initialstate, action) => {
   let updatedCart = [];
   switch (action.type) {
     case ADD_TO_CART:
-      existingIndex = state.cart.findIndex((meal) => meal.id === action.mealId);
+      existingIndex = state.cart.findIndex((meal) => meal.id == action.mealId);
+      if (existingIndex !== -1) return { ...state };
       const category = action.mealId.replace(/[0-9]/g, "");
       const newItem = state.meals[category].find(
-        (meal) => meal.id === action.mealId
+        (meal) => meal.id == action.mealId
       );
       newItem["quantity"] = 1;
       return {
@@ -25,16 +27,22 @@ const mealsReducer = (state = initialstate, action) => {
         cart: state.cart.concat(newItem),
       };
 
-    case REMOVE_FROM_CART:
+    case DECREASE_QUANTITY:
       existingIndex = state.cart.findIndex((meal) => meal.id === action.mealId);
       updatedCart = [...state.cart];
-      updatedCart.splice(existingIndex, 1);
+      updatedCart[existingIndex].quantity -= 1;
       return { ...state, cart: updatedCart };
 
     case INCREASE_QUANTITY:
       existingIndex = state.cart.findIndex((meal) => meal.id === action.mealId);
       updatedCart = [...state.cart];
       updatedCart[existingIndex].quantity += 1;
+      return { ...state, cart: updatedCart };
+
+    case REMOVE_FROM_CART:
+      existingIndex = state.cart.findIndex((meal) => meal.id === action.mealId);
+      updatedCart = [...state.cart];
+      updatedCart.splice(existingIndex, 1);
       return { ...state, cart: updatedCart };
 
     default:

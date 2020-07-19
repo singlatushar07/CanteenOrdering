@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListingsNavigator from "./ListingsNavigator";
 import AccountNavigator from "./AccountNavigator";
 import routes from "./routes";
-import CartScreen from "../screens/CartScreen";
+import CartScreenNavigator from "./CartScreenNavigator";
 
 const Tab = createBottomTabNavigator();
 const AppNavigator = () => (
@@ -27,7 +27,7 @@ const AppNavigator = () => (
     />
     <Tab.Screen
       name="Cart"
-      component={CartScreen}
+      component={CartScreenNavigator}
       options={{
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons name="cart" color={color} size={size} />

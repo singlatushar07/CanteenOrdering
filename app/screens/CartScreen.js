@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  Button,
-} from "react-native";
+import { StyleSheet, View, Image, FlatList, Button } from "react-native";
 import { useSelector } from "react-redux";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
@@ -16,9 +8,12 @@ import Counter from "../components/Counter";
 
 export default function CartScreen() {
   const data = useSelector((state) => state.meals.cart);
+  let total = 0;
+  for (let i = 0; i < data.length; i++) {
+    total += data[i].price * data[i].quantity;
+  }
   return (
-    <Screen>
-      <AppText>Cart</AppText>
+    <Screen style={{ padding: 5, paddingTop: 5 }}>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
@@ -33,6 +28,7 @@ export default function CartScreen() {
           </View>
         )}
       />
+      <AppText>Total: {total}</AppText>
       <Button onPress={() => console.log(data)} title="Log"></Button>
     </Screen>
   );

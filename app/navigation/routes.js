@@ -1,5 +1,6 @@
 export default Object.freeze({
   ACCOUNT: "Account",
+  CART: "Cart",
   LISTINGS: "Listings",
   LISTING: "Listing",
   LISTING_DETAILS: "ListingDetails",

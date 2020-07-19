@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   View,
+  Alert,
   StyleSheet,
   TouchableOpacity,
   Image,
@@ -16,6 +17,7 @@ import Counter from "./Counter";
 import colors from "../config/colors";
 
 function FoodItemCollapsible({ foods, category }) {
+  // const data1 = useSelector((state) => state.meals.cart);
   const [collapsed, setCollapsed] = useState(true);
   const [icon, setIcon] = useState("caretright");
 
@@ -27,6 +29,8 @@ function FoodItemCollapsible({ foods, category }) {
   const dispatch = useDispatch();
   const addToCartHandler = (item) => {
     dispatch(addToCart(item.id));
+
+    // console.log("items", data1);
     Alert.alert("Success", "Item added to cart.");
   };
 
