@@ -14,11 +14,26 @@ import ListingDetailsScreen from "./app/screens/ListingDetailsScreen";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import navigationTheme from "./app/navigation/navigationTheme";
 import AppNavigator from "./app/navigation/AppNavigator";
+import Counter from "./app/components/Counter";
+import FoodItemListing from "./app/components/FoodItemListing";
+import Screen from "./app/components/Screen";
+import { Provider } from "react-redux";
+import { createStore, combineReducers } from "redux";
+import mealsReducer from "./app/store/reducers/meals";
+
+const rootReducer = combineReducers({
+  meals: mealsReducer,
+});
+
+const store = createStore(rootReducer);
 
 export default function App() {
   return (
-    <NavigationContainer theme={navigationTheme}>
-      <AppNavigator />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer theme={navigationTheme}>
+        <AppNavigator />
+        {/* <AuthNavigator /> */}
+      </NavigationContainer>
+    </Provider>
   );
 }

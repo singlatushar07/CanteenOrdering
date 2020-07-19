@@ -8,37 +8,11 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
-import AsyncStorage from "@react-native-community/async-storage";
-import Icon from "react-native-vector-icons/Ionicons";
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart } from "../store/actions/mealsaction";
 import AppText from "./AppText";
 import Counter from "./Counter";
 import colors from "../config/colors";
-
-const onClickAddCart = (data) => {
-  const itemcart = {
-    food: data,
-    quantity: 1,
-    price: data.price,
-  };
-
-  AsyncStorage.getItem("cart")
-    .then((datacart) => {
-      if (datacart !== null) {
-        // We have data!!
-        const cart = JSON.parse(datacart);
-        cart.push(itemcart);
-        AsyncStorage.setItem("cart", JSON.stringify(cart));
-      } else {
-        const cart = [];
-        cart.push(itemcart);
-        AsyncStorage.setItem("cart", JSON.stringify(cart));
-      }
-      alert("Add Cart");
-    })
-    .catch((err) => {
-      alert(err);
-    });
-};
 
 function FoodItemCollapsible({ foods, category }) {
   const [collapsed, setCollapsed] = useState(true);
@@ -48,6 +22,16 @@ function FoodItemCollapsible({ foods, category }) {
     setCollapsed(!collapsed);
     setIcon(collapsed ? "caretdown" : "caretright");
   };
+
+  const dispatch = useDispatch();
+  const addToCartHandler = (item) => {
+    dispatch(addToCart(item.id));
+  };
+
+  // const handlePress = (item) => {
+  //   console.log(item.id);
+  // };
+  const availlibleMeal = useSelector((state) => state.meals.meals);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleCollapse}>
@@ -61,23 +45,21 @@ function FoodItemCollapsible({ foods, category }) {
           data={foods[category]}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => onClickAddCart(item)}>
-              <View style={styles.detailsContainer}>
-                {item.image && (
-                  <Image source={item.image} style={styles.image} />
-                )}
-                <View style={styles.card}>
+            <View style={styles.detailsContainer}>
+              {item.image && <Image source={item.image} style={styles.image} />}
+              <View style={styles.card}>
+                <TouchableOpacity onPress={() => addToCartHandler(item)}>
                   <AppText style={styles.title}>{item.title}</AppText>
                   <AppText style={styles.price}>₹{item.price}</AppText>
-                  {item.subTitle && (
-                    <AppText numberOfLines={2} style={styles.subTitle}>
-                      {item.subTitle}
-                    </AppText>
-                  )}
-                </View>
-                {/* <Counter /> */}
+                </TouchableOpacity>
+                {item.subTitle && (
+                  <AppText numberOfLines={2} style={styles.subTitle}>
+                    {item.subTitle}
+                  </AppText>
+                )}
               </View>
-            </TouchableOpacity>
+              <Counter />
+            </View>
           )}
         />
       </Collapsible>
