@@ -16,10 +16,11 @@ const mealsReducer = (state = initialstate, action) => {
         updatedCart.splice(existingIndex, 1);
         return { ...state, cart: updatedCart };
       } else {
+        const category = action.mealId.replace(/[0-9]/g, "");
         return {
           ...state,
           cart: state.cart.concat(
-            state.meals.find((meal) => meal.id === action.mealId)
+            state.meals[category].find((meal) => meal.id === action.mealId)
           ),
         };
       }

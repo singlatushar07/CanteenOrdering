@@ -1,21 +1,21 @@
 const foods = {
   Snacks: [
     {
-      id: 1,
+      id: "Snacks1",
       title: "food1",
       image: require("../assets/burger.jpg"),
       price: 10,
       subTitle: "Cheakcn lidec",
     },
     {
-      id: 2,
+      id: "Snacks2",
       title: "food2",
       image: require("../assets/burger.jpg"),
       price: 10,
       subTitle: "Cheakcn lidec",
     },
     {
-      id: 3,
+      id: "Snacks3",
       title: "food3",
       image: require("../assets/burger.jpg"),
       price: 10,
@@ -24,63 +24,45 @@ const foods = {
   ],
   Veg: [
     {
-      id: 4,
+      id: "Veg1",
       title: "food4",
       image: require("../assets/burger.jpg"),
       price: 10,
     },
     {
-      id: 5,
+      id: "Veg2",
       title: "food5",
       image: require("../assets/burger.jpg"),
       price: 10,
     },
     {
-      id: 6,
+      id: "Veg3",
       title: "food6",
       image: require("../assets/burger.jpg"),
       price: 10,
     },
     {
-      id: 7,
+      id: "Veg4",
       title: "food7",
       image: require("../assets/burger.jpg"),
       price: 10,
     },
-    {
-      id: 8,
-      title: "food8",
-      image: require("../assets/burger.jpg"),
-      price: 10,
-    },
-    {
-      id: 9,
-      title: "food9",
-      image: require("../assets/burger.jpg"),
-      price: 10,
-    },
-    {
-      id: 10,
-      title: "food10",
-      image: require("../assets/burger.jpg"),
-      price: 10,
-    },
   ],
-  "Non Veg": [
+  NonVeg: [
     {
-      id: 11,
+      id: "NonVeg1",
       title: "food11",
       image: require("../assets/burger.jpg"),
       price: 10,
     },
     {
-      id: 12,
+      id: "NonVeg2",
       title: "food12",
       image: require("../assets/burger.jpg"),
       price: 10,
     },
     {
-      id: 3,
+      id: "NonVeg3",
       title: "food13",
       image: require("../assets/burger.jpg"),
       price: 10,

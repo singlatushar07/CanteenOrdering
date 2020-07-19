@@ -99,6 +99,7 @@ import foods from "../Data/data";
 function ListingDetailsScreen({ route, navigation }) {
   const listing = route.params;
   const availlibleMeal = useSelector((state) => state.meals.meals);
+
   navigation.setOptions({
     title: listing.title,
   });

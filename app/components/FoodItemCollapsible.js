@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Alert,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -26,6 +27,7 @@ function FoodItemCollapsible({ foods, category }) {
   const dispatch = useDispatch();
   const addToCartHandler = (item) => {
     dispatch(addToCart(item.id));
+    Alert.alert("Success", "Item added to cart.");
   };
 
   // const handlePress = (item) => {
