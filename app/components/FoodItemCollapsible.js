@@ -60,7 +60,6 @@ function FoodItemCollapsible({ foods, category }) {
                   </AppText>
                 )}
               </View>
-              <Counter />
             </View>
           )}
         />
