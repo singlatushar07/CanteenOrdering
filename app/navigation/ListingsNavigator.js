@@ -9,27 +9,28 @@ import routes from "./routes";
 
 const Stack = createStackNavigator();
 
-const FeedNavigator = () => (
+const ListingsNavigator = () => (
   <Stack.Navigator
     mode="modal"
     screenOptions={{
-      headerShown: false,
       cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
     }}
   >
-    <Stack.Screen name={routes.LISTING} component={ListingScreen} />
+    <Stack.Screen
+      name={routes.LISTING}
+      component={ListingScreen}
+      options={{
+        headerShown: false,
+      }}
+    />
     <Stack.Screen
       name={routes.LISTING_DETAILS}
       component={ListingDetailsScreen}
       options={{
-        gestureEnabled: true,
-        gestureDirection: "vertical",
-        gestureResponseDistance: {
-          vertical: 300,
-        },
+        title: "",
       }}
     />
   </Stack.Navigator>
 );
 
-export default FeedNavigator;
+export default ListingsNavigator;
