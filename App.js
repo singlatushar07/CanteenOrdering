@@ -20,6 +20,7 @@ import Screen from "./app/components/Screen";
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 import mealsReducer from "./app/store/reducers/meals";
+import ListingEditScreen from "./app/screens/AdminAdder";
 
 const rootReducer = combineReducers({
   meals: mealsReducer,
@@ -29,11 +30,12 @@ const store = createStore(rootReducer);
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <NavigationContainer theme={navigationTheme}>
-        <AppNavigator />
-        {/* <AuthNavigator /> */}
-      </NavigationContainer>
-    </Provider>
+    // <Provider store={store}>
+    //   <NavigationContainer theme={navigationTheme}>
+    //     <AppNavigator />
+    //     {/* <AuthNavigator /> */}
+    //   </NavigationContainer>
+    // </Provider>
+    <ListingEditScreen />
   );
 }
