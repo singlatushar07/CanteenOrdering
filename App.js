@@ -8,7 +8,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 
 import AppImageInput from "./app/components/AppImageInput";
-import AppImageInputList from "./app/components/AppImageInputList";
+import AppImageInputSingle from "./app/components/AppImageInputListSingle";
 import ListingScreen from "./app/screens/ListingScreen";
 import ListingDetailsScreen from "./app/screens/ListingDetailsScreen";
 import AuthNavigator from "./app/navigation/AuthNavigator";
@@ -20,7 +20,8 @@ import Screen from "./app/components/Screen";
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 import mealsReducer from "./app/store/reducers/meals";
-import ListingEditScreen from "./app/screens/AdminAdder";
+import AdminAdder from "./app/screens/AdminAdder";
+import AdminNavigator from "./app/navigation/AdminNavigator";
 
 const rootReducer = combineReducers({
   meals: mealsReducer,
@@ -30,12 +31,12 @@ const store = createStore(rootReducer);
 
 export default function App() {
   return (
-    // <Provider store={store}>
-    //   <NavigationContainer theme={navigationTheme}>
-    //     <AppNavigator />
-    //     {/* <AuthNavigator /> */}
-    //   </NavigationContainer>
-    // </Provider>
-    <ListingEditScreen />
+    <Provider store={store}>
+      <NavigationContainer theme={navigationTheme}>
+        {/* <AppNavigator /> */}
+        {/* <AuthNavigator /> */}
+        <AdminNavigator />
+      </NavigationContainer>
+    </Provider>
   );
 }

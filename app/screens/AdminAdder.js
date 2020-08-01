@@ -9,12 +9,14 @@ import {
   SubmitButton,
 } from "../components/forms";
 import Screen from "../components/Screen";
+import AppFormImagePicker from "../components/forms/AppFormImagePicker";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
   price: Yup.number().required().min(1).max(10000).label("Price"),
   description: Yup.string().label("Description"),
   hall: Yup.object().required().nullable().label("Category"),
+  image: Yup.object().label("Image"),
 });
 
 const Halls = [
@@ -32,11 +34,11 @@ const Halls = [
   { label: "Hall 12", value: 12 },
   { label: "Hall 13", value: 13 },
 ];
-const a = [];
-const ha = () => {
+
+const ha = (a) => {
   console.log(a);
 };
-function ListingEditScreen() {
+function AdminAdder({ navigation }) {
   return (
     <Screen style={styles.container}>
       <Form
@@ -45,10 +47,12 @@ function ListingEditScreen() {
           price: "",
           description: "",
           hall: null,
+          image: [],
         }}
-        onSubmit={(values) => a.push(values)}
+        onSubmit={(values) => ha(values)}
         validationSchema={validationSchema}
       >
+        <AppFormImagePicker name="image" />
         <Picker items={Halls} name="hall" placeholder="Hall" />
         <FormField maxLength={255} name="title" placeholder="Title" />
         <FormField
@@ -58,10 +62,17 @@ function ListingEditScreen() {
           placeholder="Price"
         />
 
-        <FormField maxLength={255} name="description" placeholder="subTitle" />
+        <FormField
+          maxLength={255}
+          name="description"
+          placeholder="Description"
+        />
         <SubmitButton title="add" />
       </Form>
-      <Button title="console_log" onPress={() => ha()} />
+      <Button
+        title="View all items"
+        onPress={() => navigation.navigate("AdminEdit")}
+      />
     </Screen>
   );
 }
@@ -71,4 +82,4 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-export default ListingEditScreen;
+export default AdminAdder;
