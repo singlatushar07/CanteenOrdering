@@ -13,7 +13,6 @@ import Collapsible from "react-native-collapsible";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../store/actions/mealsaction";
 import AppText from "./AppText";
-import Counter from "./Counter";
 import colors from "../config/colors";
 
 function FoodItemCollapsible({ foods, category }) {

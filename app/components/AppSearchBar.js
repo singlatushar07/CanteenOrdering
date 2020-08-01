@@ -41,6 +41,7 @@ function AppSearchBar({
         data={filteredData}
         keyExtractor={(item) => item[id].toString()}
         renderItem={({ item }) => renderItem(item)}
+        showsVerticalScrollIndicator={false}
       />
     </>
   );
