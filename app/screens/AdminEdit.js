@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Image,
-  Text,
-  ScrollView,
-} from "react-native";
-import DropdownMenu from "react-native-dropdown-menu";
+import { View, StyleSheet, FlatList, Image } from "react-native";
 import foods from "../Data/data";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
@@ -21,8 +13,9 @@ import {
   MenuOption,
   MenuTrigger,
 } from "react-native-popup-menu";
+import routes from "../navigation/routes";
 
-function AdminEdit() {
+function AdminEdit({ navigation }) {
   const drop = ["Update", "Delete"];
   const ItemList = (category) => (
     <View style={styles.container}>
@@ -46,21 +39,33 @@ function AdminEdit() {
                   </AppText>
                 )}
               </View>
-              <MenuProvider>
-                <Menu onSelect={(value) => alert(value)}>
-                  <MenuTrigger>
-                    <MaterialCommunityIcons name="dots-vertical" size={35} />
-                  </MenuTrigger>
-                  <MenuOptions numberOfLines={3}>
-                    <MenuOption value={"Update"}>
-                      <Text>Update</Text>
-                    </MenuOption>
-                    <MenuOption value={"Delete"}>
-                      <Text>Delete</Text>
-                    </MenuOption>
-                  </MenuOptions>
-                </Menu>
-              </MenuProvider>
+
+              <Menu onSelect={(value) => alert(value)}>
+                <MenuTrigger>
+                  <MaterialCommunityIcons name="dots-vertical" size={35} />
+                </MenuTrigger>
+                <MenuOptions numberOfLines={2}>
+                  <MenuOption
+                    value={"Update"}
+                    style={{
+                      backgroundColor: colors.light,
+                      borderBottomWidth: 0.5,
+                      borderColor: colors.medium,
+                    }}
+                    onSelect={() =>
+                      navigation.navigate(routes.ADMIN_LISTING_UPDATE, item)
+                    }
+                  >
+                    <AppText style={{ margin: 5 }}>Update</AppText>
+                  </MenuOption>
+                  <MenuOption
+                    value={"Delete"}
+                    style={{ backgroundColor: colors.light }}
+                  >
+                    <AppText style={{ margin: 5 }}>Delete</AppText>
+                  </MenuOption>
+                </MenuOptions>
+              </Menu>
             </View>
           )}
         />
@@ -69,11 +74,13 @@ function AdminEdit() {
   );
   return (
     <Screen>
-      <FlatList
-        data={Object.keys(foods)}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => ItemList(item)}
-      />
+      <MenuProvider>
+        <FlatList
+          data={Object.keys(foods)}
+          keyExtractor={(item) => item}
+          renderItem={({ item }) => ItemList(item)}
+        />
+      </MenuProvider>
     </Screen>
   );
 }
