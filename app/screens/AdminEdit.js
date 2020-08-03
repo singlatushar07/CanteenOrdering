@@ -1,13 +1,29 @@
 import React from "react";
-import { View, StyleSheet, FlatList, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Image,
+  Text,
+  ScrollView,
+} from "react-native";
+import DropdownMenu from "react-native-dropdown-menu";
 import foods from "../Data/data";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
+import {
+  Menu,
+  MenuProvider,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
 
 function AdminEdit() {
+  const drop = ["Update", "Delete"];
   const ItemList = (category) => (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -30,7 +46,21 @@ function AdminEdit() {
                   </AppText>
                 )}
               </View>
-              <MaterialCommunityIcons name="dots-vertical" size={35} />
+              <MenuProvider>
+                <Menu onSelect={(value) => alert(value)}>
+                  <MenuTrigger>
+                    <MaterialCommunityIcons name="dots-vertical" size={35} />
+                  </MenuTrigger>
+                  <MenuOptions numberOfLines={3}>
+                    <MenuOption value={"Update"}>
+                      <Text>Update</Text>
+                    </MenuOption>
+                    <MenuOption value={"Delete"}>
+                      <Text>Delete</Text>
+                    </MenuOption>
+                  </MenuOptions>
+                </Menu>
+              </MenuProvider>
             </View>
           )}
         />
