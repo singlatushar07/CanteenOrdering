@@ -10,13 +10,15 @@ import {
 } from "../components/forms";
 import Screen from "../components/Screen";
 import AppFormImagePicker from "../components/forms/AppFormImagePicker";
+import AppButton from "../components/AppButton";
+import colors from "../config/colors";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
   price: Yup.number().required().min(1).max(10000).label("Price"),
   description: Yup.string().label("Description"),
   hall: Yup.object().required().nullable().label("Category"),
-  image: Yup.object().label("Image"),
+  image: Yup.object().nullable().label("Image"),
 });
 
 const Halls = [
@@ -69,9 +71,10 @@ function AdminAdder({ navigation }) {
         />
         <SubmitButton title="add" />
       </Form>
-      <Button
-        title="View all items"
+      <AppButton
+        color="secondary"
         onPress={() => navigation.navigate("AdminEdit")}
+        title="View all items"
       />
     </Screen>
   );

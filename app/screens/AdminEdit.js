@@ -6,8 +6,17 @@ import Collapsible from "react-native-collapsible";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
+import {
+  Menu,
+  MenuProvider,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
+import routes from "../navigation/routes";
 
-function AdminEdit() {
+function AdminEdit({ navigation }) {
+  const drop = ["Update", "Delete"];
   const ItemList = (category) => (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -30,7 +39,33 @@ function AdminEdit() {
                   </AppText>
                 )}
               </View>
-              <MaterialCommunityIcons name="dots-vertical" size={35} />
+
+              <Menu onSelect={(value) => alert(value)}>
+                <MenuTrigger>
+                  <MaterialCommunityIcons name="dots-vertical" size={35} />
+                </MenuTrigger>
+                <MenuOptions numberOfLines={2}>
+                  <MenuOption
+                    value={"Update"}
+                    style={{
+                      backgroundColor: colors.light,
+                      borderBottomWidth: 0.5,
+                      borderColor: colors.medium,
+                    }}
+                    onSelect={() =>
+                      navigation.navigate(routes.ADMIN_LISTING_UPDATE, item)
+                    }
+                  >
+                    <AppText style={{ margin: 5 }}>Update</AppText>
+                  </MenuOption>
+                  <MenuOption
+                    value={"Delete"}
+                    style={{ backgroundColor: colors.light }}
+                  >
+                    <AppText style={{ margin: 5 }}>Delete</AppText>
+                  </MenuOption>
+                </MenuOptions>
+              </Menu>
             </View>
           )}
         />
@@ -39,11 +74,13 @@ function AdminEdit() {
   );
   return (
     <Screen>
-      <FlatList
-        data={Object.keys(foods)}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => ItemList(item)}
-      />
+      <MenuProvider>
+        <FlatList
+          data={Object.keys(foods)}
+          keyExtractor={(item) => item}
+          renderItem={({ item }) => ItemList(item)}
+        />
+      </MenuProvider>
     </Screen>
   );
 }
