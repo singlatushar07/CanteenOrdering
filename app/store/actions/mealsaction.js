@@ -3,8 +3,8 @@ export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const INCREASE_QUANTITY = "INCREASE_QUANTITY";
 export const DECREASE_QUANTITY = "DECREASE_QUANTITY";
 
-export const addToCart = (id) => {
-  return { type: ADD_TO_CART, mealId: id };
+export const addToCart = (item) => {
+  return { type: ADD_TO_CART, foodItem: item };
 };
 
 export const removeFromCart = (id) => {
