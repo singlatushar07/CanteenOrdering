@@ -16,7 +16,7 @@ import colors from "../config/colors";
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
   price: Yup.number().required().min(1).max(10000).label("Price"),
-  description: Yup.string().label("Description"),
+  subTitle: Yup.string().label("subTitle"),
   hall: Yup.object().required().nullable().label("Category"),
   image: Yup.object().nullable().label("Image"),
 });
@@ -37,6 +37,43 @@ const Halls = [
   { label: "Hall 13", value: 13 },
 ];
 
+var data;
+import url from "../keys/url";
+//const ngrokurl = "https://523d4eb596ce.ngrok.io";
+let putMethod = async (c) => {
+  try {
+    let result = await fetch(url.ngrokurl + "/menu", {
+      method: "PUT", // Method itself
+      headers: {
+        "Content-type": "application/json; charset=UTF-8", // Indicates the content
+      },
+      body: JSON.stringify(c), // We send data in JSON format
+    });
+    const data2 = await result.json();
+    console.log(data2);
+  } catch (e) {
+    console.log(e);
+  }
+};
+let postData = async (c) => {
+  try {
+    let result = await fetch(url.ngrokurl + "/menu", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(c),
+    });
+    data = await result.json();
+    console.log(data);
+    putMethod(data);
+    console.log("done");
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const ha = (a) => {
   console.log(a);
 };
@@ -51,7 +88,14 @@ function AdminAdder({ navigation }) {
           hall: null,
           image: [],
         }}
-        onSubmit={(values) => ha(values)}
+        onSubmit={(values) => (
+          (value = Object.assign({}, values)),
+          (value.hall = value.hall.value),
+          console.log(value.hall),
+          ha(value),
+          postData(value),
+          console.log("pposted")
+        )}
         validationSchema={validationSchema}
       >
         <AppFormImagePicker name="image" />
@@ -64,11 +108,7 @@ function AdminAdder({ navigation }) {
           placeholder="Price"
         />
 
-        <FormField
-          maxLength={255}
-          name="description"
-          placeholder="Description"
-        />
+        <FormField maxLength={255} name="subTitle" placeholder="Description" />
         <SubmitButton title="add" />
       </Form>
       <AppButton
