@@ -16,7 +16,7 @@ const mealsReducer = (state = initialstate, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       existingIndex = state.cart.findIndex(
-        (meal) => meal.id == action.foodItem.id
+        (meal) => meal.id == action.foodItem._id
       );
       if (existingIndex !== -1) return { ...state };
       // const category = action.mealId.replace(/[0-9]/g, "");

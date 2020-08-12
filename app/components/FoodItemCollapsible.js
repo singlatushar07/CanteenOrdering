@@ -26,7 +26,6 @@ function search(nameKey, myArray) {
 }
 
 function FoodItemCollapsible({ foods, category }) {
-  // const data1 = useSelector((state) => state.meals.cart);
   const [collapsed, setCollapsed] = useState(true);
   const [icon, setIcon] = useState("caretright");
   const items = search(category, foods);
@@ -39,13 +38,9 @@ function FoodItemCollapsible({ foods, category }) {
   const addToCartHandler = (item) => {
     dispatch(addToCart(item));
 
-    // console.log("items", data1);
     Alert.alert("Success", "Item added to cart.");
   };
 
-  // const handlePress = (item) => {
-  //   console.log(item.id);
-  // };
   const availlibleMeal = useSelector((state) => state.meals.meals);
   return (
     <View style={styles.container}>
@@ -58,7 +53,7 @@ function FoodItemCollapsible({ foods, category }) {
       <Collapsible collapsed={collapsed}>
         <FlatList
           data={items}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id.toString()}
           renderItem={({ item }) => (
             <View style={styles.detailsContainer}>
               {(item.image && (
