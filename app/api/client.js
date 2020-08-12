@@ -5,5 +5,4 @@ const apiClient = create({
   baseURL: url.ngrokurl,
 });
 
-// const getFood = () => apiClient.get("/menu");
 export default apiClient;
