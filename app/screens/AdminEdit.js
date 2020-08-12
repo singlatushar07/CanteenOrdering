@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, FlatList, Image } from "react-native";
+import { View, StyleSheet, FlatList, Image, Text } from "react-native";
 import foods from "../Data/data";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
@@ -15,8 +15,19 @@ import {
 } from "react-native-popup-menu";
 import routes from "../navigation/routes";
 
+function search(nameKey, myArray) {
+  var a = new Array();
+  for (var i = 0; i < myArray.length; i++) {
+    if (myArray[i].class === nameKey) {
+      a.push(myArray[i]);
+    }
+  }
+  return a;
+}
+
 function AdminEdit({ navigation }) {
   const drop = ["Update", "Delete"];
+
   const ItemList = (category) => (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -25,7 +36,7 @@ function AdminEdit({ navigation }) {
       </View>
       <Collapsible collapsed={false}>
         <FlatList
-          data={foods[category]}
+          data={search(category, foods)}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.detailsContainer}>
@@ -76,7 +87,7 @@ function AdminEdit({ navigation }) {
     <Screen>
       <MenuProvider>
         <FlatList
-          data={Object.keys(foods)}
+          data={["Snacks", "Veg", "NonVeg"]}
           keyExtractor={(item) => item}
           renderItem={({ item }) => ItemList(item)}
         />

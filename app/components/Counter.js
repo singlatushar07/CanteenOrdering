@@ -14,21 +14,21 @@ function Counter({ item }) {
   const cartItems = useSelector((state) => state.meals.cart);
   const dispatch = useDispatch();
 
-  const existingIndex = cartItems.findIndex((meal) => meal.id === item.id);
+  const existingIndex = cartItems.findIndex((meal) => meal._id === item._id);
   const [count, setCount] = useState(cartItems[existingIndex].quantity);
 
   const handleDecrement = () => {
     if (count === 1) {
       setCount(0);
-      dispatch(removeFromCart(item.id));
+      dispatch(removeFromCart(item._id));
     } else {
       setCount(count - 1);
-      dispatch(decreaseQuantity(item.id));
+      dispatch(decreaseQuantity(item._id));
     }
   };
   const handleIncrement = () => {
     setCount(count + 1);
-    dispatch(increaseQuantity(item.id));
+    dispatch(increaseQuantity(item._id));
   };
 
   return (

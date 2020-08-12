@@ -15,12 +15,13 @@ const mealsReducer = (state = initialstate, action) => {
   let updatedCart = [];
   switch (action.type) {
     case ADD_TO_CART:
-      existingIndex = state.cart.findIndex((meal) => meal.id == action.mealId);
-      if (existingIndex !== -1) return { ...state };
-      const category = action.mealId.replace(/[0-9]/g, "");
-      const newItem = state.meals[category].find(
-        (meal) => meal.id == action.mealId
+      existingIndex = state.cart.findIndex(
+        (meal) => meal.id == action.foodItem._id
       );
+      if (existingIndex !== -1) return { ...state };
+      // const category = action.mealId.replace(/[0-9]/g, "");
+      // const newItem = state.meals.find((meal) => meal.id == action.mealId);
+      const newItem = action.foodItem;
       newItem["quantity"] = 1;
       return {
         ...state,

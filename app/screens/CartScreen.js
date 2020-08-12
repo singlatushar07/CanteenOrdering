@@ -16,10 +16,17 @@ export default function CartScreen() {
     <Screen style={{ padding: 5, paddingTop: 5 }}>
       <FlatList
         data={data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={styles.container}>
-            {item.image && <Image source={item.image} style={styles.image} />}
+            {(item.image && (
+              <Image source={item.image} style={styles.image} />
+            )) || (
+              <Image
+                source={require("../assets/burger.jpg")}
+                style={styles.image}
+              />
+            )}
             <View style={styles.card}>
               <AppText style={styles.title}>{item.title}</AppText>
               <AppText style={styles.price}>₹{item.price}</AppText>

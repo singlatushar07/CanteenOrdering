@@ -15,11 +15,20 @@ import { addToCart } from "../store/actions/mealsaction";
 import AppText from "./AppText";
 import colors from "../config/colors";
 
+function search(nameKey, myArray) {
+  var a = new Array();
+  for (var i = 0; i < myArray.length; i++) {
+    if (myArray[i].class === nameKey) {
+      a.push(myArray[i]);
+    }
+  }
+  return a;
+}
+
 function FoodItemCollapsible({ foods, category }) {
-  // const data1 = useSelector((state) => state.meals.cart);
   const [collapsed, setCollapsed] = useState(true);
   const [icon, setIcon] = useState("caretright");
-
+  const items = search(category, foods);
   const handleCollapse = () => {
     setCollapsed(!collapsed);
     setIcon(collapsed ? "caretdown" : "caretright");
@@ -27,15 +36,11 @@ function FoodItemCollapsible({ foods, category }) {
 
   const dispatch = useDispatch();
   const addToCartHandler = (item) => {
-    dispatch(addToCart(item.id));
+    dispatch(addToCart(item));
 
-    // console.log("items", data1);
     Alert.alert("Success", "Item added to cart.");
   };
 
-  // const handlePress = (item) => {
-  //   console.log(item.id);
-  // };
   const availlibleMeal = useSelector((state) => state.meals.meals);
   return (
     <View style={styles.container}>
@@ -47,11 +52,19 @@ function FoodItemCollapsible({ foods, category }) {
       </TouchableOpacity>
       <Collapsible collapsed={collapsed}>
         <FlatList
-          data={foods[category]}
-          keyExtractor={(item) => item.id.toString()}
+          data={items}
+          keyExtractor={(item) => item._id.toString()}
           renderItem={({ item }) => (
             <View style={styles.detailsContainer}>
-              {item.image && <Image source={item.image} style={styles.image} />}
+              {(item.image && (
+                <Image source={item.image} style={styles.image} />
+              )) || (
+                <Image
+                  source={require("../assets/burger.jpg")}
+                  style={styles.image}
+                />
+              )}
+
               <View style={styles.card}>
                 <TouchableOpacity onPress={() => addToCartHandler(item)}>
                   <AppText style={styles.title}>{item.title}</AppText>
