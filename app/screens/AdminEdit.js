@@ -1,6 +1,5 @@
-import React from "react";
-import { View, StyleSheet, FlatList, Image, Text } from "react-native";
-import foods from "../Data/data";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, FlatList, Image, Alert } from "react-native";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
 import colors from "../config/colors";
@@ -14,11 +13,12 @@ import {
   MenuTrigger,
 } from "react-native-popup-menu";
 import routes from "../navigation/routes";
+import listingApi from "../api/foodListings";
 
 function search(nameKey, myArray) {
   var a = new Array();
   for (var i = 0; i < myArray.length; i++) {
-    if (myArray[i].class === nameKey) {
+    if (myArray[i].category === nameKey) {
       a.push(myArray[i]);
     }
   }
@@ -26,7 +26,48 @@ function search(nameKey, myArray) {
 }
 
 function AdminEdit({ navigation }) {
-  const drop = ["Update", "Delete"];
+  const handleDelete = (item) => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure, you want to delete?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: async () => {
+            const response = await listingApi.deleteListing(item._id);
+            if (!response.ok) {
+              alert("Unable to delete." + "\n" + response.data);
+            } else {
+              alert("Deleted Successfully");
+              setFoodItems(foodItems.filter((food) => food._id !== item._id));
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const [foodItems, setFoodItems] = useState([]);
+  useEffect(() => {
+    loadFood();
+  }, []);
+
+  const loadFood = async () => {
+    try {
+      const response = await listingApi.getFoodItems();
+      const food = response;
+      console.log(food.data);
+      setFoodItems(food.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const ItemList = (category) => (
     <View style={styles.container}>
@@ -36,11 +77,18 @@ function AdminEdit({ navigation }) {
       </View>
       <Collapsible collapsed={false}>
         <FlatList
-          data={search(category, foods)}
-          keyExtractor={(item) => item.id.toString()}
+          data={search(category, foodItems)}
+          keyExtractor={(item) => item._id.toString()}
           renderItem={({ item }) => (
             <View style={styles.detailsContainer}>
-              {item.image && <Image source={item.image} style={styles.image} />}
+              {(item.image && (
+                <Image source={item.image} style={styles.image} />
+              )) || (
+                <Image
+                  source={require("../assets/burger.jpg")}
+                  style={styles.image}
+                />
+              )}
               <View style={styles.card}>
                 <AppText style={styles.title}>{item.title}</AppText>
                 <AppText style={styles.price}>₹{item.price}</AppText>
@@ -72,6 +120,7 @@ function AdminEdit({ navigation }) {
                   <MenuOption
                     value={"Delete"}
                     style={{ backgroundColor: colors.light }}
+                    onSelect={() => handleDelete(item)}
                   >
                     <AppText style={{ margin: 5 }}>Delete</AppText>
                   </MenuOption>

@@ -18,9 +18,9 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer theme={navigationTheme}>
-        <AppNavigator />
+        {/* <AppNavigator /> */}
         {/* <AuthNavigator /> */}
-        {/* <AdminNavigator /> */}
+        <AdminNavigator />
       </NavigationContainer>
     </Provider>
   );

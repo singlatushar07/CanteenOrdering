@@ -18,7 +18,7 @@ import colors from "../config/colors";
 function search(nameKey, myArray) {
   var a = new Array();
   for (var i = 0; i < myArray.length; i++) {
-    if (myArray[i].class === nameKey) {
+    if (myArray[i].category === nameKey) {
       a.push(myArray[i]);
     }
   }

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Button } from "react-native";
+import { StyleSheet, Button, Alert } from "react-native";
 import * as Yup from "yup";
 
 import {
@@ -12,13 +12,14 @@ import Screen from "../components/Screen";
 import AppFormImagePicker from "../components/forms/AppFormImagePicker";
 import AppButton from "../components/AppButton";
 import colors from "../config/colors";
+import listingApi from "../api/foodListings";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
   price: Yup.number().required().min(1).max(10000).label("Price"),
-  subTitle: Yup.string().label("subTitle"),
+  description: Yup.string().label("description"),
   hall: Yup.object().required().nullable().label("Category"),
-  image: Yup.object().nullable().label("Image"),
+  // image: Yup.object().nullable().label("Image"),
 });
 
 const Halls = [
@@ -37,46 +38,58 @@ const Halls = [
   { label: "Hall 13", value: 13 },
 ];
 
-var data;
-import url from "../keys/url";
-//const ngrokurl = "https://523d4eb596ce.ngrok.io";
-let putMethod = async (c) => {
+// var data;
+// import url from "../keys/url";
+// let putMethod = async (c) => {
+//   try {
+//     let result = await fetch(url.ngrokurl + "/menu", {
+//       method: "PUT", // Method itself
+//       headers: {
+//         "Content-type": "application/json; charset=UTF-8", // Indicates the content
+//       },
+//       body: JSON.stringify(c), // We send data in JSON format
+//     });
+//     const data2 = await result.json();
+//     console.log(data2);
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
+// let postData = async (c) => {
+//   try {
+//     let result = await fetch(url.ngrokurl + "/menu", {
+//       method: "post",
+//       headers: {
+//         Accept: "application/json",
+//         "Content-type": "application/json",
+//       },
+//       body: JSON.stringify(c),
+//     });
+//     console.log(JSON.stringify(c));
+//     data = await result.json();
+//     putMethod(data);
+//     console.log(data);
+//     console.log("done");
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
+
+const postFood = async (c) => {
   try {
-    let result = await fetch(url.ngrokurl + "/menu", {
-      method: "PUT", // Method itself
-      headers: {
-        "Content-type": "application/json; charset=UTF-8", // Indicates the content
-      },
-      body: JSON.stringify(c), // We send data in JSON format
-    });
-    const data2 = await result.json();
-    console.log(data2);
-  } catch (e) {
-    console.log(e);
-  }
-};
-let postData = async (c) => {
-  try {
-    let result = await fetch(url.ngrokurl + "/menu", {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(c),
-    });
-    data = await result.json();
-    console.log(data);
-    putMethod(data);
-    console.log("done");
-  } catch (e) {
-    console.log(e);
+    const response = await listingApi.addFoodListing(JSON.stringify(c));
+    console.log(c);
+    if (!response.ok) {
+      alert("Unable to post." + "\n" + response.data);
+    } else {
+      alert("Posted Successfully");
+    }
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
   }
 };
 
-const ha = (a) => {
-  console.log(a);
-};
 function AdminAdder({ navigation }) {
   return (
     <Screen style={styles.container}>
@@ -86,21 +99,20 @@ function AdminAdder({ navigation }) {
           price: "",
           description: "",
           hall: null,
-          image: [],
+          category: "",
+          // image: null,
         }}
-        onSubmit={(values) => (
-          (value = Object.assign({}, values)),
-          (value.hall = value.hall.value),
-          console.log(value.hall),
-          ha(value),
-          postData(value),
-          console.log("pposted")
-        )}
+        onSubmit={(values) => {
+          values.hall = values.hall.value;
+          postFood(values);
+          console.log("posted");
+        }}
         validationSchema={validationSchema}
       >
-        <AppFormImagePicker name="image" />
+        {/* <AppFormImagePicker name="image" /> */}
         <Picker items={Halls} name="hall" placeholder="Hall" />
         <FormField maxLength={255} name="title" placeholder="Title" />
+        <FormField maxLength={255} name="category" placeholder="Category" />
         <FormField
           keyboardType="numeric"
           maxLength={8}
@@ -108,7 +120,11 @@ function AdminAdder({ navigation }) {
           placeholder="Price"
         />
 
-        <FormField maxLength={255} name="subTitle" placeholder="Description" />
+        <FormField
+          maxLength={255}
+          name="description"
+          placeholder="Description"
+        />
         <SubmitButton title="add" />
       </Form>
       <AppButton
