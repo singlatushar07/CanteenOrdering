@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, FlatList } from "react-native";
+import user from "../user/user";
 
 import { ListItem, ListItemSeparator } from "../components/lists";
 import Screen from "../components/Screen";
@@ -26,12 +27,13 @@ const menuItems = [
 
 function AccountScreen({ navigation }) {
   return (
-    <Screen style={styles.screen}>
+    <View style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title="Mosh Handemi"
-          subTitle="abc@gmail.com"
-          image={require("../assets/mosh.jpg")}
+          title={user.name}
+          subTitle={user.email}
+          image={user.image}
+          onPress={() => navigation.navigate("AccountDetails", user)}
         />
       </View>
       <View style={styles.container}>
@@ -57,13 +59,14 @@ function AccountScreen({ navigation }) {
         title="Log Out"
         IconComponent={<Icon name="logout" backgroundColor="#ffe66d" />}
       />
-    </Screen>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
     backgroundColor: colors.light,
+    flex: 1,
   },
   container: {
     marginVertical: 20,

@@ -16,13 +16,12 @@ const store = createStore(rootReducer);
 
 export default function App() {
   return (
-    // <Provider store={store}>
-    //   <NavigationContainer theme={navigationTheme}>
-    //     {/* <AppNavigator /> */}
-    //     <AuthNavigator />
-    //     {/* <AdminNavigator /> */}
-    //   </NavigationContainer>
-    // </Provider>
-    <OTPScreen />
+    <Provider store={store}>
+      <NavigationContainer theme={navigationTheme}>
+        <AppNavigator />
+        {/* <AuthNavigator /> */}
+        {/* <AdminNavigator /> */}
+      </NavigationContainer>
+    </Provider>
   );
 }

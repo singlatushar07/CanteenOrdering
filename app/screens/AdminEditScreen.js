@@ -54,6 +54,8 @@ function AdminEdit({ navigation }) {
   };
 
   const [foodItems, setFoodItems] = useState([]);
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     loadFood();
   }, []);
@@ -61,9 +63,13 @@ function AdminEdit({ navigation }) {
   const loadFood = async () => {
     try {
       const response = await listingApi.getFoodItems();
-      const food = response;
-      console.log(food.data);
-      setFoodItems(food.data);
+      const food = response.data;
+      setFoodItems(food);
+      let temp = [];
+      for (let i = 0; i < food.length; i++) {
+        temp.push(food[i].category);
+      }
+      setCategories([...new Set(temp)]);
     } catch (error) {
       console.log(error);
     }
@@ -92,9 +98,9 @@ function AdminEdit({ navigation }) {
               <View style={styles.card}>
                 <AppText style={styles.title}>{item.title}</AppText>
                 <AppText style={styles.price}>₹{item.price}</AppText>
-                {item.subTitle && (
-                  <AppText numberOfLines={2} style={styles.subTitle}>
-                    {item.subTitle}
+                {item.description && (
+                  <AppText numberOfLines={2} style={styles.description}>
+                    {item.description}
                   </AppText>
                 )}
               </View>
@@ -136,7 +142,8 @@ function AdminEdit({ navigation }) {
     <Screen>
       <MenuProvider>
         <FlatList
-          data={["Snacks", "Veg", "NonVeg"]}
+          // data={["Snacks", "Veg", "NonVeg"]}
+          data={categories}
           keyExtractor={(item) => item}
           renderItem={({ item }) => ItemList(item)}
         />
@@ -180,7 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
-  subTitle: {
+  description: {
     color: colors.medium,
     fontSize: 14,
   },

@@ -14,15 +14,22 @@ function ListingDetailsScreen({ route, navigation }) {
 
   const hallNum = listing.title.match(/(\d+)/)[0];
   const [foodItems, setFoodItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     loadFood();
+    console.log(categories);
   }, []);
 
   const loadFood = async () => {
     try {
       const response = await listingApi.getFoodItems(hallNum);
-      const food = response;
-      setFoodItems(food.data);
+      const food = response.data;
+      setFoodItems(food);
+      let temp = [];
+      for (let i = 0; i < food.length; i++) {
+        temp.push(food[i].category);
+      }
+      setCategories([...new Set(temp)]);
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +46,11 @@ function ListingDetailsScreen({ route, navigation }) {
 
   return (
     <View>
-      <FoodItemListing data={foodItems} ListHeaderComponent={headerContent} />
+      <FoodItemListing
+        data={foodItems}
+        categories={categories}
+        ListHeaderComponent={headerContent}
+      />
     </View>
   );
 }

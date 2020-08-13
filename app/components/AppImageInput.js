@@ -38,7 +38,7 @@ function AppImageInput({ imageUri, onChangeImage }) {
       });
       if (!result.cancelled) onChangeImage(result.uri);
     } catch (error) {
-      console.log("Error reading image");
+      console.log(error);
     }
   };
 
