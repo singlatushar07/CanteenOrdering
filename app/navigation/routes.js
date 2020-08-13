@@ -12,4 +12,5 @@ export default Object.freeze({
   MESSAGES: "Messages",
   REGISTER: "Register",
   WELCOME: "Welcome",
+  OTP: "OTP",
 });

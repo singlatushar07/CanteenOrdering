@@ -1,4 +1,3 @@
-import foods from "../../Data/data";
 import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
@@ -7,7 +6,6 @@ import {
 } from "../actions/mealsaction";
 
 const initialstate = {
-  meals: foods,
   cart: [],
 };
 const mealsReducer = (state = initialstate, action) => {

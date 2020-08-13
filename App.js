@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 import mealsReducer from "./app/store/reducers/meals";
 import AdminNavigator from "./app/navigation/AdminNavigator";
-
+import OTPScreen from "./app/screens/OTPSceen";
 const rootReducer = combineReducers({
   meals: mealsReducer,
 });
@@ -16,12 +16,13 @@ const store = createStore(rootReducer);
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <NavigationContainer theme={navigationTheme}>
-        {/* <AppNavigator /> */}
-        {/* <AuthNavigator /> */}
-        <AdminNavigator />
-      </NavigationContainer>
-    </Provider>
+    // <Provider store={store}>
+    //   <NavigationContainer theme={navigationTheme}>
+    //     {/* <AppNavigator /> */}
+    //     <AuthNavigator />
+    //     {/* <AdminNavigator /> */}
+    //   </NavigationContainer>
+    // </Provider>
+    <OTPScreen />
   );
 }
