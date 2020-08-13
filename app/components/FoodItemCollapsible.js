@@ -10,7 +10,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "../store/actions/mealsaction";
 import AppText from "./AppText";
 import colors from "../config/colors";
@@ -41,7 +41,6 @@ function FoodItemCollapsible({ foods, category }) {
     Alert.alert("Success", "Item added to cart.");
   };
 
-  const availlibleMeal = useSelector((state) => state.meals.meals);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleCollapse}>
@@ -70,9 +69,9 @@ function FoodItemCollapsible({ foods, category }) {
                   <AppText style={styles.title}>{item.title}</AppText>
                   <AppText style={styles.price}>₹{item.price}</AppText>
                 </TouchableOpacity>
-                {item.subTitle && (
-                  <AppText numberOfLines={2} style={styles.subTitle}>
-                    {item.subTitle}
+                {item.description && (
+                  <AppText numberOfLines={2} style={styles.description}>
+                    {item.description}
                   </AppText>
                 )}
               </View>
@@ -119,7 +118,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
-  subTitle: {
+  description: {
     color: colors.medium,
     fontSize: 14,
   },

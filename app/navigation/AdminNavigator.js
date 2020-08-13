@@ -2,9 +2,9 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import routes from "./routes";
-import AdminAdder from "../screens/AdminAdder";
-import AdminEdit from "../screens/AdminEdit";
-import AdminUpdate from "../screens/AdminUpdate";
+import AdminAdder from "../screens/AdminAdderScreen";
+import AdminEdit from "../screens/AdminEditScreen";
+import AdminUpdate from "../screens/AdminUpdateScreen";
 
 const Stack = createStackNavigator();
 
