@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormikContext } from "formik";
 
-import AppImageInputSingle from "../AppImageInputListSingle";
+import AppImageInputList from "../AppImageInputList";
 import AppErrorMessage from "./AppErrorMessage";
 
 function AppFormImagePicker({ name }) {
@@ -20,7 +20,7 @@ function AppFormImagePicker({ name }) {
 
   return (
     <>
-      <AppImageInputSingle
+      <AppImageInputList
         imageUris={values[name]}
         onAddImage={handleAdd}
         onRemoveImage={handleRemove}
