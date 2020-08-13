@@ -1,38 +1,51 @@
 import React from "react";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, View } from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
-import { AppForm, AppFormField, SubmitButton } from "../components/forms";
-import AppButton from "../components/AppButton";
+import {
+  AppForm,
+  AppFormField as FormField,
+  SubmitButton,
+} from "../components/forms";
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(8).label("Password"),
+  confirmPassword: Yup.string().oneOf(
+    [Yup.ref("password"), null],
+    "Passwords must match"
+  ),
+  hall: Yup.number().required().label("Hall"),
+  room: Yup.string().required().min(1).label("Room"),
 });
 
-function RegisterScreen(props) {
+function RegisterScreen({ navigation }) {
   return (
-    <Screen style={styles.container}>
+    <View style={styles.container}>
       <AppForm
         initialValues={{
           name: "",
           rollNo: "",
           hall: "",
-          roomNo: "",
+          room: "",
           email: "",
           password: "",
+          confirmPassword: "",
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          console.log(values);
+          navigation.navigate("OTP");
+        }}
         validationSchema={validationSchema}
       >
-        <AppFormField
+        <FormField
           autoCorrect={false}
           icon="account"
           name="name"
           placeholder="Name"
         />
-        <AppFormField
+        <FormField
           autoCapitalize="none"
           autoCorrect={false}
           icon="email"
@@ -41,7 +54,14 @@ function RegisterScreen(props) {
           placeholder="Email"
           textContentType="emailAddress"
         />
-        <AppFormField
+        <FormField maxLength={255} name="hall" placeholder="Hall" icon="home" />
+        <FormField
+          maxLength={255}
+          name="room"
+          placeholder="Room"
+          icon="room-service"
+        />
+        <FormField
           autoCapitalize="none"
           autoCorrect={false}
           icon="lock"
@@ -50,9 +70,18 @@ function RegisterScreen(props) {
           secureTextEntry
           textContentType="password"
         />
+        <FormField
+          autoCapitalize="none"
+          autoCorrect={false}
+          icon="lock"
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          secureTextEntry
+          textContentType="password"
+        />
         <SubmitButton title="Register" />
       </AppForm>
-    </Screen>
+    </View>
   );
 }
 

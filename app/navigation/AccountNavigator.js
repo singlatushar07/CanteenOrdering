@@ -6,7 +6,7 @@ import {
 import AccountScreen from "../screens/AccountScreen";
 import MessagesScreen from "../screens/MessagesScreen";
 import routes from "./routes";
-import AccountDetails from "../screens/AccountDetails";
+import AccountDetails from "../screens/AccountDetailsScreen";
 
 const Stack = createStackNavigator();
 

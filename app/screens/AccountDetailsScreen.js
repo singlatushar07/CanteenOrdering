@@ -14,7 +14,6 @@ import {
   AppFormPicker as Picker,
   SubmitButton,
 } from "../components/forms";
-import Screen from "../components/Screen";
 import AppFormImagePicker from "../components/forms/AppFormImagePicker";
 import listingApi from "../api/foodListings";
 import AppText from "../components/AppText";
@@ -42,7 +41,6 @@ function AccountDetails({ navigation, route }) {
     handler(!current);
   };
 
-  console.log("log", user);
   return (
     <View style={styles.container}>
       <Form

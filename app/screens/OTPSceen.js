@@ -108,6 +108,7 @@ export default class OTPScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 10,
     paddingTop: 150,
     alignItems: "center",
     justifyContent: "center",
