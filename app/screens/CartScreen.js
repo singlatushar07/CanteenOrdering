@@ -6,7 +6,7 @@ import Screen from "../components/Screen";
 import colors from "../config/colors";
 import Counter from "../components/Counter";
 
-export default function CartScreen() {
+export default function CartScreen({ navigation }) {
   const data = useSelector((state) => state.meals.cart);
   let total = 0;
   for (let i = 0; i < data.length; i++) {
@@ -36,7 +36,10 @@ export default function CartScreen() {
         )}
       />
       <AppText>Total: {total}</AppText>
-      <Button onPress={() => console.log(data)} title="Log"></Button>
+      <Button
+        onPress={() => navigation.navigate("Payment")}
+        title="Log"
+      ></Button>
     </Screen>
   );
 }
