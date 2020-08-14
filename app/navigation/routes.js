@@ -14,4 +14,5 @@ export default Object.freeze({
   REGISTER: "Register",
   WELCOME: "Welcome",
   OTP: "OTP",
+  PAYMENT: "Payment",
 });

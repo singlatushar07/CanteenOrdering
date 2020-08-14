@@ -8,6 +8,10 @@ import { createStore, combineReducers } from "redux";
 import mealsReducer from "./app/store/reducers/meals";
 import AdminNavigator from "./app/navigation/AdminNavigator";
 import OTPScreen from "./app/screens/OTPSceen";
+import AccountScreen from "./app/screens/AccountScreen";
+import AccountDetails from "./app/screens/AccountDetailsScreen";
+import PaymentSceen from "./app/screens/PaymentSceen";
+import CartScreenNavigator from "./app/navigation/CartScreenNavigator";
 const rootReducer = combineReducers({
   meals: mealsReducer,
 });
@@ -18,10 +22,12 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer theme={navigationTheme}>
-        {/* <AppNavigator /> */}
-        <AuthNavigator />
+        <AppNavigator />
+        {/* <CartScreenNavigator /> */}
+        {/* <AuthNavigator /> */}
         {/* <AdminNavigator /> */}
       </NavigationContainer>
     </Provider>
+    // <PaymentSceen />
   );
 }
