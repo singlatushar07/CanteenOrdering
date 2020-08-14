@@ -5,6 +5,7 @@ import {
   View,
   StatusBar,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
@@ -14,68 +15,54 @@ export default function PaymentSceen() {
   return (
     <View style={styles.container}>
       <Text style={styles.paymentText}>Payment Options</Text>
-      <View>
-        <View style={{ flexDirection: "row", paddingTop: 50, paddingLeft: 10 }}>
-          <MaterialCommunityIcons
-            name="cash"
-            size={30}
-            color={colors.cashGreen}
-          />
-          <Text
-            style={{
-              paddingLeft: 15,
-              fontSize: 20,
-              paddingBottom: 10,
-              fontWeight: "700",
-              color: colors.primary,
-            }}
+      <ScrollView>
+        <View>
+          <View
+            style={{ flexDirection: "row", paddingTop: 50, paddingLeft: 10 }}
           >
-            CASH ON DELIVERY
-          </Text>
-        </View>
-
-        <View style={{ alignItems: "center" }}>
-          <TouchableOpacity onPress={() => console.log("COD")}>
             <MaterialCommunityIcons
               name="cash"
-              size={70}
-              color={colors.danger}
+              size={30}
+              color={colors.cashGreen}
             />
-          </TouchableOpacity>
-          <AppText>Cash On Delivery</AppText>
-        </View>
-      </View>
-      <View>
-        <View style={{ flexDirection: "row", paddingTop: 50, paddingLeft: 10 }}>
-          <MaterialCommunityIcons
-            name="cash"
-            size={30}
-            color={colors.cashGreen}
-          />
-          <Text
-            style={{
-              paddingLeft: 15,
-              fontSize: 20,
-              paddingBottom: 10,
-              fontWeight: "700",
-              color: colors.primary,
-            }}
-          >
-            ADD TO ACCOUNT
-          </Text>
-        </View>
+            <Text style={styles.textStyle}>CASH ON DELIVERY</Text>
+          </View>
 
-        <View style={{ alignItems: "center" }}>
-          <TouchableOpacity onPress={() => console.log("Khadde me dalvao")}>
-            <MaterialCommunityIcons
-              name="checkbook"
-              size={70}
-              color={colors.danger}
-            />
-          </TouchableOpacity>
-          <AppText>Add To your Account</AppText>
+          <View style={{ alignItems: "center" }}>
+            <TouchableOpacity onPress={() => console.log("COD")}>
+              <MaterialCommunityIcons
+                name="cash"
+                size={70}
+                color={colors.danger}
+              />
+            </TouchableOpacity>
+            <AppText>Cash On Delivery</AppText>
+          </View>
         </View>
-      </View>
+        <View>
+          <View
+            style={{ flexDirection: "row", paddingTop: 50, paddingLeft: 10 }}
+          >
+            <MaterialCommunityIcons
+              name="cash"
+              size={30}
+              color={colors.cashGreen}
+            />
+            <Text style={styles.textStyle}>PAY LATER</Text>
+          </View>
+
+          <View style={{ alignItems: "center" }}>
+            <TouchableOpacity onPress={() => console.log("Khadde me dalvao")}>
+              <MaterialCommunityIcons
+                name="checkbook"
+                size={70}
+                color={colors.danger}
+              />
+            </TouchableOpacity>
+            <AppText>Pay Later</AppText>
+          </View>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -87,9 +74,17 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     padding: 15,
     marginVertical: 10,
+    height: "75%",
   },
   paymentText: {
     fontWeight: "bold",
     fontSize: 30,
+  },
+  textStyle: {
+    paddingLeft: 15,
+    fontSize: 20,
+    paddingBottom: 10,
+    fontWeight: "700",
+    color: colors.primary,
   },
 });
