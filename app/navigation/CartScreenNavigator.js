@@ -16,8 +16,6 @@ const CartScreenNavigator = () => (
       cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
     }}
   >
-    <Stack.Screen name={routes.CART} component={CartScreen} />
-    <Stack.Screen name={routes.PAYMENT} component={PaymentSceen} />
     <Stack.Screen
       name={routes.CART}
       component={CartScreen}
@@ -25,6 +23,7 @@ const CartScreenNavigator = () => (
         headerShown: false,
       }}
     />
+    <Stack.Screen name={routes.PAYMENT} component={PaymentSceen} />
     <Stack.Screen name={routes.CHECKOUT} component={CheckoutScreen} />
   </Stack.Navigator>
 );

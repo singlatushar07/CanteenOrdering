@@ -7,6 +7,7 @@ import {
 
 const initialstate = {
   cart: [],
+  hall: null,
 };
 const mealsReducer = (state = initialstate, action) => {
   let existingIndex = 0;
@@ -21,10 +22,23 @@ const mealsReducer = (state = initialstate, action) => {
       // const newItem = state.meals.find((meal) => meal.id == action.mealId);
       const newItem = action.foodItem;
       newItem["quantity"] = 1;
-      return {
-        ...state,
-        cart: state.cart.concat(newItem),
-      };
+      if (!state.hall) {
+        return {
+          ...state,
+          cart: state.cart.concat(newItem),
+          hall: newItem.hall,
+        };
+      } else {
+        if (newItem.hall !== state.hall) {
+          return { ...state };
+        } else {
+          return {
+            ...state,
+            cart: state.cart.concat(newItem),
+            hall: newItem.hall,
+          };
+        }
+      }
 
     case DECREASE_QUANTITY:
       existingIndex = state.cart.findIndex(
@@ -48,7 +62,11 @@ const mealsReducer = (state = initialstate, action) => {
       );
       updatedCart = [...state.cart];
       updatedCart.splice(existingIndex, 1);
-      return { ...state, cart: updatedCart };
+      if (updatedCart.length == 0) {
+        return { ...state, cart: updatedCart, hall: null };
+      } else {
+        return { ...state, cart: updatedCart };
+      }
 
     default:
       return state;

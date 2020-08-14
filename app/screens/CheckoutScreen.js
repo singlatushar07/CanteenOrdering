@@ -12,10 +12,11 @@ import {
   SubmitButton,
 } from "../components/forms";
 import * as Yup from "yup";
+import routes from "../navigation/routes";
 
 const deliveryFee = 20;
 
-function CheckoutScreen() {
+function CheckoutScreen({ navigation }) {
   const [val, setVal] = useState(false);
   const [room, setRoom] = useState("");
   const roomNoSchema = /[A-G]{1}[0-9]{3}/;
@@ -54,6 +55,7 @@ function CheckoutScreen() {
       }}
       onSubmit={(values) => {
         console.log(values, val);
+        navigation.navigate(routes.PAYMENT);
       }}
       validationSchema={validationSchema}
     >

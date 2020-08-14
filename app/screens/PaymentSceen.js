@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  StatusBar,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
@@ -73,7 +72,6 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     borderRadius: 25,
     padding: 15,
-    marginVertical: 10,
     height: "75%",
   },
   paymentText: {

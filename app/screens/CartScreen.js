@@ -16,7 +16,6 @@ export default function CartScreen({ navigation }) {
     total += data[i].price * data[i].quantity;
   }
   const hallInfo = data[0] ? data[0].hall : null;
-  console.log(hallInfo);
   return (
     <>
       {hallInfo && (
