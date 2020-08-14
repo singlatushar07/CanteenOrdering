@@ -17,7 +17,6 @@ function ListingDetailsScreen({ route, navigation }) {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     loadFood();
-    console.log(categories);
   }, []);
 
   const loadFood = async () => {

@@ -37,7 +37,6 @@ function FoodItemCollapsible({ foods, category }) {
   const dispatch = useDispatch();
   const addToCartHandler = (item) => {
     dispatch(addToCart(item));
-
     Alert.alert("Success", "Item added to cart.");
   };
 
