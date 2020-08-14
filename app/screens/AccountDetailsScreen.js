@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  Button,
   Image,
   View,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import * as Yup from "yup";
 
@@ -42,7 +42,7 @@ function AccountDetails({ navigation, route }) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Form
         initialValues={{
           name: user.name,
@@ -121,7 +121,7 @@ function AccountDetails({ navigation, route }) {
         </View>
         <SubmitButton title="update" />
       </Form>
-    </View>
+    </ScrollView>
   );
 }
 

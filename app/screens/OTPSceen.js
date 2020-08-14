@@ -12,6 +12,8 @@ import AppButton from "../components/AppButton";
 import CustomButton from "../components/OTPComponents/CustomButton";
 import TimerText from "../components/OTPComponents/TimerText";
 import CustomTextInput from "../components/OTPComponents/CustomTextInput";
+import AppText from "../components/AppText";
+import colors from "../config/colors";
 
 const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
 let resendOtpTimerInterval;
@@ -118,6 +120,9 @@ const OtpVerification = function (props) {
       <StatusBar barStyle="light-content" />
       <SafeAreaView style={styles.whiteBackgroundContainer}>
         <View style={styles.container}>
+          <AppText style={styles.text}>
+            Enter OTP send to your email address.
+          </AppText>
           <View style={styles.container2}>
             {[
               firstTextInputRef,
@@ -173,7 +178,13 @@ const styles = StyleSheet.create({
   container2: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 120,
+    marginTop: 40,
+  },
+  text: {
+    color: colors.dark,
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 15,
   },
   whiteBackgroundContainer: {
     backgroundColor: "#fff",

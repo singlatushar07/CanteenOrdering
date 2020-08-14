@@ -26,7 +26,7 @@ const AppNavigator = () => (
     }}
   >
     <Tab.Screen
-      name={routes.LISTINGS}
+      name={routes.MENU}
       component={ListingsNavigator}
       options={{
         tabBarIcon: ({ color, size }) => (
@@ -48,7 +48,7 @@ const AppNavigator = () => (
                 height: 20,
                 borderRadius: 10,
                 backgroundColor: colors.secondary,
-                right: 15,
+                left: 15,
                 bottom: 10,
                 justifyContent: "center",
                 alignItems: "center",
