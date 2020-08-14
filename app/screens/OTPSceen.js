@@ -1,160 +1,183 @@
-import React, { Component } from "react";
+import React, { useState, useRef, useEffect } from "react";
+
 import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableWithoutFeedback,
+  Platform,
+  Dimensions,
   Button,
+  StatusBar,
+  SafeAreaView,
 } from "react-native";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 import AppButton from "../components/AppButton";
-const CODE_LENGTH = new Array(4).fill(0);
+import CustomButton from "../components/OTPComponents/CustomButton";
+import TimerText from "../components/OTPComponents/TimerText";
+import CustomTextInput from "../components/OTPComponents/CustomTextInput";
 
-export default class OTPScreen extends Component {
-  input = React.createRef();
-  state = {
-    value: "",
-    focused: false,
-  };
+const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
+let resendOtpTimerInterval;
 
-  handleClick = () => {
-    this.input.current.focus();
+const OtpVerification = function (props) {
+  const isAndroid = Platform.OS === "android";
+  const [otpArray, setOtpArray] = useState(["", "", "", ""]);
+  const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
+    RESEND_OTP_TIME_LIMIT
+  );
+
+  const firstTextInputRef = useRef(null);
+  const secondTextInputRef = useRef(null);
+  const thirdTextInputRef = useRef(null);
+  const fourthTextInputRef = useRef(null);
+  const refCallback = (textInputRef) => (node) => {
+    textInputRef.current = node;
   };
-  handleFocus = () => {
-    this.setState({ focused: true });
+  useEffect(() => {
+    startResendOtpTimer();
+
+    return () => {
+      if (resendOtpTimerInterval) {
+        clearInterval(resendOtpTimerInterval);
+      }
+    };
+  }, [resendButtonDisabledTime]);
+  const onOtpChange = (index) => {
+    return (value) => {
+      if (isNaN(Number(value))) {
+        // do nothing when a non digit is pressed
+        return;
+      }
+      const otpArrayCopy = otpArray.concat();
+      otpArrayCopy[index] = value;
+      setOtpArray(otpArrayCopy);
+
+      // auto focus to next InputText if value is not blank
+      if (value !== "") {
+        if (index === 0) {
+          secondTextInputRef.current.focus();
+        } else if (index === 1) {
+          thirdTextInputRef.current.focus();
+        } else if (index === 2) {
+          fourthTextInputRef.current.focus();
+        }
+      }
+    };
   };
-  handleBlur = () => {
-    this.setState({
-      focused: false,
-    });
-  };
-  handleKeyPress = (e) => {
-    if (e.nativeEvent.key === "Backspace") {
-      this.setState((state) => {
-        return {
-          value: state.value.slice(0, state.value.length - 1),
-        };
-      });
+  const startResendOtpTimer = () => {
+    if (resendOtpTimerInterval) {
+      clearInterval(resendOtpTimerInterval);
     }
+    resendOtpTimerInterval = setInterval(() => {
+      if (resendButtonDisabledTime <= 0) {
+        clearInterval(resendOtpTimerInterval);
+      } else {
+        setResendButtonDisabledTime(resendButtonDisabledTime - 1);
+      }
+    }, 1000);
   };
-  handleChange = (value) => {
-    this.setState((state) => {
-      if (state.value.length >= CODE_LENGTH.length) return null;
-      return {
-        value: (state.value + value).slice(0, CODE_LENGTH.length),
-      };
-    });
+  const onResendOtpButtonPress = () => {
+    // clear last OTP
+    if (firstTextInputRef) {
+      setOtpArray(["", "", "", ""]);
+      firstTextInputRef.current.focus();
+    }
+
+    setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
+    startResendOtpTimer();
+
+    // resend OTP Api call
+    // todo
+    console.log("todo: Resend OTP");
   };
-  render() {
-    const { value, focused } = this.state;
+  const onSubmitButtonPress = () => {
+    // API call
+    // todo
+    const num = otpArray[0] + otpArray[1] + otpArray[2] + otpArray[3];
+    console.log(parseInt(num));
+  };
+  const onOtpKeyPress = (index) => {
+    return ({ nativeEvent: { key: value } }) => {
+      // auto focus to previous InputText if value is blank and existing value is also blank
+      if (value === "Backspace" && otpArray[index] === "") {
+        if (index === 1) {
+          firstTextInputRef.current.focus();
+        } else if (index === 2) {
+          secondTextInputRef.current.focus();
+        } else if (index === 3) {
+          thirdTextInputRef.current.focus();
+        }
+        if (isAndroid && index > 0) {
+          const otpArrayCopy = otpArray.concat();
+          otpArrayCopy[index - 1] = ""; // clear the previous box which will be in focus
+          setOtpArray(otpArrayCopy);
+        }
+      }
+    };
+  };
 
-    const values = value.split("");
-
-    const selectedIndex =
-      values.length < CODE_LENGTH.length
-        ? values.length
-        : CODE_LENGTH.length - 1;
-
-    const hideInput = !(values.length < CODE_LENGTH.length);
-
-    return (
-      <View style={styles.container}>
-        <TouchableWithoutFeedback onPress={this.handleClick}>
-          <View style={styles.wrap}>
-            <TextInput
-              value=""
-              ref={this.input}
-              keyboardType="numeric"
-              onChangeText={this.handleChange}
-              onKeyPress={this.handleKeyPress}
-              onFocus={this.handleFocus}
-              onBlur={this.handleBlur}
-              style={[
-                styles.input,
-                {
-                  left: selectedIndex * 60,
-                  opacity: hideInput ? 0 : 1,
-                },
-              ]}
-            />
-            {CODE_LENGTH.map((v, index) => {
-              const selected = values.length === index;
-              const filled =
-                values.length === CODE_LENGTH.length &&
-                index === CODE_LENGTH.length - 1;
-              const removeBorder =
-                index === CODE_LENGTH.length - 1 ? styles.noBorder : undefined;
-
-              return (
-                <View style={[styles.display, removeBorder]} key={index}>
-                  <Text style={styles.text}>{values[index] || ""}</Text>
-                  {(selected || filled) && focused && (
-                    <View style={styles.shadows} />
-                  )}
-                </View>
-              );
-            })}
+  return (
+    <>
+      <StatusBar barStyle="light-content" />
+      <SafeAreaView style={styles.whiteBackgroundContainer}>
+        <View style={styles.container}>
+          <View style={styles.container2}>
+            {[
+              firstTextInputRef,
+              secondTextInputRef,
+              thirdTextInputRef,
+              fourthTextInputRef,
+            ].map((textInputRef, index) => (
+              <CustomTextInput
+                value={otpArray[index]}
+                onKeyPress={onOtpKeyPress(index)}
+                onChangeText={onOtpChange(index)}
+                keyboardType={"numeric"}
+                maxLength={1}
+                autoFocus={index === 0 ? true : undefined}
+                refCallback={refCallback(textInputRef)}
+                key={index}
+              />
+            ))}
           </View>
-        </TouchableWithoutFeedback>
-        <AppButton
-          style={{ paddingTop: 50 }}
-          title="LOG"
-          onPress={() => console.log(value)}
-        />
-      </View>
-    );
-  }
-}
-
+          {resendButtonDisabledTime > 0 ? (
+            <TimerText text={"Resend OTP in"} time={resendButtonDisabledTime} />
+          ) : (
+            <CustomButton
+              text={"Resend OTP"}
+              buttonStyle={styles.otpResendButton}
+              textStyle={styles.otpResendButtonText}
+              onPress={onResendOtpButtonPress}
+            />
+          )}
+          <AppButton title="Log" onPress={onSubmitButtonPress} />
+        </View>
+      </SafeAreaView>
+    </>
+  );
+};
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
-    paddingTop: 150,
-    alignItems: "center",
-    justifyContent: "center",
+    padding: 16,
+    flex: 1,
   },
 
-  wrap: {
-    borderWidth: 1,
-    borderColor: "rgba(0, 0, 0, 0.2)",
-    position: "relative",
+  otpResendButton: {
+    alignItems: "center",
+    width: "100%",
+    marginTop: 16,
+    marginBottom: 100,
+  },
+  otpResendButtonText: {
+    color: "#fe7d32",
+    textTransform: "none",
+    textDecorationLine: "underline",
+  },
+  container2: {
     flexDirection: "row",
-    marginBottom: 70,
-  },
-
-  input: {
-    position: "absolute",
-    fontSize: 60,
-    textAlign: "center",
-    backgroundColor: "transparent",
-    width: 32,
-    top: 0,
-    bottom: 0,
     alignItems: "center",
-    justifyContent: "center",
+    marginTop: 120,
   },
-  display: {
-    borderRightWidth: 1,
-    borderRightColor: "rgba(0, 0, 0, 0.2)",
-    width: 60,
-    height: 58,
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "visible",
-  },
-  text: {
-    fontSize: 60,
-  },
-  noBorder: {
-    borderRightWidth: 0,
-  },
-  shadows: {
-    position: "absolute",
-    left: -4,
-    top: -4,
-    bottom: -4,
-    right: -4,
-    borderColor: "rgba(58, 151, 212, 0.28)",
-    borderWidth: 4,
+  whiteBackgroundContainer: {
+    backgroundColor: "#fff",
+    flex: 1,
   },
 });
+export default OtpVerification;
