@@ -5,14 +5,16 @@ import user from "../user/user";
 import { ListItem, ListItemSeparator } from "../components/lists";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
+import routes from "../navigation/routes";
 
 const menuItems = [
   {
-    title: "My Listings",
+    title: "Order History",
     icon: {
       name: "format-list-bulleted",
       backgroundColor: colors.primary,
     },
+    targetScreen: routes.ORDER_HISTORY,
   },
   {
     title: "My Messages",
@@ -20,7 +22,7 @@ const menuItems = [
       name: "email",
       backgroundColor: colors.secondary,
     },
-    targetScreen: "Messages",
+    targetScreen: routes.MESSAGES,
   },
 ];
 

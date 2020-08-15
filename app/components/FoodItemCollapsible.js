@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import {
   View,
-  Alert,
   StyleSheet,
   TouchableOpacity,
   Image,
   FlatList,
+  Alert,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
 
-import { useDispatch } from "react-redux";
-import { addToCart } from "../store/actions/mealsaction";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, addFromOtherHall } from "../store/actions/mealsaction";
 import AppText from "./AppText";
 import colors from "../config/colors";
 
@@ -26,6 +26,7 @@ function search(nameKey, myArray) {
 }
 
 function FoodItemCollapsible({ foods, category }) {
+  const cartItems = useSelector((state) => state.meals.cart);
   const [collapsed, setCollapsed] = useState(true);
   const [icon, setIcon] = useState("caretright");
   const items = search(category, foods);
@@ -36,8 +37,28 @@ function FoodItemCollapsible({ foods, category }) {
 
   const dispatch = useDispatch();
   const addToCartHandler = (item) => {
-    dispatch(addToCart(item));
-    Alert.alert("Success", "Item added to cart.");
+    if (cartItems.length == 0 || cartItems[0].hall == item.hall) {
+      dispatch(addToCart(item));
+    } else {
+      Alert.alert(
+        "Replace cart item?",
+        "Your cart contains items from other canteen. Do you want to discard the selection and add new item?",
+        [
+          {
+            text: "No",
+            onPress: () => {
+              console.log("No pressed");
+            },
+          },
+          {
+            text: "Yes",
+            onPress: () => {
+              dispatch(addFromOtherHall(item));
+            },
+          },
+        ]
+      );
+    }
   };
 
   return (

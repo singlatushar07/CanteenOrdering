@@ -3,7 +3,10 @@ import {
   REMOVE_FROM_CART,
   INCREASE_QUANTITY,
   DECREASE_QUANTITY,
+  ADD_FROM_OTHER_HALL,
+  addFromOtherHall,
 } from "../actions/mealsaction";
+import { Alert } from "react-native";
 
 const initialstate = {
   cart: [],
@@ -12,33 +15,20 @@ const initialstate = {
 const mealsReducer = (state = initialstate, action) => {
   let existingIndex = 0;
   let updatedCart = [];
+
   switch (action.type) {
     case ADD_TO_CART:
       existingIndex = state.cart.findIndex(
         (meal) => meal._id == action.foodItem._id
       );
       if (existingIndex !== -1) return { ...state };
-      // const category = action.mealId.replace(/[0-9]/g, "");
-      // const newItem = state.meals.find((meal) => meal.id == action.mealId);
       const newItem = action.foodItem;
       newItem["quantity"] = 1;
-      if (!state.hall) {
-        return {
-          ...state,
-          cart: state.cart.concat(newItem),
-          hall: newItem.hall,
-        };
-      } else {
-        if (newItem.hall !== state.hall) {
-          return { ...state };
-        } else {
-          return {
-            ...state,
-            cart: state.cart.concat(newItem),
-            hall: newItem.hall,
-          };
-        }
-      }
+      return {
+        ...state,
+        cart: state.cart.concat(newItem),
+        hall: newItem.hall,
+      };
 
     case DECREASE_QUANTITY:
       existingIndex = state.cart.findIndex(
@@ -67,7 +57,10 @@ const mealsReducer = (state = initialstate, action) => {
       } else {
         return { ...state, cart: updatedCart };
       }
-
+    case ADD_FROM_OTHER_HALL:
+      action.foodItem.quantity = 1;
+      updatedCart = [action.foodItem];
+      return { ...state, cart: updatedCart, hall: action.foodItem.hall };
     default:
       return state;
   }
