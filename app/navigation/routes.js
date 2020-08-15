@@ -14,6 +14,7 @@ export default Object.freeze({
   MESSAGES: "Messages",
   REGISTER: "Register",
   WELCOME: "Welcome",
+  ORDER_HISTORY: "OrederHistory",
   OTP: "OTP",
   PAYMENT: "Payment",
 });
