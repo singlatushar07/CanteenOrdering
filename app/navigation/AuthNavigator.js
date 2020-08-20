@@ -9,6 +9,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import routes from "./routes";
 import OTPScreen from "../screens/OTPSceen";
+import AppNavigator from "./AppNavigator";
 
 const Stack = createStackNavigator();
 

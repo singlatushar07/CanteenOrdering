@@ -1,10 +1,11 @@
-import url from "../keys/url";
 import React, { useState, useEffect } from "react";
 import { View, Image, StyleSheet } from "react-native";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import FoodItemListing from "../components/FoodItemListing";
 import listingApi from "../api/foodListings";
+import AppButton from "../components/AppButton";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 function ListingDetailsScreen({ route, navigation }) {
   const listing = route.params;
@@ -15,23 +16,27 @@ function ListingDetailsScreen({ route, navigation }) {
   const hallNum = listing.title.match(/(\d+)/)[0];
   const [foodItems, setFoodItems] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     loadFood();
   }, []);
 
   const loadFood = async () => {
-    try {
-      const response = await listingApi.getFoodItems(hallNum);
-      const food = response.data;
-      setFoodItems(food);
-      let temp = [];
-      for (let i = 0; i < food.length; i++) {
-        temp.push(food[i].category);
-      }
-      setCategories([...new Set(temp)]);
-    } catch (error) {
-      console.log(error);
+    setLoading(true);
+    const response = await listingApi.getFoodItems(hallNum);
+    setLoading(false);
+
+    if (!response.ok) return setError(true);
+    else setError(false);
+
+    const food = response.data;
+    setFoodItems(food);
+    let temp = [];
+    for (let i = 0; i < food.length; i++) {
+      temp.push(food[i].category);
     }
+    setCategories([...new Set(temp)]);
   };
   const headerContent = () => (
     <>
@@ -44,13 +49,28 @@ function ListingDetailsScreen({ route, navigation }) {
   );
 
   return (
-    <View>
-      <FoodItemListing
-        data={foodItems}
-        categories={categories}
-        ListHeaderComponent={headerContent}
-      />
-    </View>
+    <>
+      {error && (
+        <View style={{ padding: 20, alignItems: "center" }}>
+          <AppText style={{ textAlign: "center" }}>
+            Unable to fetch data
+          </AppText>
+          <AppButton title="Retry" width="60%" onPress={() => loadFood()} />
+        </View>
+      )}
+      {!error && (
+        <>
+          {loading && <ActivityIndicator visible={loading} />}
+          {!loading && (
+            <FoodItemListing
+              data={foodItems}
+              categories={categories}
+              ListHeaderComponent={headerContent}
+            />
+          )}
+        </>
+      )}
+    </>
   );
 }
 

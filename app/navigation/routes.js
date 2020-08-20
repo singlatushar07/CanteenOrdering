@@ -17,4 +17,6 @@ export default Object.freeze({
   ORDER_HISTORY: "OrederHistory",
   OTP: "OTP",
   PAYMENT: "Payment",
+  ORDER_SUMMARY: "Summary",
+  APP_NAV: "App_Nav",
 });

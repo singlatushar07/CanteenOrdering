@@ -8,6 +8,7 @@ import MessagesScreen from "../screens/MessagesScreen";
 import routes from "./routes";
 import AccountDetails from "../screens/AccountDetailsScreen";
 import OrderHistoryScreen from "../screens/OrderHistoryScreen";
+import OrderSummary from "../screens/OrderSummary";
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,13 @@ const AccountNavigator = () => (
       component={OrderHistoryScreen}
       options={{
         title: "Order History",
+      }}
+    />
+    <Stack.Screen
+      name={routes.ORDER_SUMMARY}
+      component={OrderSummary}
+      options={{
+        title: "Order Summary",
       }}
     />
   </Stack.Navigator>

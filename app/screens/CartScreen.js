@@ -7,14 +7,23 @@ import colors from "../config/colors";
 import Counter from "../components/Counter";
 import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
-import { ListItemSeparator } from "../components/lists";
 
 export default function CartScreen({ navigation }) {
+  time = "";
+  var date = new Date().getDate(); //Current Date
+  var month = new Date().getMonth() + 1; //Current Month
+  var year = new Date().getFullYear(); //Current Year
+  var hours = new Date().getHours(); //Current Hours
+  var min = new Date().getMinutes(); //Current Minutes
+  let time = date + "/" + month + "/" + year + " " + hours + ":" + min;
   const data = useSelector((state) => state.meals.cart);
   let total = 0;
   for (let i = 0; i < data.length; i++) {
     total += data[i].price * data[i].quantity;
   }
+
+  let history = { hall: "", id: 1, totalPrice: total, time: time, items: data }; //this object should be saved in database of the user and array of all such ojects are displayed in HistoryScreen
+  history.hall = data[0] ? data[0].hall : null;
   const hallInfo = data[0] ? data[0].hall : null;
   return (
     <>
@@ -52,7 +61,7 @@ export default function CartScreen({ navigation }) {
           />
           <AppText>Total: {total}</AppText>
           <AppButton
-            onPress={() => navigation.navigate(routes.CHECKOUT)}
+            onPress={() => navigation.navigate(routes.CHECKOUT, history)}
             title="Checkout"
           />
         </Screen>

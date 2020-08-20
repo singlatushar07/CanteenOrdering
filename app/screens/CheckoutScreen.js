@@ -16,16 +16,17 @@ import routes from "../navigation/routes";
 
 const deliveryFee = 20;
 
-function CheckoutScreen({ navigation }) {
-  const [val, setVal] = useState(false);
+function CheckoutScreen({ navigation, route }) {
+  const history = route.params;
+  const [isDineIn, setIsDineIn] = useState(false);
   const [room, setRoom] = useState("");
   const roomNoSchema = /[A-G]{1}[0-9]{3}/;
   const anything = /.*?/;
   const validationSchema = Yup.object().shape({
     room: Yup.string()
-      .required(val)
+      .required(isDineIn)
       .matches(
-        val ? roomNoSchema : anything,
+        isDineIn ? roomNoSchema : anything,
         "Enter valid room number like B403"
       )
       .length(4)
@@ -54,8 +55,9 @@ function CheckoutScreen({ navigation }) {
         room: room,
       }}
       onSubmit={(values) => {
-        console.log(values, val);
-        navigation.navigate(routes.PAYMENT);
+        history.isDineIn = isDineIn;
+        history.room = values.room;
+        navigation.navigate(routes.PAYMENT, history);
       }}
       validationSchema={validationSchema}
     >
@@ -89,14 +91,14 @@ function CheckoutScreen({ navigation }) {
             initial={0}
             animation={false}
             onPress={(value) => {
-              setVal(value);
+              setIsDineIn(value);
               setRoom("");
             }}
             labelStyle={{
               marginRight: 30,
             }}
           />
-          {val && (
+          {isDineIn && (
             <>
               <FormField
                 maxLength={255}

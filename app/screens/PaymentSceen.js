@@ -10,7 +10,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
 
-export default function PaymentSceen() {
+export default function PaymentSceen({ route }) {
+  const history = route.params;
+  console.log(history);
   return (
     <View style={styles.container}>
       <Text style={styles.paymentText}>Payment Options</Text>

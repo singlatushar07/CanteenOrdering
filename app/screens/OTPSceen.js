@@ -1,24 +1,57 @@
 import React, { useState, useRef, useEffect } from "react";
-
-import {
-  Platform,
-  Dimensions,
-  Button,
-  StatusBar,
-  SafeAreaView,
-} from "react-native";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
+import url from "../keys/url";
+import { useContext } from "react";
+import { Platform, StatusBar, SafeAreaView } from "react-native";
+import { StyleSheet, View } from "react-native";
 import AppButton from "../components/AppButton";
 import CustomButton from "../components/OTPComponents/CustomButton";
 import TimerText from "../components/OTPComponents/TimerText";
 import CustomTextInput from "../components/OTPComponents/CustomTextInput";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
+import AuthContext from "../auth/context";
+import authApi from "../api/auth";
 
+console.disableYellowBox = false;
 const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
 let resendOtpTimerInterval;
+var IsUserVerified;
 
-const OtpVerification = function (props) {
+let verifyOTP = async (OTPDetails) => {
+  const response = await authApi.sendOTP(JSON.stringify(OTPDetails));
+  return response.data;
+};
+
+let resendotp = async (c) => {
+  const response = await authApi.resendOTP(JSON.stringify(c));
+  console.log(response.data);
+};
+
+function OtpVerification({ route }) {
+  const authContext = useContext(AuthContext);
+  const userData = route.params;
+  const [isVerified, setIsVerified] = useState(false);
+
+  useEffect(() => {
+    let interval = null;
+    if (isVerified) {
+      authContext.setUser(IsUserVerified);
+      console.log("success");
+      clearTimeout(interval);
+    }
+    return () => clearTimeout(interval);
+  }, [isVerified]);
+
+  useEffect(() => {
+    startResendOtpTimer();
+
+    return () => {
+      if (resendOtpTimerInterval) {
+        clearInterval(resendOtpTimerInterval);
+      }
+    };
+  }, [resendButtonDisabledTime]);
+
   const isAndroid = Platform.OS === "android";
   const [otpArray, setOtpArray] = useState(["", "", "", ""]);
   const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(
@@ -32,15 +65,7 @@ const OtpVerification = function (props) {
   const refCallback = (textInputRef) => (node) => {
     textInputRef.current = node;
   };
-  useEffect(() => {
-    startResendOtpTimer();
 
-    return () => {
-      if (resendOtpTimerInterval) {
-        clearInterval(resendOtpTimerInterval);
-      }
-    };
-  }, [resendButtonDisabledTime]);
   const onOtpChange = (index) => {
     return (value) => {
       if (isNaN(Number(value))) {
@@ -63,6 +88,7 @@ const OtpVerification = function (props) {
       }
     };
   };
+
   const startResendOtpTimer = () => {
     if (resendOtpTimerInterval) {
       clearInterval(resendOtpTimerInterval);
@@ -75,6 +101,7 @@ const OtpVerification = function (props) {
       }
     }, 1000);
   };
+
   const onResendOtpButtonPress = () => {
     // clear last OTP
     if (firstTextInputRef) {
@@ -86,15 +113,21 @@ const OtpVerification = function (props) {
     startResendOtpTimer();
 
     // resend OTP Api call
-    // todo
-    console.log("todo: Resend OTP");
+    resendotp({ id: userData._id });
   };
-  const onSubmitButtonPress = () => {
+  const onSubmitButtonPress = async () => {
     // API call
-    // todo
     const num = otpArray[0] + otpArray[1] + otpArray[2] + otpArray[3];
-    console.log(parseInt(num));
+
+    IsUserVerified = await verifyOTP({ id: userData._id, otp: parseInt(num) });
+    if (IsUserVerified.isVerified) setIsVerified(true);
+    else {
+      alert("Incorrect OTP");
+      setOtpArray(["", "", "", ""]);
+      firstTextInputRef.current.focus();
+    }
   };
+
   const onOtpKeyPress = (index) => {
     return ({ nativeEvent: { key: value } }) => {
       // auto focus to previous InputText if value is blank and existing value is also blank
@@ -157,7 +190,7 @@ const OtpVerification = function (props) {
       </SafeAreaView>
     </>
   );
-};
+}
 const styles = StyleSheet.create({
   container: {
     padding: 16,

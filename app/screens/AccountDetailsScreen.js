@@ -11,11 +11,8 @@ import * as Yup from "yup";
 import {
   AppForm as Form,
   AppFormField as FormField,
-  AppFormPicker as Picker,
   SubmitButton,
 } from "../components/forms";
-import AppFormImagePicker from "../components/forms/AppFormImagePicker";
-import listingApi from "../api/foodListings";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -30,7 +27,6 @@ const validationSchema = Yup.object().shape({
     .label("Mobile"),
   hall: Yup.number().required().label("Hall"),
   room: Yup.string().required().min(1).label("Room"),
-  // image: Yup.object().nullable().label("Image"),
   // image: Yup.object().nullable().label("Image"),
 });
 
@@ -50,9 +46,6 @@ function AccountDetails({ navigation, route }) {
           mobile: user.mobile,
           hall: user.hall,
           room: user.room,
-          // image: null,
-          // hall: item.hall,
-          // image: [Image.resolveAssetSource(item.image).uri],
         }}
         onSubmit={(values) => {
           console.log(values);

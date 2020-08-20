@@ -1,13 +1,13 @@
 import React from "react";
-import { StyleSheet, Image, View } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import * as Yup from "yup";
-
-import Screen from "../components/Screen";
 import {
   AppForm,
   AppFormField as FormField,
   SubmitButton,
 } from "../components/forms";
+import listingApi from "../api/auth";
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
   email: Yup.string().required().email().label("Email"),
@@ -17,12 +17,21 @@ const validationSchema = Yup.object().shape({
     "Passwords must match"
   ),
   hall: Yup.number().required().label("Hall"),
-  room: Yup.string().required().min(1).label("Room"),
+  room: Yup.string()
+    .required()
+    .matches(/[A-G]{1}[0-9]{3}/)
+    .min(1)
+    .label("Room"),
+  mobile: Yup.string()
+    .length(10)
+    .matches(/^[0-9]*$/, "Enter a valid mobile number")
+    .required()
+    .label("Mobile"),
 });
 
 function RegisterScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <AppForm
         initialValues={{
           name: "",
@@ -32,10 +41,12 @@ function RegisterScreen({ navigation }) {
           email: "",
           password: "",
           confirmPassword: "",
+          mobile: "",
         }}
-        onSubmit={(values) => {
-          console.log(values);
-          navigation.navigate("OTP");
+        onSubmit={async (values) => {
+          const response = await listingApi.registerUser(values);
+          console.log(response.data);
+          if (response.ok) navigation.navigate("OTP", response.data);
         }}
         validationSchema={validationSchema}
       >
@@ -53,6 +64,13 @@ function RegisterScreen({ navigation }) {
           name="email"
           placeholder="Email"
           textContentType="emailAddress"
+        />
+        <FormField
+          keyboardType="phone-pad"
+          maxLength={255}
+          name="mobile"
+          placeholder="Mobile"
+          icon="phone-classic"
         />
         <FormField maxLength={255} name="hall" placeholder="Hall" icon="home" />
         <FormField
@@ -81,7 +99,7 @@ function RegisterScreen({ navigation }) {
         />
         <SubmitButton title="Register" />
       </AppForm>
-    </View>
+    </ScrollView>
   );
 }
 

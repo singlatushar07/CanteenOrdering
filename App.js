@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import navigationTheme from "./app/navigation/navigationTheme";
@@ -12,6 +12,8 @@ import AccountScreen from "./app/screens/AccountScreen";
 import AccountDetails from "./app/screens/AccountDetailsScreen";
 import PaymentSceen from "./app/screens/PaymentSceen";
 import CartScreenNavigator from "./app/navigation/CartScreenNavigator";
+import AccountNavigator from "./app/navigation/AccountNavigator";
+import AuthContext from "./app/auth/context";
 const rootReducer = combineReducers({
   meals: mealsReducer,
 });
@@ -19,15 +21,18 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer);
 
 export default function App() {
+  const [user, setUser] = useState();
   return (
-    <Provider store={store}>
-      <NavigationContainer theme={navigationTheme}>
-        <AppNavigator />
-        {/* <CartScreenNavigator /> */}
-        {/* <AuthNavigator /> */}
-        {/* <AdminNavigator /> */}
-      </NavigationContainer>
-    </Provider>
+    <AuthContext.Provider value={{ user, setUser }}>
+      <Provider store={store}>
+        <NavigationContainer theme={navigationTheme}>
+          {user ? <AppNavigator /> : <AuthNavigator />}
+          {/* <CartScreenNavigator /> */}
+          {/* <AuthNavigator /> */}
+          {/* <AdminNavigator /> */}
+        </NavigationContainer>
+      </Provider>
+    </AuthContext.Provider>
     // <PaymentSceen />
   );
 }
