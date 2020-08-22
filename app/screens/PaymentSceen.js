@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Button,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
@@ -30,7 +31,9 @@ export default function PaymentSceen({ route }) {
           </View>
 
           <View style={{ alignItems: "center" }}>
-            <TouchableOpacity onPress={() => console.log("COD")}>
+            <TouchableOpacity
+              onPress={() => (history.payment_method = "COD")}
+            >
               <MaterialCommunityIcons
                 name="cash"
                 size={70}
@@ -53,7 +56,9 @@ export default function PaymentSceen({ route }) {
           </View>
 
           <View style={{ alignItems: "center" }}>
-            <TouchableOpacity onPress={() => console.log("Khadde me dalvao")}>
+            <TouchableOpacity
+              onPress={() => (history.payment_method = "account")} 
+            >
               <MaterialCommunityIcons
                 name="checkbook"
                 size={70}
@@ -64,6 +69,7 @@ export default function PaymentSceen({ route }) {
           </View>
         </View>
       </ScrollView>
+      <Button title="log" onPress={()=> console.log(history,'CCC')}/>
     </View>
   );
 }
