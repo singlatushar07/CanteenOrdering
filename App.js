@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import navigationTheme from "./app/navigation/navigationTheme";
@@ -14,6 +14,10 @@ import PaymentSceen from "./app/screens/PaymentSceen";
 import CartScreenNavigator from "./app/navigation/CartScreenNavigator";
 import AccountNavigator from "./app/navigation/AccountNavigator";
 import AuthContext from "./app/auth/context";
+import authStorage from "./app/auth/storage";
+import { RotationGestureHandler } from "react-native-gesture-handler";
+import jwtDecode from "jwt-decode";
+
 const rootReducer = combineReducers({
   meals: mealsReducer,
 });
@@ -22,6 +26,16 @@ const store = createStore(rootReducer);
 
 export default function App() {
   const [user, setUser] = useState();
+
+  const restoreToken = async () => {
+    const token = await authStorage.getToken();
+    console.log(token, "retrive");
+    if (!token) return;
+    setUser(jwtDecode(token));
+  };
+  useEffect(() => {
+    restoreToken();
+  }, []);
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <Provider store={store}>
