@@ -39,7 +39,8 @@ function AccountScreen({ navigation }) {
         <ListItem
           title={user.name}
           subTitle={user.email}
-          image={require("../assets/mosh.jpg")}
+          // image={require("../assets/mosh.jpg")}
+          image={{ uri: user.image }}
           onPress={() => navigation.navigate("AccountDetails", user)}
         />
       </View>

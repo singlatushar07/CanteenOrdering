@@ -10,6 +10,8 @@ import AdminNavigator from "./app/navigation/AdminNavigator";
 import AuthContext from "./app/auth/context";
 import authStorage from "./app/auth/storage";
 import jwtDecode from "jwt-decode";
+import { View } from "react-native";
+import AppImageInput from "./app/components/AppImageInput";
 
 const rootReducer = combineReducers({
   meals: mealsReducer,
@@ -19,6 +21,8 @@ const store = createStore(rootReducer);
 
 export default function App() {
   const [user, setUser] = useState();
+
+  const [im, setIm] = useState(null);
 
   const restoreToken = async () => {
     const token = await authStorage.getToken();
@@ -41,5 +45,8 @@ export default function App() {
         </NavigationContainer>
       </Provider>
     </AuthContext.Provider>
+    // <View>
+    //   <AppImageInput onChangeImage={setIm} imageUri={im}></AppImageInput>
+    // </View>
   );
 }

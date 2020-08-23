@@ -6,8 +6,9 @@ import {
   AppFormField as FormField,
   SubmitButton,
 } from "../components/forms";
-import listingApi from "../api/auth";
+import registerApi from "../api/auth";
 import Spinner from "react-native-loading-spinner-overlay";
+import AppFormImagePicker from "../components/forms/AppFormImagePicker";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
@@ -28,6 +29,7 @@ const validationSchema = Yup.object().shape({
     .matches(/^[0-9]*$/, "Enter a valid mobile number")
     .required()
     .label("Mobile"),
+  image: Yup.object().nullable().label("User Image"),
 });
 
 function RegisterScreen({ navigation }) {
@@ -50,17 +52,20 @@ function RegisterScreen({ navigation }) {
           password: "",
           confirmPassword: "",
           mobile: "",
+          image: null,
         }}
         onSubmit={async (values) => {
           setLoading(true);
-          const response = await listingApi.registerUser(values);
+          const response = await registerApi.registerUser(values);
           setLoading(false);
           console.log(response.data);
           if (response.ok) navigation.navigate("OTP", response.data);
           else alert(response.data);
+          console.log(values);
         }}
         validationSchema={validationSchema}
       >
+        <AppFormImagePicker name="image" />
         <FormField
           autoCorrect={false}
           icon="account"

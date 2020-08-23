@@ -74,12 +74,10 @@ function OrderHistoryScreen({ navigation }) {
         size="large"
         animation="fade"
         color={colors.light}
-        textContent={"Loading..."}
         cancelable={true}
       />
       <FlatList
         data={history}
-        m
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => renderItem(item)}
       />
