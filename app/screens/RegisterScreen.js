@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import * as Yup from "yup";
 import {
@@ -7,6 +7,7 @@ import {
   SubmitButton,
 } from "../components/forms";
 import listingApi from "../api/auth";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
@@ -30,8 +31,15 @@ const validationSchema = Yup.object().shape({
 });
 
 function RegisterScreen({ navigation }) {
+  const [loading, setLoading] = useState(false);
   return (
     <ScrollView style={styles.container}>
+      <Spinner
+        visible={loading}
+        size="large"
+        animation="fade"
+        cancelable={true}
+      />
       <AppForm
         initialValues={{
           name: "",
@@ -44,9 +52,12 @@ function RegisterScreen({ navigation }) {
           mobile: "",
         }}
         onSubmit={async (values) => {
+          setLoading(true);
           const response = await listingApi.registerUser(values);
+          setLoading(false);
           console.log(response.data);
           if (response.ok) navigation.navigate("OTP", response.data);
+          else alert(response.data);
         }}
         validationSchema={validationSchema}
       >

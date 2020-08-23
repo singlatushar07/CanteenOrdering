@@ -9,27 +9,42 @@ import CustomTextInput from "../components/OTPComponents/CustomTextInput";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import AuthContext from "../auth/context";
+import Spinner from "react-native-loading-spinner-overlay";
 import authApi from "../api/auth";
 
-console.disableYellowBox = false;
-const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
-let resendOtpTimerInterval;
-var IsUserVerified;
-
-let verifyOTP = async (OTPDetails) => {
-  const response = await authApi.sendOTP(JSON.stringify(OTPDetails));
-  return response.data;
-};
-
-let resendotp = async (c) => {
-  const response = await authApi.resendOTP(JSON.stringify(c));
-  console.log(response.data);
-};
-
 function OtpVerification({ route }) {
+  console.disableYellowBox = false;
+  const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
+  let resendOtpTimerInterval;
+  var IsUserVerified;
+
+  const [loading, setLoading] = useState(false);
+
+  let verifyOTP = async (OTPDetails) => {
+    setLoading(true);
+    const response = await authApi.sendOTP(JSON.stringify(OTPDetails));
+    setLoading(false);
+    return response.data;
+  };
+
+  let resendotp = async (c) => {
+    setLoading(true);
+    const response = await authApi.resendOTP(JSON.stringify(c));
+    setLoading(false);
+    console.log(response.data);
+  };
   const authContext = useContext(AuthContext);
   const userData = route.params;
   const [isVerified, setIsVerified] = useState(false);
+  useEffect(() => {
+    startResendOtpTimer();
+
+    return () => {
+      if (resendOtpTimerInterval) {
+        clearInterval(resendOtpTimerInterval);
+      }
+    };
+  }, [resendButtonDisabledTime]);
 
   useEffect(() => {
     let interval = null;
@@ -40,16 +55,6 @@ function OtpVerification({ route }) {
     }
     return () => clearTimeout(interval);
   }, [isVerified]);
-
-  useEffect(() => {
-    startResendOtpTimer();
-
-    return () => {
-      if (resendOtpTimerInterval) {
-        clearInterval(resendOtpTimerInterval);
-      }
-    };
-  }, [resendButtonDisabledTime]);
 
   const isAndroid = Platform.OS === "android";
   const [otpArray, setOtpArray] = useState(["", "", "", ""]);
@@ -151,6 +156,12 @@ function OtpVerification({ route }) {
     <>
       <StatusBar barStyle="light-content" />
       <SafeAreaView style={styles.whiteBackgroundContainer}>
+        <Spinner
+          visible={loading}
+          size="large"
+          animation="fade"
+          cancelable={true}
+        />
         <View style={styles.container}>
           <AppText style={styles.text}>
             Enter OTP send to your email address.

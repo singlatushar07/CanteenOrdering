@@ -3,6 +3,7 @@ export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const INCREASE_QUANTITY = "INCREASE_QUANTITY";
 export const DECREASE_QUANTITY = "DECREASE_QUANTITY";
 export const ADD_FROM_OTHER_HALL = "ADD_FROM_OTHER_HALL";
+export const RESET_CART = "RESET_CART";
 
 export const addToCart = (item) => {
   return { type: ADD_TO_CART, foodItem: item };
@@ -22,4 +23,8 @@ export const increaseQuantity = (id) => {
 
 export const decreaseQuantity = (id) => {
   return { type: DECREASE_QUANTITY, mealId: id };
+};
+
+export const resetCart = () => {
+  return { type: RESET_CART };
 };

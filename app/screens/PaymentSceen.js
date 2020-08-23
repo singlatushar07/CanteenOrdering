@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,22 +12,37 @@ import colors from "../config/colors";
 import AppText from "../components/AppText";
 import AuthContext from "../auth/context";
 import orderApi from "../api/orders";
+import Spinner from "react-native-loading-spinner-overlay";
+import routes from "../navigation/routes";
+import { useDispatch } from "react-redux";
+import { resetCart } from "../store/actions/mealsaction";
 
-const placeOrder = async (orderDetails) => {
-  const response = await orderApi.placeOrder(orderDetails);
-  if (response.ok) {
-    alert("Order Placed Successfully");
-  } else {
-    alert("Failed to place order");
-  }
-};
-
-export default function PaymentSceen({ route }) {
+export default function PaymentSceen({ route, navigation }) {
   const { user, setUser } = useContext(AuthContext);
   const orderDetails = route.params;
-  console.log("History ", orderDetails);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const placeOrder = async (orderDetails) => {
+    setLoading(true);
+    const response = await orderApi.placeOrder(orderDetails);
+    setLoading(false);
+    if (response.ok) {
+      alert("Order Placed Successfully");
+    } else {
+      alert("Failed to place order");
+    }
+    dispatch(resetCart());
+    navigation.navigate(routes.CART);
+  };
   return (
     <View style={styles.container}>
+      <Spinner
+        visible={loading}
+        size="large"
+        animation="fade"
+        color={colors.light}
+        cancelable={true}
+      />
       <Text style={styles.paymentText}>Payment Options</Text>
       <ScrollView>
         <View>

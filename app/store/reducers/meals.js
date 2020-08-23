@@ -4,9 +4,8 @@ import {
   INCREASE_QUANTITY,
   DECREASE_QUANTITY,
   ADD_FROM_OTHER_HALL,
-  addFromOtherHall,
+  RESET_CART,
 } from "../actions/mealsaction";
-import { Alert } from "react-native";
 
 const initialstate = {
   cart: [],
@@ -61,6 +60,12 @@ const mealsReducer = (state = initialstate, action) => {
       action.foodItem.quantity = 1;
       updatedCart = [action.foodItem];
       return { ...state, cart: updatedCart, hall: action.foodItem.hall };
+
+    case RESET_CART:
+      return {
+        cart: [],
+        hall: null,
+      };
     default:
       return state;
   }

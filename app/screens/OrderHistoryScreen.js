@@ -14,12 +14,14 @@ import AuthContext from "../auth/context";
 import ActivityIndicator from "../components/ActivityIndicator";
 import orderApi from "../api/orders";
 import routes from "../navigation/routes";
+import Spinner from "react-native-loading-spinner-overlay";
 
 function OrderHistoryScreen({ navigation }) {
   const { user, setUser } = useContext(AuthContext);
   const [history, setHistory] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     loadHistory();
   }, []);
@@ -67,27 +69,20 @@ function OrderHistoryScreen({ navigation }) {
   );
   return (
     <>
-      <Text
-        style={{
-          marginLeft: 15,
-          marginTop: 5,
-          marginBottom: 5,
-          fontSize: 25,
-          fontWeight: "bold",
-          color: colors.cashGreen,
-        }}
-      >
-        History
-      </Text>
-      {loading && <ActivityIndicator visible={loading} />}
-      {!loading && (
-        <FlatList
-          data={history}
-          m
-          keyExtractor={(item) => item._id}
-          renderItem={({ item }) => renderItem(item)}
-        />
-      )}
+      <Spinner
+        visible={loading}
+        size="large"
+        animation="fade"
+        color={colors.light}
+        textContent={"Loading..."}
+        cancelable={true}
+      />
+      <FlatList
+        data={history}
+        m
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => renderItem(item)}
+      />
     </>
   );
 }

@@ -11,7 +11,7 @@ import {
   SubmitButton,
   AppErrorMessage,
 } from "../components/forms";
-
+import Spinner from "react-native-loading-spinner-overlay";
 import AuthContext from "../auth/context";
 import authApi from "../api/auth";
 
@@ -24,25 +24,31 @@ function LoginScreen() {
   const authContext = useContext(AuthContext);
   const [loginFailed, SetLoginFailed] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (userDetails) => {
+    setLoading(true);
     const response = await authApi.loginUser(JSON.stringify(userDetails));
-    console.log(response);
+    setLoading(false);
     if (!response.ok) {
       setErrorMessage(response.data);
       return SetLoginFailed(true);
     }
     const userData = response.data;
     SetLoginFailed(false);
-    console.log(userData);
     const user = jwtDecode(userData);
     authContext.setUser(user);
     authStorage.storeToken(userData);
-    console.log(user);
   };
 
   return (
     <Screen style={styles.container}>
+      <Spinner
+        visible={loading}
+        size="large"
+        animation="fade"
+        cancelable={true}
+      />
       <Image style={styles.logo} source={require("../assets/logo-red.png")} />
       <AppForm
         initialValues={{ email: "", password: "" }}
