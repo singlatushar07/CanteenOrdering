@@ -58,7 +58,7 @@ function OrderHistoryScreen({ navigation }) {
         </AppText>
         <Text style={{ color: "#aaa" }}>ORDERED ON</Text>
         <AppText style={{ fontSize: 15, fontWeight: "800" }}>
-          {item.time.split("T")[0]}
+          {item.time.split("T")[0]},{item.time.split("T")[1]}
         </AppText>
         <Text style={{ color: "#aaa" }}>Total Amount</Text>
         <AppText style={{ fontSize: 15, fontWeight: "bold", color: "green" }}>

@@ -1,8 +1,6 @@
 import React from "react";
 import { useContext } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
-// import user from "../user/user";
-
 import { ListItem, ListItemSeparator } from "../components/lists";
 import colors from "../config/colors";
 import Icon from "../components/Icon";

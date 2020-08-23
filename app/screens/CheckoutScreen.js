@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import user from "../user/user";
+import AuthContext from "../auth/context";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import { useSelector } from "react-redux";
@@ -17,17 +17,8 @@ import { ListItemSeparator } from "../components/lists";
 const deliveryFee = 20;
 
 function CheckoutScreen({ navigation, route }) {
-  function DisplayItem({ text1, text2 }) {
-    return (
-      <View style={styles.item}>
-        <AppText style={{ flex: 1 }}>{text1}</AppText>
-        <AppText>{text2}</AppText>
-      </View>
-    );
-  }
-
-  const orderDetails = route.params;
-
+  const history = route.params;
+  const { user, setUser } = useContext(AuthContext);
   const [isDineIn, setIsDineIn] = useState(false);
   const [room, setRoom] = useState("");
 
