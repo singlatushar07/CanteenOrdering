@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import user from "../user/user";
+import AuthContext from "../auth/context";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import { useSelector } from "react-redux";
@@ -18,7 +18,7 @@ const deliveryFee = 20;
 
 function CheckoutScreen({ navigation, route }) {
   const history = route.params;
-
+  const { user, setUser } = useContext(AuthContext);
   const [isDineIn, setIsDineIn] = useState(false);
   const [room, setRoom] = useState("");
   const roomNoSchema = /[A-G]{1}[0-9]{3}/;
