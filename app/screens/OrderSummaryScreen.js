@@ -5,6 +5,7 @@ import AppText from "../components/AppText";
 
 export default function OrderSummary({ route }) {
   const listing = route.params;
+  console.log(listing);
   const renderItem = (item) => (
     <View style={styles.detailsContainer}>
       {(item.image && <Image source={item.image} style={styles.image} />) || (

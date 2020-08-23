@@ -9,30 +9,33 @@ import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
 
 export default function CartScreen({ navigation }) {
-  time = "";
-  s = [];
-  var date = new Date().getDate(); //Current Date
-  var month = new Date().getMonth() + 1; //Current Month
-  var year = new Date().getFullYear(); //Current Year
-  var hours = new Date().getHours(); //Current Hours
-  var min = new Date().getMinutes(); //Current Minutes
-  let time = date + "/" + month + "/" + year + " " + hours + ":" + min;
   const data = useSelector((state) => state.meals.cart);
+
+  const date = new Date().getDate(); //Current Date
+  const month = new Date().getMonth() + 1; //Current Month
+  const year = new Date().getFullYear(); //Current Year
+  const hours = new Date().getHours(); //Current Hours
+  const min = new Date().getMinutes(); //Current Minutes
+  const time = date + "/" + month + "/" + year + " " + hours + ":" + min;
+  console.log(time);
   let total = 0;
+  let itemsArray = [];
   for (let i = 0; i < data.length; i++) {
     total += data[i].price * data[i].quantity;
+    itemsArray[i] = { id: data[i]._id, quantity: data[i].quantity };
   }
-  for (let j = 0; j < data.length; j++) {
-    s[j]  = { id: data[j]._id, quantity: data[j].quantity };
-  }
-  let history = {
-    payment_method: "VHGVdfvfvdfvf",
+
+  let orderDetails = {
+    payment_method: "",
     hall: "",
     totalPrice: total,
     time: time,
-    items: s,
+    items: itemsArray,
+    isDineIn: null,
+    room: "",
   }; //this object should be saved in database of the user and array of all such ojects are displayed in HistoryScreen
-  history.hall = data[0] ? data[0].hall : null;
+
+  orderDetails.hall = data[0] ? data[0].hall : null;
   const hallInfo = data[0] ? data[0].hall : null;
   return (
     <>
@@ -70,7 +73,7 @@ export default function CartScreen({ navigation }) {
           />
           <AppText>Total: {total}</AppText>
           <AppButton
-            onPress={() => navigation.navigate(routes.CHECKOUT, history)}
+            onPress={() => navigation.navigate(routes.CHECKOUT, orderDetails)}
             title="Checkout"
           />
         </Screen>

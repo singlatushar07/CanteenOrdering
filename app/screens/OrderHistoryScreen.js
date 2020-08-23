@@ -7,13 +7,13 @@ import {
   FlatList,
   TouchableWithoutFeedback,
 } from "react-native";
-import listingApi from "../api/foodListings";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
 import ListItemSeparator from "../components/lists/ListItemSeparator";
-import { useSelector } from "react-redux";
 import AuthContext from "../auth/context";
 import ActivityIndicator from "../components/ActivityIndicator";
+import orderApi from "../api/orders";
+import routes from "../navigation/routes";
 
 function OrderHistoryScreen({ navigation }) {
   const { user, setUser } = useContext(AuthContext);
@@ -25,36 +25,18 @@ function OrderHistoryScreen({ navigation }) {
   }, []);
   const loadHistory = async () => {
     setLoading(true);
-    const response = await listingApi.getHistory(user._id);
+    const response = await orderApi.getHistory(user._id);
+    console.log(response.data);
     setLoading(false);
 
     if (!response.ok) return setError(true);
     else setError(false);
-    const food = response.data;
-    setHistory(food);
+    const history = response.data;
+    setHistory(history);
   };
-  // time = "";
-  // var date = new Date().getDate(); //Current Date
-  // var month = new Date().getMonth() + 1; //Current Month
-  // var year = new Date().getFullYear(); //Current Year
-  // var hours = new Date().getHours(); //Current Hours
-  // var min = new Date().getMinutes(); //Current Minutes
-  // let time = date + "/" + month + "/" + year + " " + hours + ":" + min;
-  // const data = useSelector((state) => state.meals.cart);
-
-  // const hallInfo = data[0] ? data[0].hall : null;
-  // let total = 0;
-  // for (let i = 0; i < data.length; i++) {
-  //   total += data[i].price * data[i].quantity;
-  // }
-  // let history = [
-  //   { time: time, hall: hallInfo, id: 1, totalPrice: total, items: data },
-  // ];
-
-  // history.hall = data[0] ? data[0].hall : null;
   const renderItem = (item) => (
     <TouchableWithoutFeedback
-      onPress={() => navigation.navigate("Summary", item.items)}
+      onPress={() => navigation.navigate(routes.ORDER_SUMMARY, item.items)}
     >
       <View style={styles.Maincontainer}>
         <View style={styles.detailsContainer}>

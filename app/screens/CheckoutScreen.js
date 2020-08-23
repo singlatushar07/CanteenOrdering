@@ -21,13 +21,14 @@ function CheckoutScreen({ navigation, route }) {
   const { user, setUser } = useContext(AuthContext);
   const [isDineIn, setIsDineIn] = useState(false);
   const [room, setRoom] = useState("");
+
   const roomNoSchema = /[A-G]{1}[0-9]{3}/;
-  const anything = /.*?/;
+  const anythingSchema = /.*?/;
   const validationSchema = Yup.object().shape({
     room: Yup.string()
       .required(isDineIn)
       .matches(
-        isDineIn ? roomNoSchema : anything,
+        isDineIn ? roomNoSchema : anythingSchema,
         "Enter valid room number like B403"
       )
       .length(4)
@@ -37,19 +38,8 @@ function CheckoutScreen({ navigation, route }) {
     { label: "Dine In", value: false },
     { label: "Delivery", value: true },
   ];
-  const data = useSelector((state) => state.meals.cart);
-  let total = 0;
-  for (let i = 0; i < data.length; i++) {
-    total += data[i].price * data[i].quantity;
-  }
-  function DisplayItem({ text1, text2 }) {
-    return (
-      <View style={styles.item}>
-        <AppText style={{ flex: 1 }}>{text1}</AppText>
-        <AppText>{text2}</AppText>
-      </View>
-    );
-  }
+
+  const total = orderDetails.totalPrice;
 
   return (
     <Form
@@ -57,9 +47,9 @@ function CheckoutScreen({ navigation, route }) {
         room: room,
       }}
       onSubmit={(values) => {
-        history.isDineIn = isDineIn;
-        history.room = values.room;
-        navigation.navigate(routes.PAYMENT, history);
+        orderDetails.isDineIn = isDineIn;
+        orderDetails.room = values.room;
+        navigation.navigate(routes.PAYMENT, orderDetails);
       }}
       validationSchema={validationSchema}
     >

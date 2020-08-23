@@ -8,7 +8,7 @@ import MessagesScreen from "../screens/MessagesScreen";
 import routes from "./routes";
 import AccountDetails from "../screens/AccountDetailsScreen";
 import OrderHistoryScreen from "../screens/OrderHistoryScreen";
-import OrderSummary from "../screens/OrderSummary";
+import OrderSummary from "../screens/OrderSummaryScreen";
 
 const Stack = createStackNavigator();
 
