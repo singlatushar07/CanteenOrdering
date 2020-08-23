@@ -1,16 +1,38 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   ScrollView,
+  Button,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
+import url from "../keys/url";
+import AuthContext from "../auth/context";
+let postData = async (c) => {
+  try {
+    let result = await fetch(url.ngrokurl + "/history", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(c),
+    });
+    data = await result.json();
+  //  console.log(data);
+    // putMethod(data);
+    console.log("done");
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 export default function PaymentSceen({ route }) {
+  const { user, setUser } = useContext(AuthContext);
   const history = route.params;
   console.log(history);
   return (
@@ -30,7 +52,7 @@ export default function PaymentSceen({ route }) {
           </View>
 
           <View style={{ alignItems: "center" }}>
-            <TouchableOpacity onPress={() => console.log("COD")}>
+            <TouchableOpacity onPress={() => (history.payment_method = "COD")}>
               <MaterialCommunityIcons
                 name="cash"
                 size={70}
@@ -53,7 +75,9 @@ export default function PaymentSceen({ route }) {
           </View>
 
           <View style={{ alignItems: "center" }}>
-            <TouchableOpacity onPress={() => console.log("Khadde me dalvao")}>
+            <TouchableOpacity
+              onPress={() => (history.payment_method = "account")}
+            >
               <MaterialCommunityIcons
                 name="checkbook"
                 size={70}
@@ -64,6 +88,13 @@ export default function PaymentSceen({ route }) {
           </View>
         </View>
       </ScrollView>
+      <Button
+        title="log"
+        onPress={
+          () => (console.log(user, "CCC"), (history.id = user._id),
+          postData(history))
+        }
+      />
     </View>
   );
 }

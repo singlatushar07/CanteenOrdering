@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { StyleSheet, Image } from "react-native";
 import * as Yup from "yup";
 import jwtDecode from "jwt-decode";
-
+import authStorage from "../auth/storage";
 import Screen from "../components/Screen";
 import {
   AppForm,
@@ -37,6 +37,7 @@ function LoginScreen() {
     console.log(userData);
     const user = jwtDecode(userData);
     authContext.setUser(user);
+    authStorage.storeToken(userData);
     console.log(user);
   };
 

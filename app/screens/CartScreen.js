@@ -10,6 +10,7 @@ import routes from "../navigation/routes";
 
 export default function CartScreen({ navigation }) {
   time = "";
+  s = [];
   var date = new Date().getDate(); //Current Date
   var month = new Date().getMonth() + 1; //Current Month
   var year = new Date().getFullYear(); //Current Year
@@ -21,8 +22,16 @@ export default function CartScreen({ navigation }) {
   for (let i = 0; i < data.length; i++) {
     total += data[i].price * data[i].quantity;
   }
-
-  let history = { hall: "", id: 1, totalPrice: total, time: time, items: data }; //this object should be saved in database of the user and array of all such ojects are displayed in HistoryScreen
+  for (let j = 0; j < data.length; j++) {
+    s[j]  = { id: data[j]._id, quantity: data[j].quantity };
+  }
+  let history = {
+    payment_method: "VHGVdfvfvdfvf",
+    hall: "",
+    totalPrice: total,
+    time: time,
+    items: s,
+  }; //this object should be saved in database of the user and array of all such ojects are displayed in HistoryScreen
   history.hall = data[0] ? data[0].hall : null;
   const hallInfo = data[0] ? data[0].hall : null;
   return (

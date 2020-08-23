@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import user from "../user/user";
 import AppText from "../components/AppText";
-import { ListItemSeparator } from "../components/lists";
 import colors from "../config/colors";
 import { useSelector } from "react-redux";
 import RadioForm from "react-native-simple-radio-button";
@@ -13,11 +12,13 @@ import {
 } from "../components/forms";
 import * as Yup from "yup";
 import routes from "../navigation/routes";
+import { ListItemSeparator } from "../components/lists";
 
 const deliveryFee = 20;
 
 function CheckoutScreen({ navigation, route }) {
   const history = route.params;
+
   const [isDineIn, setIsDineIn] = useState(false);
   const [room, setRoom] = useState("");
   const roomNoSchema = /[A-G]{1}[0-9]{3}/;
@@ -49,6 +50,7 @@ function CheckoutScreen({ navigation, route }) {
       </View>
     );
   }
+
   return (
     <Form
       initialValues={{
