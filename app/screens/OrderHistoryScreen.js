@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -8,39 +8,61 @@ import {
   Button,
   TouchableWithoutFeedback,
 } from "react-native";
-
+import listingApi from "../api/foodListings";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
 import ListItemSeparator from "../components/lists/ListItemSeparator";
 import { useSelector } from "react-redux";
+import AuthContext from "../auth/context";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 function OrderHistoryScreen({ navigation }) {
-  time = "";
-  var date = new Date().getDate(); //Current Date
-  var month = new Date().getMonth() + 1; //Current Month
-  var year = new Date().getFullYear(); //Current Year
-  var hours = new Date().getHours(); //Current Hours
-  var min = new Date().getMinutes(); //Current Minutes
-  let time = date + "/" + month + "/" + year + " " + hours + ":" + min;
-  const data = useSelector((state) => state.meals.cart);
+  const { user, setUser } = useContext(AuthContext);
+  const [history, setHistory] = useState([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    loadHistory();
+  }, []);
+  const loadHistory = async () => {
+    setLoading(true);
+    const response = await listingApi.getHistory(user._id);
+    setLoading(false);
 
-  const hallInfo = data[0] ? data[0].hall : null;
-  let total = 0;
-  for (let i = 0; i < data.length; i++) {
-    total += data[i].price * data[i].quantity;
-  }
-  let history = [
-    { time: time, hall: hallInfo, id: 1, totalPrice: total, items: data },
-  ];
+    if (!response.ok) return setError(true);
+    else setError(false);
+    const food = response.data;
+    setHistory(food);
+  };
+  // time = "";
+  // var date = new Date().getDate(); //Current Date
+  // var month = new Date().getMonth() + 1; //Current Month
+  // var year = new Date().getFullYear(); //Current Year
+  // var hours = new Date().getHours(); //Current Hours
+  // var min = new Date().getMinutes(); //Current Minutes
+  // let time = date + "/" + month + "/" + year + " " + hours + ":" + min;
+  // const data = useSelector((state) => state.meals.cart);
 
-  history.hall = data[0] ? data[0].hall : null;
+  // const hallInfo = data[0] ? data[0].hall : null;
+  // let total = 0;
+  // for (let i = 0; i < data.length; i++) {
+  //   total += data[i].price * data[i].quantity;
+  // }
+  // let history = [
+  //   { time: time, hall: hallInfo, id: 1, totalPrice: total, items: data },
+  // ];
+
+  // history.hall = data[0] ? data[0].hall : null;
   const renderItem = (item) => (
     <TouchableWithoutFeedback
       onPress={() => navigation.navigate("Summary", item.items)}
     >
       <View style={styles.Maincontainer}>
         <View style={styles.detailsContainer}>
-          <Image source={item.image} style={styles.image} />
+          <Image
+            source={require("../assets/hostel.jpg")}
+            style={styles.image}
+          />
 
           <View style={styles.card}>
             <AppText style={styles.title}>Hall {item.hall}</AppText>
@@ -76,11 +98,15 @@ function OrderHistoryScreen({ navigation }) {
       >
         History
       </Text>
-      <FlatList
-        data={history}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => renderItem(item)}
-      />
+      {loading && <ActivityIndicator visible={loading} />}
+      {!loading && (
+        <FlatList
+          data={history}
+          m
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => renderItem(item)}
+        />
+      )}
     </>
   );
 }
