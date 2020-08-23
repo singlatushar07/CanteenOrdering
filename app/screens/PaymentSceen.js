@@ -10,31 +10,22 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
-import url from "../keys/url";
 import AuthContext from "../auth/context";
-let postData = async (c) => {
-  try {
-    let result = await fetch(url.ngrokurl + "/history", {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(c),
-    });
-    data = await result.json();
-  //  console.log(data);
-    // putMethod(data);
-    console.log("done");
-  } catch (e) {
-    console.log(e);
+import orderApi from "../api/orders";
+
+const placeOrder = async (orderDetails) => {
+  const response = await orderApi.placeOrder(orderDetails);
+  if (response.ok) {
+    alert("Order Placed Successfully");
+  } else {
+    alert("Failed to place order");
   }
 };
 
 export default function PaymentSceen({ route }) {
   const { user, setUser } = useContext(AuthContext);
-  const history = route.params;
-  console.log(history);
+  const orderDetails = route.params;
+  console.log("History ", orderDetails);
   return (
     <View style={styles.container}>
       <Text style={styles.paymentText}>Payment Options</Text>
@@ -52,7 +43,9 @@ export default function PaymentSceen({ route }) {
           </View>
 
           <View style={{ alignItems: "center" }}>
-            <TouchableOpacity onPress={() => (history.payment_method = "COD")}>
+            <TouchableOpacity
+              onPress={() => (orderDetails.payment_method = "COD")}
+            >
               <MaterialCommunityIcons
                 name="cash"
                 size={70}
@@ -76,7 +69,7 @@ export default function PaymentSceen({ route }) {
 
           <View style={{ alignItems: "center" }}>
             <TouchableOpacity
-              onPress={() => (history.payment_method = "account")}
+              onPress={() => (orderDetails.payment_method = "account")}
             >
               <MaterialCommunityIcons
                 name="checkbook"
@@ -90,10 +83,11 @@ export default function PaymentSceen({ route }) {
       </ScrollView>
       <Button
         title="log"
-        onPress={
-          () => (console.log(user, "CCC"), (history.id = user._id),
-          postData(history))
-        }
+        onPress={() => {
+          console.log(user, "CCC");
+          orderDetails.userId = user._id;
+          placeOrder(orderDetails);
+        }}
       />
     </View>
   );

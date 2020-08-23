@@ -30,11 +30,11 @@ const menuItems = [
 ];
 
 function AccountScreen({ navigation }) {
-  const { user,setUser } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const handleLogOut = () => {
     setUser(null);
     authStorage.removeToken();
-  }
+  };
   return (
     <View style={styles.screen}>
       <View style={styles.container}>

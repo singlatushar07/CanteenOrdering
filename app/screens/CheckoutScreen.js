@@ -17,31 +17,6 @@ import { ListItemSeparator } from "../components/lists";
 const deliveryFee = 20;
 
 function CheckoutScreen({ navigation, route }) {
-  const history = route.params;
-
-  const [isDineIn, setIsDineIn] = useState(false);
-  const [room, setRoom] = useState("");
-  const roomNoSchema = /[A-G]{1}[0-9]{3}/;
-  const anything = /.*?/;
-  const validationSchema = Yup.object().shape({
-    room: Yup.string()
-      .required(isDineIn)
-      .matches(
-        isDineIn ? roomNoSchema : anything,
-        "Enter valid room number like B403"
-      )
-      .length(4)
-      .label("Room Number"),
-  });
-  var radio_props = [
-    { label: "Dine In", value: false },
-    { label: "Delivery", value: true },
-  ];
-  const data = useSelector((state) => state.meals.cart);
-  let total = 0;
-  for (let i = 0; i < data.length; i++) {
-    total += data[i].price * data[i].quantity;
-  }
   function DisplayItem({ text1, text2 }) {
     return (
       <View style={styles.item}>
@@ -51,15 +26,39 @@ function CheckoutScreen({ navigation, route }) {
     );
   }
 
+  const orderDetails = route.params;
+
+  const [isDineIn, setIsDineIn] = useState(false);
+  const [room, setRoom] = useState("");
+
+  const roomNoSchema = /[A-G]{1}[0-9]{3}/;
+  const anythingSchema = /.*?/;
+  const validationSchema = Yup.object().shape({
+    room: Yup.string()
+      .required(isDineIn)
+      .matches(
+        isDineIn ? roomNoSchema : anythingSchema,
+        "Enter valid room number like B403"
+      )
+      .length(4)
+      .label("Room Number"),
+  });
+  var radio_props = [
+    { label: "Dine In", value: false },
+    { label: "Delivery", value: true },
+  ];
+
+  const total = orderDetails.totalPrice;
+
   return (
     <Form
       initialValues={{
         room: room,
       }}
       onSubmit={(values) => {
-        history.isDineIn = isDineIn;
-        history.room = values.room;
-        navigation.navigate(routes.PAYMENT, history);
+        orderDetails.isDineIn = isDineIn;
+        orderDetails.room = values.room;
+        navigation.navigate(routes.PAYMENT, orderDetails);
       }}
       validationSchema={validationSchema}
     >

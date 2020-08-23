@@ -18,6 +18,7 @@ function ListingDetailsScreen({ route, navigation }) {
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     loadFood();
   }, []);
@@ -38,6 +39,7 @@ function ListingDetailsScreen({ route, navigation }) {
     }
     setCategories([...new Set(temp)]);
   };
+
   const headerContent = () => (
     <>
       <Image style={styles.image} source={listing.image} />

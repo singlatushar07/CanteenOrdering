@@ -100,7 +100,6 @@ function ListingScreen({ navigation }) {
   );
   return (
     <Screen style={styles.screen}>
-  
       <AppSearchBar
         autoCorrect={false}
         data={listings}

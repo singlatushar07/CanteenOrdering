@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import url from "../keys/url";
 import { useContext } from "react";
 import { Platform, StatusBar, SafeAreaView } from "react-native";
 import { StyleSheet, View } from "react-native";
