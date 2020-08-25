@@ -22,8 +22,6 @@ const store = createStore(rootReducer);
 export default function App() {
   const [user, setUser] = useState();
 
-  const [im, setIm] = useState(null);
-
   const restoreToken = async () => {
     const token = await authStorage.getToken();
     console.log(token, "retrived authToken");

@@ -6,12 +6,12 @@ import {
   Image,
   FlatList,
   TouchableWithoutFeedback,
+  SafeAreaView,
 } from "react-native";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
 import ListItemSeparator from "../components/lists/ListItemSeparator";
 import AuthContext from "../auth/context";
-import ActivityIndicator from "../components/ActivityIndicator";
 import orderApi from "../api/orders";
 import routes from "../navigation/routes";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -68,7 +68,7 @@ function OrderHistoryScreen({ navigation }) {
     </TouchableWithoutFeedback>
   );
   return (
-    <>
+    <SafeAreaView>
       <Spinner
         visible={loading}
         size="large"
@@ -81,7 +81,7 @@ function OrderHistoryScreen({ navigation }) {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => renderItem(item)}
       />
-    </>
+    </SafeAreaView>
   );
 }
 

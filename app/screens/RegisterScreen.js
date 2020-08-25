@@ -58,7 +58,6 @@ function RegisterScreen({ navigation }) {
           setLoading(true);
           const response = await registerApi.registerUser(values);
           setLoading(false);
-          console.log(response.data);
           if (response.ok) navigation.navigate("OTP", response.data);
           else alert(response.data);
           console.log(values);

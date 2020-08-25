@@ -9,17 +9,19 @@ import CustomTextInput from "../components/OTPComponents/CustomTextInput";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import AuthContext from "../auth/context";
-import Spinner from "react-native-loading-spinner-overlay";
 import authApi from "../api/auth";
+import Spinner from "react-native-loading-spinner-overlay";
+
+console.disableYellowBox = false;
+const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
+let resendOtpTimerInterval;
+var IsUserVerified;
 
 function OtpVerification({ route }) {
-  console.disableYellowBox = false;
-  const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
-  let resendOtpTimerInterval;
-  var IsUserVerified;
-
+  const authContext = useContext(AuthContext);
+  const userData = route.params;
+  const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
-
   let verifyOTP = async (OTPDetails) => {
     setLoading(true);
     const response = await authApi.sendOTP(JSON.stringify(OTPDetails));
@@ -33,18 +35,6 @@ function OtpVerification({ route }) {
     setLoading(false);
     console.log(response.data);
   };
-  const authContext = useContext(AuthContext);
-  const userData = route.params;
-  const [isVerified, setIsVerified] = useState(false);
-  useEffect(() => {
-    startResendOtpTimer();
-
-    return () => {
-      if (resendOtpTimerInterval) {
-        clearInterval(resendOtpTimerInterval);
-      }
-    };
-  }, [resendButtonDisabledTime]);
 
   useEffect(() => {
     let interval = null;
@@ -69,7 +59,15 @@ function OtpVerification({ route }) {
   const refCallback = (textInputRef) => (node) => {
     textInputRef.current = node;
   };
+  useEffect(() => {
+    startResendOtpTimer();
 
+    return () => {
+      if (resendOtpTimerInterval) {
+        clearInterval(resendOtpTimerInterval);
+      }
+    };
+  }, [resendButtonDisabledTime]);
   const onOtpChange = (index) => {
     return (value) => {
       if (isNaN(Number(value))) {
