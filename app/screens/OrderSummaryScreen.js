@@ -8,7 +8,9 @@ export default function OrderSummary({ route }) {
   console.log(listing);
   const renderItem = (item) => (
     <View style={styles.detailsContainer}>
-      {(item.image && <Image source={item.image} style={styles.image} />) || (
+      {(item.image && (
+        <Image source={{ uri: item.image }} style={styles.image} />
+      )) || (
         <Image source={require("../assets/burger.jpg")} style={styles.image} />
       )}
       <View style={{ flexDirection: "row-reverse", flex: 1 }}>

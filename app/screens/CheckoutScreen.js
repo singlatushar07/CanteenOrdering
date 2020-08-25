@@ -17,7 +17,7 @@ import { ListItemSeparator } from "../components/lists";
 const deliveryFee = 20;
 
 function CheckoutScreen({ navigation, route }) {
-  const history = route.params;
+  const orderDetails = route.params;
   const { user, setUser } = useContext(AuthContext);
   const [isDineIn, setIsDineIn] = useState(false);
   const [room, setRoom] = useState("");
@@ -56,20 +56,21 @@ function CheckoutScreen({ navigation, route }) {
       <ScrollView style={styles.container}>
         <View style={styles.detailsContainer}>
           <AppText style={styles.header}>User Details</AppText>
-          <DisplayItem text1="Name" text2={user.name} />
+          {/* <DisplayItem text1="Name" text2={user.name} />
           <DisplayItem text1="Hall" text2={user.hall} />
           <DisplayItem text1="Room No" text2={user.room} />
-          <DisplayItem text1="Mobile" text2={user.mobile} />
+          <DisplayItem text1="Mobile" text2={user.mobile} /> */}
+          
         </View>
 
         <ListItemSeparator style={styles.separator} />
 
         <View style={styles.detailsContainer}>
           <AppText style={styles.header}>Bill Details</AppText>
-          <DisplayItem text1="Item Total" text2={`₹${total}`} />
+          {/* <DisplayItem text1="Item Total" text2={`₹${total}`} />
           <DisplayItem text1="Delivery Fee" text2={`₹${deliveryFee}`} />
           <ListItemSeparator style={{ marginVertical: 10, height: 1.5 }} />
-          <DisplayItem text1="To Pay" text2={`₹${total + deliveryFee}`} />
+          <DisplayItem text1="To Pay" text2={`₹${total + deliveryFee}`} /> */}
         </View>
 
         <ListItemSeparator style={styles.separator} />

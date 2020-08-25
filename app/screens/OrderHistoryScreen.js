@@ -15,7 +15,7 @@ import AuthContext from "../auth/context";
 import orderApi from "../api/orders";
 import routes from "../navigation/routes";
 import Spinner from "react-native-loading-spinner-overlay";
-
+import listings from "../../Data/halls";
 function OrderHistoryScreen({ navigation }) {
   const { user, setUser } = useContext(AuthContext);
   const [history, setHistory] = useState([]);
@@ -43,7 +43,9 @@ function OrderHistoryScreen({ navigation }) {
       <View style={styles.Maincontainer}>
         <View style={styles.detailsContainer}>
           <Image
-            source={require("../assets/hostel.jpg")}
+            source={
+              listings.find((element) => element.id === item.hall).image
+            }
             style={styles.image}
           />
 
