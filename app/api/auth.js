@@ -12,13 +12,14 @@ const registerUser = (user) => {
   userData.append("password", user.password);
   userData.append("confirmPassword", user.confirmPassword);
   userData.append("room", user.room);
+  // userData.append("image", user.image);
   userData.append("image", {
     name: user.name + "image",
     type: "image/jpeg",
     uri: user.image,
   });
 
-  return client.post(register, user);
+  return client.post(register, userData);
 };
 const loginUser = (user) => client.post(auth, user);
 const sendOTP = (otp) => client.post(verify, otp);
