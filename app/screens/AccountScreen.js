@@ -40,7 +40,7 @@ function AccountScreen({ navigation }) {
           title={user.name}
           subTitle={user.email}
           // image={require("../assets/mosh.jpg")}
-          image={{ uri: user.image }}
+          image={{ uri: user.imagePath }}
           onPress={() => navigation.navigate("AccountDetails", user)}
         />
       </View>

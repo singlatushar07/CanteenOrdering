@@ -76,7 +76,7 @@ function FoodItemCollapsible({ foods, category }) {
           renderItem={({ item }) => (
             <View style={styles.detailsContainer}>
               {(item.image && (
-                <Image source={item.image} style={styles.image} />
+                <Image source={{uri: item.image}} style={styles.image} />
               )) || (
                 <Image
                   source={require("../assets/burger.jpg")}

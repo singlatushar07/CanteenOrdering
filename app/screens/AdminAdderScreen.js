@@ -19,7 +19,7 @@ const validationSchema = Yup.object().shape({
   price: Yup.number().required().min(1).max(10000).label("Price"),
   description: Yup.string().label("description"),
   hall: Yup.object().required().nullable().label("Category"),
-  // image: Yup.object().nullable().label("Image"),
+  image: Yup.object().nullable().label("Image"),
 });
 
 const Halls = [
@@ -77,7 +77,7 @@ const Halls = [
 
 const postFood = async (c) => {
   try {
-    const response = await listingApi.addFoodListing(JSON.stringify(c));
+    const response = await listingApi.addFoodListing(c);
     console.log(c);
     if (!response.ok) {
       alert("Unable to post." + "\n" + response.data);
@@ -100,7 +100,7 @@ function AdminAdder({ navigation }) {
           description: "",
           hall: null,
           category: "",
-          // image: null,
+          image: null,
         }}
         onSubmit={(values) => {
           values.hall = values.hall.value;
@@ -109,7 +109,7 @@ function AdminAdder({ navigation }) {
         }}
         validationSchema={validationSchema}
       >
-        {/* <AppFormImagePicker name="image" /> */}
+        <AppFormImagePicker name="image" />
         <Picker items={Halls} name="hall" placeholder="Hall" />
         <FormField maxLength={255} name="title" placeholder="Title" />
         <FormField maxLength={255} name="category" placeholder="Category" />

@@ -1,3 +1,3 @@
 export default {
-  ngrokurl: "https://7679c608847d.ngrok.io",
+  ngrokurl: "http://192.168.0.175:3000",
 };

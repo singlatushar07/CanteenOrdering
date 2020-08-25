@@ -7,7 +7,7 @@ import colors from "../config/colors";
 import Counter from "../components/Counter";
 import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
-
+import listings from "../../Data/halls";
 export default function CartScreen({ navigation }) {
   const data = useSelector((state) => state.meals.cart);
 
@@ -37,15 +37,13 @@ export default function CartScreen({ navigation }) {
 
   orderDetails.hall = data[0] ? data[0].hall : null;
   const hallInfo = data[0] ? data[0].hall : null;
+  const hall = listings.find((element) => element.id === hallInfo);
   return (
     <>
       {hallInfo && (
         <Screen style={{ padding: 5, paddingTop: 10 }}>
           <View style={styles.hall}>
-            <Image
-              source={require("../assets/hostel.jpg")}
-              style={styles.image}
-            />
+            <Image source={hall.image} style={styles.image} />
             <View style={styles.card}>
               <AppText style={styles.hallTitle}>Hall {hallInfo}</AppText>
             </View>
@@ -56,12 +54,12 @@ export default function CartScreen({ navigation }) {
             renderItem={({ item }) => (
               <View style={styles.container}>
                 {(item.image && (
-                  <Image source={item.image} style={styles.image} />
+                  <Image source={{uri : item.image}} style={styles.image} />
                 )) || (
                   <Image
                     source={require("../assets/burger.jpg")}
                     style={styles.image}
-                  />
+                  />  
                 )}
                 <View style={styles.card}>
                   <AppText style={styles.title}>{item.title}</AppText>
