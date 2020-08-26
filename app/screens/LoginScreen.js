@@ -29,6 +29,7 @@ function LoginScreen() {
   const handleSubmit = async (userDetails) => {
     setLoading(true);
     const response = await authApi.loginUser(JSON.stringify(userDetails));
+    console.log(response);
     setLoading(false);
     if (!response.ok) {
       setErrorMessage(response.data);
@@ -38,6 +39,7 @@ function LoginScreen() {
     SetLoginFailed(false);
     const user = jwtDecode(userData);
     authContext.setUser(user);
+    console.log(user);
     authStorage.storeToken(userData);
   };
 

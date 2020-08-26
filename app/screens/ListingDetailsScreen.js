@@ -18,6 +18,7 @@ function ListingDetailsScreen({ route, navigation }) {
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     loadFood();
@@ -68,6 +69,8 @@ function ListingDetailsScreen({ route, navigation }) {
               data={foodItems}
               categories={categories}
               ListHeaderComponent={headerContent}
+              refreshing={refreshing}
+              onRefresh={() => loadFood()}
             />
           )}
         </>

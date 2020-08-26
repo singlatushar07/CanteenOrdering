@@ -36,7 +36,6 @@ function AppImageInput({ imageUri, onChangeImage }) {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0.5,
       });
-      console.log(result);
       if (!result.cancelled) onChangeImage(result.uri);
     } catch (error) {
       console.log(error);

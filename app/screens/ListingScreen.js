@@ -5,7 +5,7 @@ import Card from "../components/Card";
 import colors from "../config/colors";
 import routes from "../navigation/routes";
 import AppSearchBar from "../components/AppSearchBar";
-import listings from "../../Data/halls";
+import listings from "../Data/halls";
 
 function ListingScreen({ navigation }) {
   const renderItem = (item) => (

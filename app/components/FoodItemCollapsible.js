@@ -3,7 +3,7 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Image,
+  Image as ImageReact,
   FlatList,
   Alert,
 } from "react-native";
@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, addFromOtherHall } from "../store/actions/mealsaction";
 import AppText from "./AppText";
 import colors from "../config/colors";
-
+import { Image } from "react-native-expo-image-cache";
 function search(nameKey, myArray) {
   var a = new Array();
   for (var i = 0; i < myArray.length; i++) {
@@ -76,9 +76,9 @@ function FoodItemCollapsible({ foods, category }) {
           renderItem={({ item }) => (
             <View style={styles.detailsContainer}>
               {(item.image && (
-                <Image source={{uri: item.image}} style={styles.image} />
+                <Image style={styles.image} uri={item.image} />
               )) || (
-                <Image
+                <ImageReact
                   source={require("../assets/burger.jpg")}
                   style={styles.image}
                 />

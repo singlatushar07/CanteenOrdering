@@ -21,6 +21,20 @@ const registerUser = (user) => {
 
   return client.post(register, userData);
 };
+
+const updateUser = (user) => {
+  var userData = new FormData();
+  userData.append("email", user.email);
+  userData.append("image", {
+    name: user.name + "image",
+    type: "image/jpeg",
+    uri: user.image,
+  });
+  userData.append("mobile", user.mobile);
+
+  return client.put(register, userData);
+};
+
 const loginUser = (user) => client.post(auth, user);
 const sendOTP = (otp) => client.post(verify, otp);
 const resendOTP = (id) => client.post(verify + "/resend", id);
@@ -30,4 +44,5 @@ export default {
   loginUser,
   sendOTP,
   resendOTP,
+  updateUser,
 };

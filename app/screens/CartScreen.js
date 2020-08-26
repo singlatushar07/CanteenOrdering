@@ -7,7 +7,7 @@ import colors from "../config/colors";
 import Counter from "../components/Counter";
 import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
-import listings from "../../Data/halls";
+import listings from "../Data/halls";
 export default function CartScreen({ navigation }) {
   const data = useSelector((state) => state.meals.cart);
 
@@ -54,12 +54,12 @@ export default function CartScreen({ navigation }) {
             renderItem={({ item }) => (
               <View style={styles.container}>
                 {(item.image && (
-                  <Image source={{uri : item.image}} style={styles.image} />
+                  <Image source={{ uri: item.image }} style={styles.image} />
                 )) || (
                   <Image
                     source={require("../assets/burger.jpg")}
                     style={styles.image}
-                  />  
+                  />
                 )}
                 <View style={styles.card}>
                   <AppText style={styles.title}>{item.title}</AppText>

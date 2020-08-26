@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Image,
@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import * as Yup from "yup";
+import AuthContext from "../auth/context";
 
 import {
   AppForm as Form,
@@ -16,6 +17,8 @@ import {
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AppFormImagePicker from "../components/forms/AppFormImagePicker";
+import authApi from "../api/auth";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().min(1).label("Name"),
@@ -26,12 +29,13 @@ const validationSchema = Yup.object().shape({
     .required()
     .label("Mobile"),
   hall: Yup.number().required().label("Hall"),
+  image: Yup.object().nullable().label("User Image"),
   room: Yup.string().required().min(1).label("Room"),
   // image: Yup.object().nullable().label("Image"),
 });
 
-function AccountDetails({ navigation, route }) {
-  const user = route.params;
+function AccountDetails() {
+  const { user, setUser } = useContext(AuthContext);
   const [editMobile, setEditMobile] = useState(false);
   const handleEdit = (current, handler) => {
     handler(!current);
@@ -46,13 +50,15 @@ function AccountDetails({ navigation, route }) {
           mobile: user.mobile,
           hall: user.hall,
           room: user.room,
+          image: user.imagePath,
         }}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values) => {
+          const newUser = await authApi.updateUser(values);
+          setUser(newUser.data);
         }}
         validationSchema={validationSchema}
       >
-        {/* <AppFormImagePicker name="image" /> */}
+        <AppFormImagePicker name="image" />
         {/* <Picker items={Halls} name="hall" placeholder="Hall" /> */}
         <FormField
           defaultValue={user.name}
@@ -71,7 +77,7 @@ function AccountDetails({ navigation, route }) {
           editable={false}
         />
         <FormField
-          defaultValue={"Hall " + user.hall.toString()}
+          defaultValue={"Hall " + user.hall}
           maxLength={255}
           name="hall"
           placeholder="Hall"
