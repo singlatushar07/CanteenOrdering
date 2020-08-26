@@ -31,7 +31,7 @@ export default function CartScreen({ navigation }) {
     totalPrice: total,
     time: time,
     items: itemsArray,
-    isDineIn: null,
+    isDelivery: null,
     room: "",
   }; //this object should be saved in database of the user and array of all such ojects are displayed in HistoryScreen
 

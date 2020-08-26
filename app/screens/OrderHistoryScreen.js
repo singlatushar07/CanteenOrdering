@@ -29,7 +29,7 @@ function OrderHistoryScreen({ navigation }) {
   const loadHistory = async () => {
     setLoading(true);
     const response = await orderApi.getHistory(user._id);
-    console.log(response.data);
+    // console.log(response.data);
     setLoading(false);
 
     if (!response.ok) return setError(true);
@@ -69,7 +69,7 @@ function OrderHistoryScreen({ navigation }) {
         <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
           {item.payment_method}
         </AppText>
-        {/* {item.isDineIn ? (
+        {!item.isDineIn ? (
           <>
             <Text style={{ color: "#aaa" }}>Room</Text>
             <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
@@ -77,8 +77,8 @@ function OrderHistoryScreen({ navigation }) {
             </AppText>
           </>
         ) : (
-          <Text> not dine in</Text>
-        )}  */}
+          <Text> dine in</Text>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );

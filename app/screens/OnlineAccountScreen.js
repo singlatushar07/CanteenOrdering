@@ -16,7 +16,7 @@ import AuthContext from "../auth/context";
 import orderApi from "../api/orders";
 import routes from "../navigation/routes";
 import Spinner from "react-native-loading-spinner-overlay";
-import listings from "../../Data/halls";
+import listings from "../Data/halls";
 function OnlineAccountScreen({ navigation }) {
   const { user, setUser } = useContext(AuthContext);
   const [history, setHistory] = useState([]);
