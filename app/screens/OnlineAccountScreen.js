@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   SafeAreaView,
+  Button,
 } from "react-native";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
@@ -15,9 +16,8 @@ import AuthContext from "../auth/context";
 import orderApi from "../api/orders";
 import routes from "../navigation/routes";
 import Spinner from "react-native-loading-spinner-overlay";
-import listings from "../Data/halls";
-
-function OrderHistoryScreen({ navigation }) {
+import listings from "../../Data/halls";
+function OnlineAccountScreen({ navigation }) {
   const { user, setUser } = useContext(AuthContext);
   const [history, setHistory] = useState([]);
   const [error, setError] = useState(false);
@@ -29,61 +29,63 @@ function OrderHistoryScreen({ navigation }) {
   const loadHistory = async () => {
     setLoading(true);
     const response = await orderApi.getHistory(user._id);
-    console.log(response.data);
+    // console.log(response.data);
     setLoading(false);
 
     if (!response.ok) return setError(true);
     else setError(false);
-    const history = response.data;
-    setHistory(history);
+    const history2 = response.data;
+    setHistory(history2);
+  };
+  const handle = () => {
+    let m = 0;
+    for (let i = 0; i < history.length; i++) {
+      if (history[i].payment_method === "account") {
+        m = m + history[i].totalPrice;
+      }
+    }
+    console.log(m);
   };
   const renderItem = (item) => (
     <TouchableWithoutFeedback
       onPress={() => navigation.navigate(routes.ORDER_SUMMARY, item.items)}
     >
-      <View style={styles.Maincontainer}>
-        <View style={styles.detailsContainer}>
-          <Image
-            source={listings.find((element) => element.id === item.hall).image}
-            style={styles.image}
-          />
+      {item.payment_method === "account" ? (
+        <View style={styles.Maincontainer}>
+          <View style={styles.detailsContainer}>
+            <Image
+              source={
+                listings.find((element) => element.id === item.hall).image
+              }
+              style={styles.image}
+            />
 
-          <View style={styles.card}>
-            <AppText style={styles.title}>Hall {item.hall}</AppText>
+            <View style={styles.card}>
+              <AppText style={styles.title}>Hall {item.hall}</AppText>
+            </View>
           </View>
+          <ListItemSeparator style={{ backgroundColor: colors.dark }} />
+          <Text style={{ color: "#aaa" }}>Items</Text>
+          <AppText style={{ fontSize: 15, fontWeight: "800" }}>
+            Click to view more items...
+          </AppText>
+          <Text style={{ color: "#aaa" }}>ORDERED ON</Text>
+          <AppText style={{ fontSize: 15, fontWeight: "800" }}>
+            {item.time.split("T")[0]},{item.time.split("T")[1]}
+          </AppText>
+          <Text style={{ color: "#aaa" }}>Total Amount</Text>
+          <AppText style={{ fontSize: 15, fontWeight: "bold", color: "green" }}>
+            ₹{item.totalPrice}
+          </AppText>
         </View>
-        <ListItemSeparator style={{ backgroundColor: colors.dark }} />
-        <Text style={{ color: "#aaa" }}>Items</Text>
-        <AppText style={{ fontSize: 15, fontWeight: "800" }}>
-          Click to view more items...
-        </AppText>
-        <Text style={{ color: "#aaa" }}>ORDERED ON</Text>
-        <AppText style={{ fontSize: 15, fontWeight: "800" }}>
-          {item.time.split("T")[0]},{item.time.split("T")[1]}
-        </AppText>
-        <Text style={{ color: "#aaa" }}>Total Amount</Text>
-        <AppText style={{ fontSize: 15, fontWeight: "bold", color: "green" }}>
-          ₹{item.totalPrice}
-        </AppText>
-        <Text style={{ color: "#aaa" }}>Payment Method</Text>
-        <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
-          {item.payment_method}
-        </AppText>
-        {/* {item.isDineIn ? (
-          <>
-            <Text style={{ color: "#aaa" }}>Room</Text>
-            <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
-              {item.room}
-            </AppText>
-          </>
-        ) : (
-          <Text> not dine in</Text>
-        )}  */}
-      </View>
+      ) : (
+        <></>
+      )}
     </TouchableWithoutFeedback>
   );
   return (
     <SafeAreaView>
+      <Button title="to log total account price" onPress={handle} />
       <Spinner
         visible={loading}
         size="large"
@@ -160,4 +162,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderHistoryScreen;
+export default OnlineAccountScreen;

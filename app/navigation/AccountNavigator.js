@@ -9,6 +9,7 @@ import routes from "./routes";
 import AccountDetails from "../screens/AccountDetailsScreen";
 import OrderHistoryScreen from "../screens/OrderHistoryScreen";
 import OrderSummary from "../screens/OrderSummaryScreen";
+import OnlineAccountScreen from "../screens/OnlineAccountScreen";
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,13 @@ const AccountNavigator = () => (
       component={OrderSummary}
       options={{
         title: "Order Summary",
+      }}
+    />
+    <Stack.Screen
+      name={routes.ONLINE_ACCOUNT}
+      component={OnlineAccountScreen}
+      options={{
+        title: "Online Account",
       }}
     />
   </Stack.Navigator>
