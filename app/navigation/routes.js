@@ -19,4 +19,5 @@ export default Object.freeze({
   PAYMENT: "Payment",
   ORDER_SUMMARY: "Summary",
   APP_NAV: "App_Nav",
+  ONLINE_ACCOUNT: "Online_Account",
 });

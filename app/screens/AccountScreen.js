@@ -25,6 +25,14 @@ const menuItems = [
     },
     targetScreen: routes.MESSAGES,
   },
+  {
+    title: "Online Acccount",
+    icon: {
+      name: "cash",
+      backgroundColor: colors.cashGreen,
+    },
+    targetScreen: routes.ONLINE_ACCOUNT,
+  },
 ];
 
 function AccountScreen({ navigation }) {
