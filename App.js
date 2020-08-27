@@ -12,6 +12,8 @@ import authStorage from "./app/auth/storage";
 import jwtDecode from "jwt-decode";
 import { View } from "react-native";
 import AppImageInput from "./app/components/AppImageInput";
+import OfflineNotice from "./app/components/OfflineNotice";
+import AppText from "./app/components/AppText";
 
 const rootReducer = combineReducers({
   meals: mealsReducer,
@@ -35,6 +37,7 @@ export default function App() {
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
+      {/* <OfflineNotice /> */}
       <Provider store={store}>
         <NavigationContainer theme={navigationTheme}>
           {user ? <AppNavigator /> : <AuthNavigator />}
@@ -43,8 +46,5 @@ export default function App() {
         </NavigationContainer>
       </Provider>
     </AuthContext.Provider>
-    // <View>
-    //   <AppImageInput onChangeImage={setIm} imageUri={im}></AppImageInput>
-    // </View>
   );
 }

@@ -9,6 +9,7 @@ import routes from "./routes";
 import CartScreenNavigator from "./CartScreenNavigator";
 import { View, Text } from "react-native";
 import colors from "../config/colors";
+import useNotifications from "../hooks/useNotifications";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,64 +18,67 @@ function getNum() {
   return data.length;
 }
 
-const AppNavigator = () => (
-  <Tab.Navigator
-    tabBarOptions={{
-      style: {
-        height: 60,
-      },
-    }}
-  >
-    <Tab.Screen
-      name={routes.MENU}
-      component={ListingsNavigator}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="home" color={color} size={size} />
-        ),
+const AppNavigator = () => {
+  useNotifications();
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        style: {
+          height: 60,
+        },
       }}
-    />
-    <Tab.Screen
-      name="Cart"
-      component={CartScreenNavigator}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <View>
-            <View
-              style={{
-                position: "absolute",
-                fontSize: 8,
-                width: 20,
-                height: 20,
-                borderRadius: 10,
-                backgroundColor: colors.secondary,
-                left: 15,
-                bottom: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                zIndex: 1000,
-              }}
-            >
-              <Text style={{ fontSize: 10, color: colors.white }}>
-                {getNum()}
-              </Text>
+    >
+      <Tab.Screen
+        name={routes.MENU}
+        component={ListingsNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={CartScreenNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <View>
+              <View
+                style={{
+                  position: "absolute",
+                  fontSize: 8,
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  backgroundColor: colors.secondary,
+                  left: 15,
+                  bottom: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  zIndex: 1000,
+                }}
+              >
+                <Text style={{ fontSize: 10, color: colors.white }}>
+                  {getNum()}
+                </Text>
+              </View>
+              <MaterialCommunityIcons name="cart" color={color} size={size} />
             </View>
-            <MaterialCommunityIcons name="cart" color={color} size={size} />
-          </View>
-        ),
-      }}
-    />
+          ),
+        }}
+      />
 
-    <Tab.Screen
-      name={routes.ACCOUNT}
-      component={AccountNavigator}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="account" color={color} size={size} />
-        ),
-      }}
-    />
-  </Tab.Navigator>
-);
+      <Tab.Screen
+        name={routes.ACCOUNT}
+        component={AccountNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 export default AppNavigator;
