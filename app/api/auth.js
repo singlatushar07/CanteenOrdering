@@ -38,11 +38,14 @@ const updateUser = (user) => {
 const loginUser = (user) => client.post(auth, user);
 const sendOTP = (otp) => client.post(verify, otp);
 const resendOTP = (id) => client.post(verify + "/resend", id);
-
+const forgetPassword = (email) => client.post(register + "/forget", email);
+const sendForgetOTP = (otp) => client.post(verify + "/forget", otp);
 export default {
   registerUser,
   loginUser,
   sendOTP,
   resendOTP,
   updateUser,
+  forgetPassword,
+  sendForgetOTP,
 };
