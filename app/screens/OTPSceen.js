@@ -11,22 +11,32 @@ import colors from "../config/colors";
 import AuthContext from "../auth/context";
 import authApi from "../api/auth";
 import Spinner from "react-native-loading-spinner-overlay";
+import routes from "../navigation/routes";
 
 console.disableYellowBox = false;
 const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
 let resendOtpTimerInterval;
-var IsUserVerified;
+var response;
 
-function OtpVerification({ route }) {
+function OtpVerification({ route, navigation }) {
   const authContext = useContext(AuthContext);
   const userData = route.params;
   const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
-  let verifyOTP = async (OTPDetails) => {
+  let verifyOTP = async (OTPDetails, isChangePassword) => {
     setLoading(true);
-    const response = await authApi.sendOTP(JSON.stringify(OTPDetails));
+    let response;
+    if (isChangePassword) {
+      response = await authApi.sendForgetOTP(JSON.stringify(OTPDetails));
+    } else {
+      response = await authApi.sendOTP(JSON.stringify(OTPDetails));
+    }
     setLoading(false);
-    return response.data;
+    let a = {
+      headers: response.headers,
+      data: response.data,
+    };
+    return a;
   };
 
   let resendotp = async (c) => {
@@ -39,7 +49,7 @@ function OtpVerification({ route }) {
   useEffect(() => {
     let interval = null;
     if (isVerified) {
-      authContext.setUser(IsUserVerified);
+      authContext.setUser(response);
       console.log("success");
       clearTimeout(interval);
     }
@@ -120,10 +130,18 @@ function OtpVerification({ route }) {
   const onSubmitButtonPress = async () => {
     // API call
     const num = otpArray[0] + otpArray[1] + otpArray[2] + otpArray[3];
-
-    IsUserVerified = await verifyOTP({ id: userData._id, otp: parseInt(num) });
-    if (IsUserVerified.isVerified) setIsVerified(true);
-    else {
+    console.log("USER", userData);
+    response = await verifyOTP(
+      { id: userData._id, otp: parseInt(num) },
+      userData.isChangePassword
+    );
+    console.log("edwsf", response);
+    if (response.data.isChangePassword) {
+      navigation.navigate(routes.CHANGE_PASSWORD, response);
+    } else if (response.data.isVerified) {
+      console.log("tesg");
+      setIsVerified(true);
+    } else {
       alert("Incorrect OTP");
       setOtpArray(["", "", "", ""]);
       firstTextInputRef.current.focus();

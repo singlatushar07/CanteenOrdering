@@ -22,6 +22,7 @@ function OrderHistoryScreen({ navigation }) {
   const [history, setHistory] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     loadHistory();
@@ -95,6 +96,8 @@ function OrderHistoryScreen({ navigation }) {
         data={history}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => renderItem(item)}
+        refreshing={refreshing}
+        onRefresh={() => loadHistory()}
       />
     </SafeAreaView>
   );

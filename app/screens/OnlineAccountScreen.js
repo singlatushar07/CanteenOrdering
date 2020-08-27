@@ -22,6 +22,8 @@ function OnlineAccountScreen({ navigation }) {
   const [history, setHistory] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [pendingAmount, setPendingAmount] = useState(0);
 
   useEffect(() => {
     loadHistory();
@@ -34,58 +36,60 @@ function OnlineAccountScreen({ navigation }) {
 
     if (!response.ok) return setError(true);
     else setError(false);
-    const history2 = response.data;
-    setHistory(history2);
-  };
-  const handle = () => {
-    let m = 0;
-    for (let i = 0; i < history.length; i++) {
-      if (history[i].payment_method === "account") {
-        m = m + history[i].totalPrice;
-      }
+    let data = response.data;
+    data = data.filter((item) => {
+      return item.payment_method === "account";
+    });
+    setHistory(data);
+    let amount = 0;
+    for (let i = 0; i < data.length; i++) {
+      amount = amount + (await data[i].totalPrice);
     }
-    console.log(m);
+    setPendingAmount(amount);
   };
+
   const renderItem = (item) => (
     <TouchableWithoutFeedback
       onPress={() => navigation.navigate(routes.ORDER_SUMMARY, item.items)}
     >
-      {item.payment_method === "account" ? (
-        <View style={styles.Maincontainer}>
-          <View style={styles.detailsContainer}>
-            <Image
-              source={
-                listings.find((element) => element.id === item.hall).image
-              }
-              style={styles.image}
-            />
+      <View style={styles.Maincontainer}>
+        <View style={styles.detailsContainer}>
+          <Image
+            source={listings.find((element) => element.id === item.hall).image}
+            style={styles.image}
+          />
 
-            <View style={styles.card}>
-              <AppText style={styles.title}>Hall {item.hall}</AppText>
-            </View>
+          <View style={styles.card}>
+            <AppText style={styles.title}>Hall {item.hall}</AppText>
           </View>
-          <ListItemSeparator style={{ backgroundColor: colors.dark }} />
-          <Text style={{ color: "#aaa" }}>Items</Text>
-          <AppText style={{ fontSize: 15, fontWeight: "800" }}>
-            Click to view more items...
-          </AppText>
-          <Text style={{ color: "#aaa" }}>ORDERED ON</Text>
-          <AppText style={{ fontSize: 15, fontWeight: "800" }}>
-            {item.time.split("T")[0]},{item.time.split("T")[1]}
-          </AppText>
-          <Text style={{ color: "#aaa" }}>Total Amount</Text>
-          <AppText style={{ fontSize: 15, fontWeight: "bold", color: "green" }}>
-            ₹{item.totalPrice}
-          </AppText>
         </View>
-      ) : (
-        <></>
-      )}
+        <ListItemSeparator style={{ backgroundColor: colors.dark }} />
+        <Text style={{ color: "#aaa" }}>Items</Text>
+        <AppText style={{ fontSize: 15, fontWeight: "800" }}>
+          Click to view more items...
+        </AppText>
+        <Text style={{ color: "#aaa" }}>ORDERED ON</Text>
+        <AppText style={{ fontSize: 15, fontWeight: "800" }}>
+          {item.time.split("T")[0]},{item.time.split("T")[1]}
+        </AppText>
+        <Text style={{ color: "#aaa" }}>Total Amount</Text>
+        <AppText style={{ fontSize: 15, fontWeight: "bold", color: "green" }}>
+          ₹{item.totalPrice}
+        </AppText>
+      </View>
     </TouchableWithoutFeedback>
   );
   return (
-    <SafeAreaView>
-      <Button title="to log total account price" onPress={handle} />
+    <>
+      {/* <Button title="to log total account price" onPress={handle} /> */}
+      <AppText
+        style={{
+          paddingHorizontal: 20,
+        }}
+      >
+        Total amount pending to be paid is ₹{pendingAmount}
+      </AppText>
+
       <Spinner
         visible={loading}
         size="large"
@@ -97,8 +101,10 @@ function OnlineAccountScreen({ navigation }) {
         data={history}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => renderItem(item)}
+        refreshing={refreshing}
+        onRefresh={() => loadHistory()}
       />
-    </SafeAreaView>
+    </>
   );
 }
 

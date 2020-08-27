@@ -20,4 +20,6 @@ export default Object.freeze({
   ORDER_SUMMARY: "Summary",
   APP_NAV: "App_Nav",
   ONLINE_ACCOUNT: "Online_Account",
+  FORGET_PASSWORD: "Forget_Password",
+  CHANGE_PASSWORD: "Change_Password",
 });
