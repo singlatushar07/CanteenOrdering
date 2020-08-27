@@ -32,7 +32,11 @@ function OtpVerification({ route, navigation }) {
       response = await authApi.sendOTP(JSON.stringify(OTPDetails));
     }
     setLoading(false);
-    return response.data;
+    let a = {
+      headers: response.headers,
+      data: response.data,
+    };
+    return a;
   };
 
   let resendotp = async (c) => {
@@ -132,9 +136,9 @@ function OtpVerification({ route, navigation }) {
       userData.isChangePassword
     );
     console.log("edwsf", response);
-    if (response.isChangePassword) {
+    if (response.data.isChangePassword) {
       navigation.navigate(routes.CHANGE_PASSWORD, response);
-    } else if (response.isVerified) {
+    } else if (response.data.isVerified) {
       console.log("tesg");
       setIsVerified(true);
     } else {

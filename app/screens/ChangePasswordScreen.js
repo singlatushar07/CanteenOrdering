@@ -10,6 +10,8 @@ import {
 } from "../components/forms";
 import * as Yup from "yup";
 import colors from "../config/colors";
+import authApi from "../api/auth";
+import routes from "../navigation/routes";
 
 const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(8).label("Password"),
@@ -19,16 +21,24 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-function ChangePasswordScreen(props) {
+function ChangePasswordScreen({ route, navigation }) {
+  const response = route.params;
+  const userData = response.data;
+  const token = response.headers["x-auth-token"];
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
-  const handleSubmit = async (email) => {
+  const handleSubmit = async (values) => {
     setLoading(true);
-    const response = await authApi.forgetPassword(email);
+    const response = await authApi.changePassword({
+      id: userData._id,
+      token: token,
+      newPassword: values.password,
+    });
     setLoading(false);
     if (response.ok) {
       setError(false);
-      navigation.navigate(routes.OTP, response.data);
+      alert(response.data);
+      navigation.navigate(routes.LOGIN);
     } else {
       setError(response.data);
     }
@@ -45,7 +55,7 @@ function ChangePasswordScreen(props) {
       <AppText style={styles.text}>Enter new password</AppText>
       <AppForm
         initialValues={{ password: "", confirmPassword: "" }}
-        onSubmit={handleSubmit}
+        onSubmit={(values) => handleSubmit(values)}
         validationSchema={validationSchema}
       >
         <AppFormField

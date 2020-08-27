@@ -40,6 +40,9 @@ const sendOTP = (otp) => client.post(verify, otp);
 const resendOTP = (id) => client.post(verify + "/resend", id);
 const forgetPassword = (email) => client.post(register + "/forget", email);
 const sendForgetOTP = (otp) => client.post(verify + "/forget", otp);
+const changePassword = (details) =>
+  client.put(verify + "/forget", JSON.stringify(details));
+
 export default {
   registerUser,
   loginUser,
@@ -48,4 +51,5 @@ export default {
   updateUser,
   forgetPassword,
   sendForgetOTP,
+  changePassword,
 };
