@@ -12,6 +12,7 @@ import AuthContext from "../auth/context";
 import authApi from "../api/auth";
 import Spinner from "react-native-loading-spinner-overlay";
 import routes from "../navigation/routes";
+import JwtDecode from "jwt-decode";
 
 console.disableYellowBox = false;
 const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
@@ -49,7 +50,8 @@ function OtpVerification({ route, navigation }) {
   useEffect(() => {
     let interval = null;
     if (isVerified) {
-      authContext.setUser(response);
+      const user = JwtDecode(response.headers["x-auth-token"]);
+      authContext.setUser(user);
       console.log("success");
       clearTimeout(interval);
     }
