@@ -41,7 +41,7 @@ export default function OrderSummary({ route }) {
       </Text>
       <FlatList
         data={listing}
-        keyExtractor={(item) => item._id.toString()}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => renderItem(item)}
       />
     </View>
