@@ -13,6 +13,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 import listings from "../Data/halls";
 import { color } from "react-native-reanimated";
 
+
 function OrderHistoryScreen({ navigation }) {
   useEffect(() => {
     fetchData();
@@ -39,7 +40,7 @@ function OrderHistoryScreen({ navigation }) {
     var url =
       "http://" +
       systemIPAddress +
-      ":3000/5f4630025975ab577cd4bca2/fetch-paginated-data?pageNo=" +
+      ":3000/" + user._id + "/fetch-paginated-data?pageNo=" +
       pageNo +
       "&pageSize=" +
       pageSize;
