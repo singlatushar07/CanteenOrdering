@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { StyleSheet, ActivityIndicator, View, FlatList,Image,TouchableWithoutFeedback } from "react-native";
+import {
+  StyleSheet,
+  ActivityIndicator,
+  View,
+  FlatList,
+  Image,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { Container, Content, Text, List } from "native-base";
 import axios from "axios";
 import colors from "../config/colors";
@@ -12,7 +19,8 @@ import routes from "../navigation/routes";
 import Spinner from "react-native-loading-spinner-overlay";
 import listings from "../Data/halls";
 import { color } from "react-native-reanimated";
-
+import ngrokUrl from "../keys/url";
+import { combineReducers } from "redux";
 
 function OrderHistoryScreen({ navigation }) {
   useEffect(() => {
@@ -36,11 +44,12 @@ function OrderHistoryScreen({ navigation }) {
       setShowLoadingMore(true);
     }
 
-    var systemIPAddress = "192.168.18.17";
+    console.log(ngrokUrl.ngrokUrl, user._id);
     var url =
-      "http://" +
-      systemIPAddress +
-      ":3000/" + user._id + "/fetch-paginated-data?pageNo=" +
+      ngrokUrl.ngrokUrl +
+      "/" +
+      user._id +
+      "/fetch-paginated-data?pageNo=" +
       pageNo +
       "&pageSize=" +
       pageSize;
@@ -87,61 +96,61 @@ function OrderHistoryScreen({ navigation }) {
   };
 
   //initially display loader at the center
-  let listSection = (
-    <>
-    </>
-  );
+  let listSection = <></>;
   if (dataReceived) {
     if (data2.length > 0) {
       listSection = data2.map((record) => {
         return (
-          
           <TouchableWithoutFeedback
-          key={record._id}
-      onPress={() => navigation.navigate(routes.ORDER_SUMMARY, record.items)}
-    >
-          <View style={styles.Maincontainer} >
-          <View style={styles.detailsContainer}>
-            <Image
-              source={listings.find((element) => element.id === record.hall).image}
-              style={styles.image}
-            />
-  
-            <View style={styles.card}>
-        <AppText style={styles.title}>Hall {record.hall}</AppText>
-            </View>
-          </View>
-          <ListItemSeparator style={{ backgroundColor: colors.dark }} />
-          <Text style={{ color: "#aaa" }}>Items</Text>
-          <AppText style={{ fontSize: 15, fontWeight: "800" }}>
-            Click to view more items...
-          </AppText>
-          <Text style={{ color: "#aaa" }}>ORDERED ON</Text>
-          <AppText style={{ fontSize: 15, fontWeight: "800" }}>
-            {record.time.split("T")[0]},{record.time.split("T")[1]}
-          </AppText>
-          <Text style={{ color: "#aaa" }}>Total Amount</Text>
-          <AppText style={{ fontSize: 15, fontWeight: "bold", color: "green" }}>
-            ₹{record.totalPrice}
-          </AppText>
-          <Text style={{ color: "#aaa" }}>Payment Method</Text>
-          <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
-            {record.payment_method}
-          </AppText>
-          {!record.isDineIn ? (
-            <>
-              <Text style={{ color: "#aaa" }}>Room</Text>
-              <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
-                {record.room}
-              </AppText>
-            </>
-          ) : (
-            <Text> dine in</Text>
-          )}
-        </View>  
-     </TouchableWithoutFeedback>
+            key={record._id}
+            onPress={() =>
+              navigation.navigate(routes.ORDER_SUMMARY, record.items)
+            }
+          >
+            <View style={styles.Maincontainer}>
+              <View style={styles.detailsContainer}>
+                <Image
+                  source={
+                    listings.find((element) => element.id === record.hall).image
+                  }
+                  style={styles.image}
+                />
 
-          
+                <View style={styles.card}>
+                  <AppText style={styles.title}>Hall {record.hall}</AppText>
+                </View>
+              </View>
+              <ListItemSeparator style={{ backgroundColor: colors.dark }} />
+              <Text style={{ color: "#aaa" }}>Items</Text>
+              <AppText style={{ fontSize: 15, fontWeight: "800" }}>
+                Click to view more items...
+              </AppText>
+              <Text style={{ color: "#aaa" }}>ORDERED ON</Text>
+              <AppText style={{ fontSize: 15, fontWeight: "800" }}>
+                {record.time.split("T")[0]},{record.time.split("T")[1]}
+              </AppText>
+              <Text style={{ color: "#aaa" }}>Total Amount</Text>
+              <AppText
+                style={{ fontSize: 15, fontWeight: "bold", color: "green" }}
+              >
+                ₹{record.totalPrice}
+              </AppText>
+              <Text style={{ color: "#aaa" }}>Payment Method</Text>
+              <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
+                {record.payment_method}
+              </AppText>
+              {!record.isDineIn ? (
+                <>
+                  <Text style={{ color: "#aaa" }}>Room</Text>
+                  <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
+                    {record.room}
+                  </AppText>
+                </>
+              ) : (
+                <Text> dine in</Text>
+              )}
+            </View>
+          </TouchableWithoutFeedback>
         );
       });
     } else {
@@ -179,8 +188,6 @@ function OrderHistoryScreen({ navigation }) {
       </Container>
     );
   }
-
-  
 }
 
 const styles = StyleSheet.create({
