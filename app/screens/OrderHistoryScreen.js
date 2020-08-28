@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  FlatList,
-  TouchableWithoutFeedback,
-  SafeAreaView,
-} from "react-native";
+
+import { StyleSheet, ActivityIndicator, View, FlatList,Image,TouchableWithoutFeedback } from "react-native";
+import { Container, Content, Text, List } from "native-base";
+import axios from "axios";
 import colors from "../config/colors";
 import AppText from "../components/AppText";
 import ListItemSeparator from "../components/lists/ListItemSeparator";
@@ -16,91 +11,175 @@ import orderApi from "../api/orders";
 import routes from "../navigation/routes";
 import Spinner from "react-native-loading-spinner-overlay";
 import listings from "../Data/halls";
+import { color } from "react-native-reanimated";
 
 function OrderHistoryScreen({ navigation }) {
+  useEffect(() => {
+    fetchData();
+  }, []);
   const { user, setUser } = useContext(AuthContext);
   const [history, setHistory] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(4);
+  const [showLoadingMore, setShowLoadingMore] = useState(false);
+  const [data2, setData2] = useState([]);
+  const [loadMoreData, setLoadMoreData] = useState(true);
+  const [shouldHit, setShouldHit] = useState(false);
+  const [dataReceived, setDataReceived] = useState(false);
 
-  useEffect(() => {
-    loadHistory();
-  }, []);
-  const loadHistory = async () => {
-    setLoading(true);
-    const response = await orderApi.getHistory(user._id);
-    // console.log(response.data);
-    setLoading(false);
+  const fetchData = () => {
+    if (pageNo != 1) {
+      setShowLoadingMore(true);
+    }
 
-    if (!response.ok) return setError(true);
-    else setError(false);
-    const history = response.data;
-    setHistory(history);
+    var systemIPAddress = "192.168.18.17";
+    var url =
+      "http://" +
+      systemIPAddress +
+      ":3000/5f4630025975ab577cd4bca2/fetch-paginated-data?pageNo=" +
+      pageNo +
+      "&pageSize=" +
+      pageSize;
+    axios
+      .get(url)
+      .then((response) => {
+        if (response.data.success) {
+          // console.log(response.data.list);
+          //add data to list and change the state to render new content
+          let receivedDataList = response.data.list;
+          let currentDataList = data2;
+          //append to existing list
+          let newDataList = currentDataList.concat(receivedDataList);
+          //render new list
+          //once new list is set we are ready to load more data if bottom is reached
+          let loadMoreData = true;
+          setPageNo(pageNo + 1);
+          setData2(newDataList);
+          setDataReceived(true);
+          setLoadMoreData(loadMoreData);
+          setShowLoadingMore(false);
+        } else {
+          //no more data to be loaded
+          setShouldHit(false);
+          setShowLoadingMore(false);
+        }
+        console.log(data2);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-  const renderItem = (item) => (
-    <TouchableWithoutFeedback
-      onPress={() => navigation.navigate(routes.ORDER_SUMMARY, item.items)}
-    >
-      <View style={styles.Maincontainer}>
-        <View style={styles.detailsContainer}>
-          <Image
-            source={listings.find((element) => element.id === item.hall).image}
-            style={styles.image}
-          />
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }) => {
+    const paddingToBottom = 40;
+    let result =
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+    //true if the end is reached other wise false
+    return result;
+  };
 
-          <View style={styles.card}>
-            <AppText style={styles.title}>Hall {item.hall}</AppText>
+  //initially display loader at the center
+  let listSection = (
+    <>
+    </>
+  );
+  if (dataReceived) {
+    if (data2.length > 0) {
+      listSection = data2.map((record) => {
+        return (
+          
+          <TouchableWithoutFeedback
+          key={record._id}
+      onPress={() => navigation.navigate(routes.ORDER_SUMMARY, record.items)}
+    >
+          <View style={styles.Maincontainer} >
+          <View style={styles.detailsContainer}>
+            <Image
+              source={listings.find((element) => element.id === record.hall).image}
+              style={styles.image}
+            />
+  
+            <View style={styles.card}>
+        <AppText style={styles.title}>Hall {record.hall}</AppText>
+            </View>
           </View>
-        </View>
-        <ListItemSeparator style={{ backgroundColor: colors.dark }} />
-        <Text style={{ color: "#aaa" }}>Items</Text>
-        <AppText style={{ fontSize: 15, fontWeight: "800" }}>
-          Click to view more items...
-        </AppText>
-        <Text style={{ color: "#aaa" }}>ORDERED ON</Text>
-        <AppText style={{ fontSize: 15, fontWeight: "800" }}>
-          {item.time.split("T")[0]},{item.time.split("T")[1]}
-        </AppText>
-        <Text style={{ color: "#aaa" }}>Total Amount</Text>
-        <AppText style={{ fontSize: 15, fontWeight: "bold", color: "green" }}>
-          ₹{item.totalPrice}
-        </AppText>
-        <Text style={{ color: "#aaa" }}>Payment Method</Text>
-        <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
-          {item.payment_method}
-        </AppText>
-        {!item.isDineIn ? (
-          <>
-            <Text style={{ color: "#aaa" }}>Room</Text>
-            <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
-              {item.room}
-            </AppText>
-          </>
-        ) : (
-          <Text> dine in</Text>
-        )}
+          <ListItemSeparator style={{ backgroundColor: colors.dark }} />
+          <Text style={{ color: "#aaa" }}>Items</Text>
+          <AppText style={{ fontSize: 15, fontWeight: "800" }}>
+            Click to view more items...
+          </AppText>
+          <Text style={{ color: "#aaa" }}>ORDERED ON</Text>
+          <AppText style={{ fontSize: 15, fontWeight: "800" }}>
+            {record.time.split("T")[0]},{record.time.split("T")[1]}
+          </AppText>
+          <Text style={{ color: "#aaa" }}>Total Amount</Text>
+          <AppText style={{ fontSize: 15, fontWeight: "bold", color: "green" }}>
+            ₹{record.totalPrice}
+          </AppText>
+          <Text style={{ color: "#aaa" }}>Payment Method</Text>
+          <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
+            {record.payment_method}
+          </AppText>
+          {!record.isDineIn ? (
+            <>
+              <Text style={{ color: "#aaa" }}>Room</Text>
+              <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
+                {record.room}
+              </AppText>
+            </>
+          ) : (
+            <Text> dine in</Text>
+          )}
+        </View>  
+     </TouchableWithoutFeedback>
+
+          
+        );
+      });
+    } else {
+      listSection = null;
+    }
+  }
+
+  if (dataReceived && data2.length == 0) {
+    return (
+      <View style={styles.container}>
+        <Text>No records to display</Text>
       </View>
-    </TouchableWithoutFeedback>
-  );
-  return (
-    <SafeAreaView>
-      <Spinner
-        visible={loading}
-        size="large"
-        animation="fade"
-        color={colors.light}
-        cancelable={true}
-      />
-      <FlatList
-        data={history}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => renderItem(item)}
-        refreshing={refreshing}
-        onRefresh={() => loadHistory()}
-      />
-    </SafeAreaView>
-  );
+    );
+  } else {
+    return (
+      <Container style={{ marginTop: 1 }}>
+        <Content
+          onScroll={({ nativeEvent }) => {
+            if (isCloseToBottom(nativeEvent)) {
+              //prevent multiple hits for same page number
+              if (loadMoreData) {
+                //bottom reached start loading data
+
+                setLoadMoreData(false);
+                fetchData();
+              }
+            }
+          }}
+        >
+          <List>{listSection}</List>
+          {showLoadingMore ? (
+            <ActivityIndicator size="large" color={colors.primary} />
+          ) : null}
+        </Content>
+      </Container>
+    );
+  }
+
+  
 }
 
 const styles = StyleSheet.create({
@@ -131,9 +210,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-  container: {
-    padding: 10,
-  },
+  // container: {
+  //   padding: 10,
+  // },
   detailsContainer: {
     flexDirection: "row",
     marginVertical: 1,
@@ -160,6 +239,12 @@ const styles = StyleSheet.create({
   description: {
     color: colors.medium,
     fontSize: 14,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
