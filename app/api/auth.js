@@ -1,6 +1,6 @@
 import client from "./client";
 const register = "/register";
-const auth = "/user/auth";
+const auth = "/auth";
 const verify = "/verify";
 
 const registerUser = (user) => {
