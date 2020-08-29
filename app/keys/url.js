@@ -1,4 +1,4 @@
 export default {
   // ngrokUrl: "https://7679c6192.168.43.23708847d.ngrok.io",
-  ngrokUrl: "http://192.168.42.111:3000/user/",
+  ngrokUrl: "https://4d565cbe1e31.ngrok.io",
 };

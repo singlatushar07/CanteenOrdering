@@ -21,6 +21,8 @@ import listings from "../Data/halls";
 import { color } from "react-native-reanimated";
 import ngrokUrl from "../keys/url";
 import { combineReducers } from "redux";
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import Entypo from 'react-native-vector-icons/Entypo';
 
 function OrderHistoryScreen({ navigation }) {
   useEffect(() => {
@@ -48,6 +50,8 @@ function OrderHistoryScreen({ navigation }) {
     console.log(ngrokUrl.ngrokUrl, user._id);
     var url =
       ngrokUrl.ngrokUrl +
+      "/user" +
+      "/" +
       user._id +
       "/fetch-paginated-data?pageNo=" +
       pageNo +
@@ -151,6 +155,28 @@ function OrderHistoryScreen({ navigation }) {
               ) : (
                 <Text> Dine in</Text>
               )}
+              {(() => {
+        switch (record.orderStatus) {
+          case 0:
+            
+            return  <MaterialCommunityIcons
+            name="progress-clock"
+            size={30}
+            color={colors.medium}
+          />;
+          case 1:
+            return <Entypo name='circle-with-cross' size={30} color={colors.danger}/>;
+          case 2:
+            
+            return <MaterialCommunityIcons
+            name="check-decagram"
+            size={30}
+            color={colors.cashGreen}
+          />;
+          default:
+            return null;
+        }
+      })()}
             </View>
           </TouchableWithoutFeedback>
         );

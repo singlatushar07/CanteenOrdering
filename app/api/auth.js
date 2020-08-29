@@ -1,7 +1,7 @@
 import client from "./client";
-const register = "/register";
-const auth = "/auth";
-const verify = "/verify";
+const register = "/user/register";
+const auth = "/user/auth";
+const verify = "/user/verify";
 
 const registerUser = (user) => {
   var userData = new FormData();
