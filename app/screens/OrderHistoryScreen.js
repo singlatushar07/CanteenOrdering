@@ -43,16 +43,17 @@ function OrderHistoryScreen({ navigation }) {
     if (pageNo != 1) {
       setShowLoadingMore(true);
     }
+    setLoading(true);
 
     console.log(ngrokUrl.ngrokUrl, user._id);
     var url =
       ngrokUrl.ngrokUrl +
-      "/" +
       user._id +
       "/fetch-paginated-data?pageNo=" +
       pageNo +
       "&pageSize=" +
       pageSize;
+    console.log(url);
     axios
       .get(url)
       .then((response) => {
@@ -76,6 +77,7 @@ function OrderHistoryScreen({ navigation }) {
           setShouldHit(false);
           setShowLoadingMore(false);
         }
+        setLoading(false);
         console.log(data2);
       })
       .catch((error) => {
@@ -127,7 +129,7 @@ function OrderHistoryScreen({ navigation }) {
               </AppText>
               <Text style={{ color: "#aaa" }}>ORDERED ON</Text>
               <AppText style={{ fontSize: 15, fontWeight: "800" }}>
-                {record.time.split("T")[0]},{record.time.split("T")[1]}
+                {new Date(record.time).toLocaleString()}
               </AppText>
               <Text style={{ color: "#aaa" }}>Total Amount</Text>
               <AppText
@@ -139,7 +141,7 @@ function OrderHistoryScreen({ navigation }) {
               <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
                 {record.payment_method}
               </AppText>
-              {!record.isDineIn ? (
+              {record.isDelivery ? (
                 <>
                   <Text style={{ color: "#aaa" }}>Room</Text>
                   <AppText style={{ fontSize: 15, fontWeight: "bold" }}>
@@ -147,7 +149,7 @@ function OrderHistoryScreen({ navigation }) {
                   </AppText>
                 </>
               ) : (
-                <Text> dine in</Text>
+                <Text> Dine in</Text>
               )}
             </View>
           </TouchableWithoutFeedback>
@@ -167,6 +169,12 @@ function OrderHistoryScreen({ navigation }) {
   } else {
     return (
       <Container style={{ marginTop: 1 }}>
+        <Spinner
+          visible={loading && pageNo === 1}
+          size="large"
+          animation="fade"
+          cancelable={true}
+        />
         <Content
           onScroll={({ nativeEvent }) => {
             if (isCloseToBottom(nativeEvent)) {
