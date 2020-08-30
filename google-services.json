@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "53166050643",
+    "firebase_url": "https://canteenordering-fedb8.firebaseio.com",
+    "project_id": "canteenordering-fedb8",
+    "storage_bucket": "canteenordering-fedb8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53166050643:android:9eb280c880c9221ca265a6",
+        "android_client_info": {
+          "package_name": "com.tushar.COA"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53166050643-k1c7igbp5o71hd334l8bhb0vsi9o3spf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc5TcG7KIGuQQiaMOIXeWsXhrn3CDRIlg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "53166050643-k1c7igbp5o71hd334l8bhb0vsi9o3spf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

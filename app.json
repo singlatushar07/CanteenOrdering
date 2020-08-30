@@ -5,6 +5,7 @@
     "platforms": ["ios", "android"],
     "android": {
       "package": "com.tushar.COA",
+      "googleServicesFile": "./google-services.json",
       "versionCode": 1
     },
     "version": "1.0.0",
