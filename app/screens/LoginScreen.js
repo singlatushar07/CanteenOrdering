@@ -31,6 +31,7 @@ function LoginScreen({ navigation }) {
 
   const handleSubmit = async (userDetails) => {
     setLoading(true);
+    console.log(JSON.stringify(userDetails));
     const response = await authApi.loginUser(JSON.stringify(userDetails));
     console.log(response);
     setLoading(false);

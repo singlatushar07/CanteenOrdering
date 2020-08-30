@@ -1,6 +1,6 @@
 import client from "./client";
 
-const endpoint = "user/menu";
+const endpoint = "/menu";
 
 const getFoodItems = (hallNum = "") => client.get(endpoint + "/" + hallNum);
 const deleteListing = (id) => client.delete(endpoint + "/" + id);
