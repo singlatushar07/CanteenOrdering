@@ -38,7 +38,6 @@ function OrderHistoryScreen({ navigation }) {
   const [showLoadingMore, setShowLoadingMore] = useState(false);
   const [data2, setData2] = useState([]);
   const [loadMoreData, setLoadMoreData] = useState(true);
-  const [shouldHit, setShouldHit] = useState(false);
   const [dataReceived, setDataReceived] = useState(false);
 
   const fetchData = () => {
@@ -76,7 +75,6 @@ function OrderHistoryScreen({ navigation }) {
           setShowLoadingMore(false);
         } else {
           //no more data to be loaded
-          setShouldHit(false);
           setShowLoadingMore(false);
         }
         setLoading(false);

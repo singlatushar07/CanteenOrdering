@@ -21,22 +21,6 @@ const validationSchema = Yup.object().shape({
   // image: Yup.object().nullable().label("Image"),
 });
 
-// const Halls = [
-//   { label: "Hall 1", value: 1 },
-//   { label: "Hall 2", value: 2 },
-//   { label: "Hall 3", value: 3 },
-//   { label: "Hall 4", value: 4 },
-//   { label: "Hall 5", value: 5 },
-//   { label: "Hall 6", value: 6 },
-//   { label: "Hall 7", value: 7 },
-//   { label: "Hall 8", value: 8 },
-//   { label: "Hall 9", value: 9 },
-//   { label: "Hall 10", value: 10 },
-//   { label: "Hall 11", value: 11 },
-//   { label: "Hall 12", value: 12 },
-//   { label: "Hall 13", value: 13 },
-// ];
-
 function AdminUpdate({ navigation, route }) {
   const item = route.params;
 
