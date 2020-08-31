@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Canteen Ordering",
-    "slug": "CanteenOrdering",
+    "name": "Bhookad",
+    "slug": "Bhookad",
     "platforms": ["ios", "android"],
     "android": {
       "package": "com.tushar.COA",
@@ -10,7 +10,7 @@
     },
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/logo-red.png",
+    "icon": "./app/assets/logo.png",
     "splash": {
       "image": "./app/assets/splash.png",
       "resizeMode": "contain",

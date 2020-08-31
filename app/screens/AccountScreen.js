@@ -18,14 +18,6 @@ const menuItems = [
     targetScreen: routes.ORDER_HISTORY,
   },
   {
-    title: "My Messages",
-    icon: {
-      name: "email",
-      backgroundColor: colors.secondary,
-    },
-    targetScreen: routes.MESSAGES,
-  },
-  {
     title: "Online Acccount",
     icon: {
       name: "cash",

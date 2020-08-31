@@ -74,28 +74,28 @@ function FoodItemCollapsible({ foods, category }) {
           data={items}
           keyExtractor={(item) => item._id.toString()}
           renderItem={({ item }) => (
-            <View style={styles.detailsContainer}>
-              {(item.image && (
-                <Image style={styles.image} uri={item.image} />
-              )) || (
-                <ImageReact
-                  source={require("../assets/burger.jpg")}
-                  style={styles.image}
-                />
-              )}
+            <TouchableOpacity onPress={() => addToCartHandler(item)}>
+              <View style={styles.detailsContainer}>
+                {(item.image && (
+                  <Image style={styles.image} uri={item.image} />
+                )) || (
+                  <ImageReact
+                    source={require("../assets/burger.jpg")}
+                    style={styles.image}
+                  />
+                )}
 
-              <View style={styles.card}>
-                <TouchableOpacity onPress={() => addToCartHandler(item)}>
+                <View style={styles.card}>
                   <AppText style={styles.title}>{item.title}</AppText>
                   <AppText style={styles.price}>₹{item.price}</AppText>
-                </TouchableOpacity>
-                {item.description && (
-                  <AppText numberOfLines={2} style={styles.description}>
-                    {item.description}
-                  </AppText>
-                )}
+                  {item.description && (
+                    <AppText numberOfLines={2} style={styles.description}>
+                      {item.description}
+                    </AppText>
+                  )}
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
         />
       </Collapsible>

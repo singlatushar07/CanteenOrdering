@@ -59,7 +59,11 @@ export default function PaymentSceen({ route, navigation }) {
 
           <View style={{ alignItems: "center" }}>
             <TouchableOpacity
-              onPress={() => (orderDetails.payment_method = "COD")}
+              onPress={() => {
+                orderDetails.payment_method = "COD";
+                orderDetails.userId = user._id;
+                placeOrder(orderDetails);
+              }}
             >
               <MaterialCommunityIcons
                 name="cash"
@@ -70,7 +74,7 @@ export default function PaymentSceen({ route, navigation }) {
             <AppText>Cash On Delivery</AppText>
           </View>
         </View>
-        <View>
+        {/* <View>
           <View
             style={{ flexDirection: "row", paddingTop: 50, paddingLeft: 10 }}
           >
@@ -94,16 +98,16 @@ export default function PaymentSceen({ route, navigation }) {
             </TouchableOpacity>
             <AppText>Pay Later</AppText>
           </View>
-        </View>
+        </View> */}
       </ScrollView>
-      <Button
+      {/* <Button
         title="log"
         onPress={() => {
           console.log(user, "CCC");
           orderDetails.userId = user._id;
           placeOrder(orderDetails);
         }}
-      />
+      /> */}
     </View>
   );
 }

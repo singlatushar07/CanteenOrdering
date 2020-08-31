@@ -216,7 +216,7 @@ function OtpVerification({ route, navigation }) {
               onPress={onResendOtpButtonPress}
             />
           )}
-          <AppButton title="Log" onPress={onSubmitButtonPress} />
+          <AppButton title="Submit" onPress={onSubmitButtonPress} />
         </View>
       </SafeAreaView>
     </>
