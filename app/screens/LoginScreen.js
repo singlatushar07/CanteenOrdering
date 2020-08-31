@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useContext } from "react";
-import { StyleSheet, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, View, Text } from "react-native";
 import * as Yup from "yup";
 import jwtDecode from "jwt-decode";
 import authStorage from "../auth/storage";
@@ -87,6 +87,12 @@ function LoginScreen({ navigation }) {
       >
         <AppText style={styles.forgetPassword}>Forgot Password</AppText>
       </TouchableOpacity>
+      <View style={{ position: "absolute", bottom: 10, right: 10 }}>
+        <AppText>Contact Us</AppText>
+        <Text>tusharsi@iitk.ac.in</Text>
+        <Text>yatishg@iitk.ac.in</Text>
+        <Text>nikhilme@iitk.ac.in</Text>
+      </View>
     </Screen>
   );
 }
@@ -96,8 +102,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logo: {
-    width: 80,
-    height: 80,
+    width: 120,
+    height: 120,
     alignSelf: "center",
     marginTop: 50,
     marginBottom: 20,

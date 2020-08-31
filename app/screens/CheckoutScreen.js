@@ -119,7 +119,7 @@ function CheckoutScreen({ navigation, route }) {
         <View style={styles.detailsContainer}>
           <AppText style={styles.header}>Cancellation Policy</AppText>
           <AppText>
-            Review your order and address to avoid cancellations .Order once
+            Review your order and address to avoid cancellations. Order once
             placed cannot be cancelled.
           </AppText>
         </View>
